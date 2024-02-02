@@ -1,0 +1,56 @@
+const plugin = require("tailwindcss/plugin");
+
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./modules/**/*.{js,ts,jsx,tsx,mdx}",
+    "./constants/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        primary: "#2C7CF1",
+      },
+      borderRadius: {
+        20: "20px",
+        30: "30px",
+      },
+      boxShadow: {
+        contact: "0px 69px 114px rgba(0, 0, 0, 0.08)",
+      },
+      fontFamily: {
+        poppins: "var(--poppins-font)",
+      },
+      maxWidth: {
+        container: "1280px",
+      },
+    },
+  },
+  plugins: [
+    plugin(function ({ addComponents, theme }) {
+      addComponents({
+        ".section": {
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          padding: "0 10px",
+          "@screen sm": {
+            padding: "0 30px",
+          },
+        },
+        ".container": {
+          maxWidth: theme("maxWidth.container"),
+        },
+      });
+    }),
+  ],
+};
+
+//sm	640px
+//md  768px
+//lg  1024px
+//xl  1280px
+//2xl 1536px
