@@ -2,15 +2,17 @@
 
 import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
-import "swiper/css/navigation";
+
+import "swiper/css/pagination";
 import axios from "axios";
+import Categories from "../categories";
 const Hero = () => {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      const url = "https://fakestoreapi.com/products?limit=8";
+      const url = "https://fakestoreapi.com/products";
       try {
         const res = await axios.get(url);
         console.log(res);
@@ -30,22 +32,27 @@ const Hero = () => {
 
   return (
     <div className="section">
-      <div className="container">
+      <div className="container md:flex md:flex-row">
+        <Categories />
         <Swiper
-          modules={[Navigation]}
-          spaceBetween={50}
+          modules={[Autoplay]}
           slidesPerView={1}
-          navigation
           pagination={{ clickable: true }}
           scrollbar={{ draggable: true }}
-          onSwiper={(swiper) => console.log(swiper)}
-          onSlideChange={() => console.log("slide change")}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
           loop={true}
-          className=""
+          breakpoints={{
+            768: {
+              slidesPerView: 3,
+            },
+          }}
         >
           {products.map((product) => (
-            <SwiperSlide key={product.id} className="w-full   overflow-hidden">
-              <div className=" flex items-center justify-center">
+            <SwiperSlide key={product.id}>
+              <div className="flex flex-col items-center justify-center">
                 <img
                   src={product.image}
                   alt={product.title}
