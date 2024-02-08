@@ -1,15 +1,46 @@
+"use client";
 import axios from "axios";
-import React from "react";
+
+import Link from "next/link";
+import React, { useState, useEffect } from "react";
+import Card from "../card";
 
 const Jewelery = () => {
-  const jeweleryUrl = "https://fakestoreapi.com/products/category/jewelery";
+  const [datas, setDatas] = useState([]);
 
-  const res = axios.get(jeweleryUrl);
-  console.log(res);
+  useEffect(() => {
+    const fetchJewelery = async () => {
+      const jeweleryUrl = "https://fakestoreapi.com/products/category/jewelery";
+      try {
+        const res = await axios.get(jeweleryUrl);
+        console.log(res);
+
+        if (res.status >= 200 && res.status < 300) {
+          setDatas(res.data);
+        } else {
+          throw new Error("Failed to get the jewelery");
+        }
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+
+    fetchJewelery();
+  }, []);
 
   return (
     <div className="section">
-      <div className="container"></div>
+      <div className="container flex overflow-scroll md:gap-0 gap-5  ">
+        {datas.map((item, index) => (
+          <Card
+            key={index}
+            title={item.title}
+            description={item.description}
+            imageUrl={item.image}
+            price={item.price}
+          />
+        ))}
+      </div>
     </div>
   );
 };
