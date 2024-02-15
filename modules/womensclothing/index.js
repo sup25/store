@@ -30,16 +30,18 @@ const WomensClothing = () => {
 
   return (
     <div className="section">
-      <div className="container flex overflow-scroll md:gap-0 gap-5  ">
-        {datas.map((item, index) => (
-          <Card
-            key={index}
-            title={item.title}
-            description={item.description}
-            imageUrl={item.image}
-            price={item.price}
-          />
-        ))}
+      <div className="container">
+        <div className="flex md:flex-row flex-col w-full justify-between gap-10  flex-wrap   ">
+          {datas.map((item, index) => (
+            <Card
+              key={index}
+              title={item.title}
+              description={item.description}
+              imageUrl={item.image}
+              price={item.price}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

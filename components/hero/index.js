@@ -32,7 +32,7 @@ const Hero = () => {
 
   return (
     <div className="section">
-      <div className="container md:flex md:flex-row">
+      <div className="container flex md:flex-row gap-2">
         <Categories />
         <Swiper
           modules={[Autoplay]}
@@ -49,10 +49,11 @@ const Hero = () => {
               slidesPerView: 3,
             },
           }}
+          className="border-b border-black "
         >
           {products.map((product) => (
             <SwiperSlide key={product.id}>
-              <div className="flex flex-col items-center justify-center">
+              <div className="flex flex-col items-center justify-center px-2 py-2">
                 <img
                   src={product.image}
                   alt={product.title}
