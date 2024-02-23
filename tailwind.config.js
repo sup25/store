@@ -12,8 +12,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#2C7CF1",
+        primary: "#1C3144",
         secondary: "#8CB7F5",
+        tertiary: "#98C1D9",
+        btn: "#D00000",
       },
       borderRadius: {
         20: "20px",

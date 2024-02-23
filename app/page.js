@@ -1,5 +1,12 @@
-import Image from "next/image";
+import React from "react";
+
+import Hero from "@/components/hero";
+import Categories from "@/components/categories";
 
 export default function Home() {
-  return <div>hello homies</div>;
+  return (
+    <div className="md:flex md:flex-row flex-col flex items-center justify-center ">
+      <Hero />
+    </div>
+  );
 }
