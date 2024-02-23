@@ -4,7 +4,7 @@ import { FaUser, FaHeart, FaShoppingCart } from "react-icons/fa";
 
 const links = [
   {
-    href: "/",
+    href: "/register",
     icon: <FaUser size={20} className="text-white " />,
     text: "Profile",
   },
