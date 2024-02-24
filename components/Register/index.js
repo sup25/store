@@ -1,6 +1,12 @@
 "use client";
 import React, { useState } from "react";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { collection, addDoc } from "firebase/firestore";
+import { firestore } from "@/config/firestore";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import { app } from "@/config/firebase";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -29,7 +35,17 @@ const Register = () => {
         formData.email,
         formData.password
       );
+      await updateProfile(auth.currentUser, {
+        displayName: formData.displayName,
+      });
+
       console.log("User registered:", userCredential.user);
+      await addUserToFirestore(
+        userCredential.user.uid,
+        formData.displayName,
+        formData.email
+      );
+
       setFormData({
         displayName: "",
         email: "",
@@ -39,6 +55,19 @@ const Register = () => {
     } catch (error) {
       console.error("Error registering user:", error.message);
       toast.error("Error registering user");
+    }
+  };
+  const addUserToFirestore = async (userId, displayName, email) => {
+    try {
+      const usersCollectionRef = collection(firestore, "users");
+      await addDoc(usersCollectionRef, {
+        userId,
+        displayName,
+        email,
+      });
+      console.log("User added to Firestore");
+    } catch (error) {
+      console.error("Error adding user to Firestore:", error.message);
     }
   };
 

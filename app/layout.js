@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/constants/navbar";
 import Footer from "@/constants/footer";
 import { ToastContainer } from "react-toastify";
+import { AuthProvider } from "@/context/AuthContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -18,11 +19,13 @@ export default function RootLayout({ children }) {
         style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
       >
         <ToastContainer />
-        <div className="w-full md:mb-24 mb-20">
-          <Navbar />
-        </div>
-        <div style={{ flex: 1 }}>{children}</div>
-        <Footer />
+        <AuthProvider>
+          <div className="w-full md:mb-24 mb-20">
+            <Navbar />
+          </div>
+          <div style={{ flex: 1 }}>{children}</div>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );
