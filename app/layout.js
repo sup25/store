@@ -24,7 +24,9 @@ export default function RootLayout({ children }) {
             <Navbar />
           </div>
           <div style={{ flex: 1 }}>{children}</div>
-          <Footer />
+          <div className="w-full md:mt-24 mt-20">
+            <Footer />
+          </div>
         </AuthProvider>
       </body>
     </html>

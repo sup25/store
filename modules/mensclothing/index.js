@@ -39,6 +39,7 @@ const MensClothing = () => {
               description={item.description}
               imageUrl={item.image}
               price={item.price}
+              id={item.id}
             />
           ))}
         </div>

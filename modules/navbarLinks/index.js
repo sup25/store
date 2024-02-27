@@ -6,6 +6,7 @@ import {
   FaShoppingCart,
   FaUserPlus,
   FaSignOutAlt,
+  FaSignInAlt,
 } from "react-icons/fa";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "react-toastify";
@@ -14,28 +15,34 @@ const NavbarLinks = () => {
   const { user, loading, logout } = useAuth();
 
   const links = [
-    user
-      ? {
-          href: "/profile",
-          icon: <FaUser size={20} className="text-white " />,
-          text: user.displayName,
-        }
-      : {
-          href: "/register",
-          icon: <FaUserPlus size={20} className="text-white " />,
-          text: "Profile",
-        },
-    {
+    !user && {
+      href: "/login",
+      icon: <FaSignInAlt size={20} className="text-white " />,
+      text: "Login",
+    },
+    !user && {
+      href: "/register",
+      icon: <FaUserPlus size={20} className="text-white " />,
+      text: "Register",
+    },
+    user && {
+      href: "/profile",
+      icon: <FaUser size={20} className="text-white " />,
+      text: user.displayName,
+    },
+
+    user && {
       href: "/",
       icon: <FaHeart size={20} className="text-white " />,
       text: "Orders",
     },
-    {
+    user && {
       href: "/",
       icon: <FaShoppingCart size={20} className="text-white " />,
       text: "My Cart",
     },
-  ];
+  ].filter(Boolean);
+
   const handleLogout = async () => {
     await logout();
     toast.success("User Logged out successfully");
