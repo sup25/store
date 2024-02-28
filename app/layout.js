@@ -2,7 +2,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/constants/navbar";
 import Footer from "@/constants/footer";
-
+import { ToastContainer } from "react-toastify";
+import { AuthProvider } from "@/context/AuthContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -17,11 +18,16 @@ export default function RootLayout({ children }) {
         className={inter.className}
         style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
       >
-        <div className="w-full md:mb-24 mb-20">
-          <Navbar />
-        </div>
-        <div style={{ flex: 1 }}>{children}</div>
-        <Footer />
+        <ToastContainer />
+        <AuthProvider>
+          <div className="w-full md:mb-24 mb-20">
+            <Navbar />
+          </div>
+          <div style={{ flex: 1 }}>{children}</div>
+          <div className="w-full md:mt-24 mt-20">
+            <Footer />
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );
