@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
       >
         <ToastContainer />
         <AuthProvider>
-          <div className="w-full md:mb-24 mb-20">
+          <div className="w-full md:mb-24 mb-10 z-10">
             <Navbar />
           </div>
           <div style={{ flex: 1 }}>{children}</div>
