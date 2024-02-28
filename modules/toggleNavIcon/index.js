@@ -2,7 +2,7 @@ import React from "react";
 
 const ToggleNavIcon = ({ show, onClick }) => (
   <div
-    className={`lg:hidden cursor-pointer transform transition-transform duration-300 ease-in-out ${
+    className={`fixed right-[10px] lg:hidden cursor-pointer transform transition-transform duration-300 ease-in-out text-white ${
       show ? "rotate-180" : ""
     }`}
     onClick={onClick}

@@ -32,28 +32,31 @@ const Hero = () => {
 
   return (
     <div className="section">
-      <div className="container flex md:flex-row gap-2">
+      <div className="container flex md:flex-row md:gap-2 flex-col gap-20">
         <Categories />
         <Swiper
           modules={[Autoplay]}
           slidesPerView={1}
           pagination={{ clickable: true }}
           scrollbar={{ draggable: true }}
-          autoplay={{
+          /*  autoplay={{
             delay: 2500,
             disableOnInteraction: false,
-          }}
+          }} */
           loop={true}
           breakpoints={{
             768: {
               slidesPerView: 3,
             },
           }}
-          className="border-b border-black "
+          className="border-b border-black w-full "
         >
           {products.map((product) => (
-            <SwiperSlide key={product.id}>
-              <div className="flex flex-col items-center justify-center px-2 py-2">
+            <SwiperSlide
+              key={product.id}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              <div className="flex flex-col items-center justify-center px-2 py-2 w-72 ">
                 <img
                   src={product.image}
                   alt={product.title}
