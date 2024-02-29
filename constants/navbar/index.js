@@ -2,10 +2,10 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import NavbarLinks from "@/modules/navbarLinks";
+import NavbarLinks from "@/components/navbarLinks";
 
 import ToggleNavIcon from "@/modules/toggleNavIcon";
-import MobileNavLinks from "@/modules/mobileNavLinks";
+import MobileNavLinks from "@/components/mobileNavLinks";
 
 export default function Navbar() {
   const router = useRouter();

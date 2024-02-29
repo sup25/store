@@ -49,7 +49,7 @@ const MobileNavLinks = ({ show }) => {
 
   return (
     <div
-      className={`w-full fixed top-[48px] right-0 h-full bg-gray-300 transition-transform duration-300 ease-in-out transform ${
+      className={`z-10  w-full fixed top-[48px] right-0 h-full bg-gray-300 transition-transform duration-300 ease-in-out transform ${
         isVisible ? "lg:hidden translate-x-0" : "translate-x-full  "
       } `}
     >

@@ -1,4 +1,4 @@
-import WomensClothing from "@/modules/womensclothing";
+import WomensClothing from "@/components/womensclothing";
 import React from "react";
 
 export default function page() {

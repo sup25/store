@@ -1,4 +1,4 @@
-import Jewelery from "@/modules/jewelery";
+import Jewelery from "@/components/jewelery";
 import React from "react";
 
 export default function JeweleryPage() {

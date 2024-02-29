@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import Card from "../card";
+import Card from "../../modules/card";
 
 const WomensClothing = () => {
   const [datas, setDatas] = useState([]);

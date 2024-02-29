@@ -1,36 +1,36 @@
 "use client";
+
 import axios from "axios";
-
-import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import Card from "../card";
+import Card from "../../modules/card";
 
-const Jewelery = () => {
+const MensClothing = () => {
   const [datas, setDatas] = useState([]);
 
   useEffect(() => {
-    const fetchJewelery = async () => {
-      const jeweleryUrl = "https://fakestoreapi.com/products/category/jewelery";
+    const fetchMensClothing = async () => {
+      const MensClothingUrl =
+        "https://fakestoreapi.com/products/category/men's%20clothing";
       try {
-        const res = await axios.get(jeweleryUrl);
-        console.log(res);
+        const res = await axios.get(MensClothingUrl);
+        console.log("response", res);
 
         if (res.status >= 200 && res.status < 300) {
           setDatas(res.data);
         } else {
-          throw new Error("Failed to get the jewelery");
+          throw new Error("Failed to get the Men's clothing");
         }
       } catch (error) {
         console.log("error", error);
       }
     };
 
-    fetchJewelery();
+    fetchMensClothing();
   }, []);
 
   return (
     <div className="section">
-      <div className="container ">
+      <div className="container">
         <div className="flex w-full justify-between gap-10  flex-wrap  ">
           {datas.map((item, index) => (
             <Card
@@ -48,4 +48,4 @@ const Jewelery = () => {
   );
 };
 
-export default Jewelery;
+export default MensClothing;
