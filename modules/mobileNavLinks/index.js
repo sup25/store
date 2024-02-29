@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   FaUser,
@@ -12,6 +12,11 @@ import { useAuth } from "@/context/AuthContext";
 
 const MobileNavLinks = ({ show }) => {
   const { user, loading, logout } = useAuth();
+  const [isVisible, setIsVisible] = useState(show);
+
+  useEffect(() => {
+    setIsVisible(show);
+  }, [show]);
 
   const handleLogout = async () => {
     await logout();
@@ -44,11 +49,11 @@ const MobileNavLinks = ({ show }) => {
 
   return (
     <div
-      className={`w-full ${
-        show ? "lg:hidden transition duration-300 ease-in" : "hidden"
-      }`}
+      className={`w-full fixed top-[48px] right-0 h-full bg-gray-300 transition-transform duration-300 ease-in-out transform ${
+        isVisible ? "lg:hidden translate-x-0" : "translate-x-full  "
+      } `}
     >
-      <div className="bg-gray-300 h-[90vh] w-full py-2 flex flex-col absolute top-[45px]  left-0 right-0">
+      <div className="h-full flex flex-col justify-start">
         {links.map((link, index) => (
           <div key={index} onClick={link.onclick}>
             {link.href ? (

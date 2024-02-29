@@ -39,10 +39,10 @@ const Hero = () => {
           slidesPerView={1}
           pagination={{ clickable: true }}
           scrollbar={{ draggable: true }}
-          /*  autoplay={{
+          autoplay={{
             delay: 2500,
             disableOnInteraction: false,
-          }} */
+          }}
           loop={true}
           breakpoints={{
             768: {
