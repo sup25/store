@@ -12,10 +12,14 @@ import { useAuth } from "@/context/AuthContext";
 
 const MobileNavLinks = ({ show }) => {
   const { user, loading, logout } = useAuth();
-  const [isVisible, setIsVisible] = useState(show);
 
   useEffect(() => {
-    setIsVisible(show);
+    // Prevent scrolling when the mobile navigation is open
+    if (show) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
   }, [show]);
 
   const handleLogout = async () => {
@@ -49,8 +53,8 @@ const MobileNavLinks = ({ show }) => {
 
   return (
     <div
-      className={`z-10  w-full fixed top-[48px] right-0 h-full bg-gray-300 transition-transform duration-300 ease-in-out transform ${
-        isVisible ? "lg:hidden translate-x-0" : "translate-x-full  "
+      className={`z-10  w-full fixed top-[48px] right-0 left-0 h-full bg-gray-300 transition-transform duration-300 ease-in-out transform ${
+        show ? "md:hidden translate-x-0" : "translate-x-full  "
       } `}
     >
       <div className="h-full flex flex-col justify-start">
