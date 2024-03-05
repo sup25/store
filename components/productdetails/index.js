@@ -1,11 +1,13 @@
-"use client";
+// ProductDetails.js
 
 import React, { useState, useEffect } from "react";
-
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { loadStripe } from "@stripe/stripe-js";
 
 const ProductDetails = ({ id }) => {
   const [product, setProduct] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -13,6 +15,7 @@ const ProductDetails = ({ id }) => {
         const res = await axios.get(`https://fakestoreapi.com/products/${id}`);
         if (res.status >= 200 && res.status < 300) {
           setProduct(res.data);
+          console.log("response", res.data);
         } else {
           throw new Error("Failed to fetch product");
         }
@@ -25,6 +28,35 @@ const ProductDetails = ({ id }) => {
       fetchProduct();
     }
   }, [id]);
+
+  const handleCheckout = async () => {
+    const unit_amount = product.price * 100;
+    const lineItems = [
+      {
+        price: unit_amount.toString(),
+        quantity: 1,
+      },
+    ];
+
+    const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
+
+    if (stripe) {
+      try {
+        const { error } = await stripe.redirectToCheckout({
+          mode: "payment",
+          lineItems: lineItems,
+          successUrl: `${window.location.origin}/success`,
+          cancelUrl: `${window.location.origin}/error`,
+        });
+
+        if (error) {
+          console.error("Error redirecting to checkout:", error);
+        }
+      } catch (error) {
+        console.error("Error creating checkout session:", error);
+      }
+    }
+  };
 
   if (!product) {
     return <div>Loading...</div>;
@@ -51,7 +83,10 @@ const ProductDetails = ({ id }) => {
               <div className="w-full cursor-pointer flex items-center justify-center px-2 py-2 bg-btn hover:bg-primary text-white font-bold text-lg transition duration-150 ease-out hover:ease-in">
                 Add to cart
               </div>
-              <div className="w-full cursor-pointer flex items-center justify-center px-2 py-2 bg-tertiary hover:bg-primary hover:text-white text-black font-bold text-lg transition duration-150 ease-out hover:ease-in">
+              <div
+                className="w-full cursor-pointer flex items-center justify-center px-2 py-2 bg-tertiary hover:bg-primary hover:text-white text-black font-bold text-lg transition duration-150 ease-out hover:ease-in"
+                onClick={handleCheckout}
+              >
                 Chekout now
               </div>
             </div>
