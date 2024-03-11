@@ -1,24 +1,13 @@
 "use client";
 import React, { useState } from "react";
-import { collection, addDoc } from "firebase/firestore";
-import { firestore } from "@/config/firestore";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  updateProfile,
-  signOut,
-} from "firebase/auth";
-import { app } from "@/config/firebase";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const Register = () => {
-  const router = useRouter();
-
   const [formData, setFormData] = useState({
-    displayName: "",
+    fullName: "",
     email: "",
     password: "",
   });
@@ -29,49 +18,25 @@ const Register = () => {
       ...formData,
       [name]: value,
     });
+    console.log("formdata", formData);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const auth = getAuth(app);
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
+      const response = await axios.post(
+        "http://localhost:5001/registeruser",
+        formData
       );
-      await updateProfile(auth.currentUser, {
-        displayName: formData.displayName,
-      });
 
-      console.log("User registered:", userCredential.user);
-      await signOut(auth);
-      await addUserToFirestore(
-        userCredential.user.uid,
-        formData.displayName,
-        formData.email
-      );
+      if (response.status !== 201) {
+        throw new Error("Failed to register user");
+      }
 
       toast.success("User registered successfully");
-
-      router.push("/login");
     } catch (error) {
       console.error("Error registering user:", error.message);
       toast.error("Error registering user");
-    } finally {
-    }
-  };
-  const addUserToFirestore = async (userId, displayName, email) => {
-    try {
-      const usersCollectionRef = collection(firestore, "users");
-      await addDoc(usersCollectionRef, {
-        userId,
-        displayName,
-        email,
-      });
-      console.log("User added to Firestore");
-    } catch (error) {
-      console.error("Error adding user to Firestore:", error.message);
     }
   };
 
@@ -91,9 +56,9 @@ const Register = () => {
 
               <input
                 type="text"
-                id="displayName"
-                name="displayName"
-                value={formData.displayName}
+                id="fullName"
+                name="fullName"
+                value={formData.fullName}
                 onChange={handleChange}
                 required
                 className="py-2 px-2 w-full"

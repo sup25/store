@@ -22,9 +22,7 @@ const MobileNavLinks = ({ show }) => {
     }
   }, [show]);
 
-  const handleLogout = async () => {
-    await logout();
-  };
+  const handleLogout = async () => {};
 
   const links = [
     user && { icon: <FaUser size={20} />, text: "Profile" },
