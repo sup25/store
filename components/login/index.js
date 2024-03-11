@@ -2,8 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { app } from "@/config/firebase";
+
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -25,13 +24,6 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const auth = getAuth(app);
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
-      );
-
       console.log("User Logged in:", userCredential.user);
 
       toast.success("User Logged In successfully");
