@@ -2,27 +2,32 @@ import Link from "next/link";
 import React from "react";
 
 const Categories = () => {
-  return (
-    <div className="h-auto flex md:flex-col justify-around bg-primary rounded shadow items-center ">
-      <Link
-        href={"/jewelery"}
-        className="text-lg text-white w-full font-bold  hover:bg-tertiary px-4 py-2  cursor-pointer"
-      >
-        Jewelery
-      </Link>
+  const LinkItems = [
+    {
+      name: "Jewelery",
+      href: "/jewelery",
+    },
+    {
+      name: " Men's Clothing",
+      href: "/mensclothing",
+    },
+    {
+      name: "Women's Clothing",
+      href: "/womensclothing",
+    },
+  ];
 
-      <Link
-        href={"/mensclothing"}
-        className="text-lg w-full text-white font-bold  hover:bg-tertiary px-4 py-2  cursor-pointer"
-      >
-        Men's Clothing
-      </Link>
-      <Link
-        href={"/womensclothing"}
-        className="text-lg w-full text-white font-bold  hover:bg-tertiary px-4 py-2  cursor-pointer"
-      >
-        Women's Clothing
-      </Link>
+  return (
+    <div className="h-auto flex  justify-between bg-primary rounded shadow items-center ">
+      {LinkItems.map((items, index) => (
+        <Link
+          key={index}
+          href={items.href}
+          className="text-lg text-white w-full font-bold flex justify-center transition duration-300  hover:bg-tertiary px-4 py-2  cursor-pointer"
+        >
+          {items.name}
+        </Link>
+      ))}
     </div>
   );
 };
