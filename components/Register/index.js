@@ -18,14 +18,17 @@ const Register = () => {
       ...formData,
       [name]: value,
     });
-    console.log("formdata", formData);
+    console.log("formdata", {
+      ...formData,
+      password: "",
+    });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const response = await axios.post(
-        "http://localhost:5001/registeruser",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/registeruser`,
         formData
       );
 
@@ -34,7 +37,15 @@ const Register = () => {
       }
 
       toast.success("User registered successfully");
+      setFormData({
+        fullName: "",
+        email: "",
+        password: "",
+      });
     } catch (error) {
+      if (error.response && error.response.status === 400) {
+        toast.error("Email is already in use");
+      }
       console.error("Error registering user:", error.message);
       toast.error("Error registering user");
     }

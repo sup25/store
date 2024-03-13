@@ -19,8 +19,10 @@ app.use("/registeruser", registerRoute);
 
 async function DbConnection() {
   try {
-    const user = await prisma.user_information.findFirst();
-    console.log("Successfully connected to the database:", user);
+    const result =
+      await prisma.$queryRaw`SELECT current_database() as db_name;`;
+    const databaseName = result[0].db_name;
+    console.log("Successfully connected to the database:", databaseName);
   } catch (error) {
     console.error("Error connecting to the database:", error.message);
   }

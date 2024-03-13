@@ -23,7 +23,7 @@ const NavbarLinks = () => {
       icon: <FaSignInAlt size={20} className="text-white " />,
       text: "Login",
     },
-    {
+    !user && {
       href: "/register",
       icon: <FaUserPlus size={20} className="text-white " />,
       text: "Register",
