@@ -3,10 +3,10 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useAuth } from "@/context/AuthContext";
 
 const Login = () => {
+  const { login } = useAuth();
   const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
@@ -22,15 +22,27 @@ const Login = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      console.log("User Logged in:", userCredential.user);
+      const response = await fetch("http://localhost:5001/loginuser", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-      toast.success("User Logged In successfully");
-      router.push("/");
+      if (response.ok) {
+        const userData = await response.json();
+        const { token } = userData.response;
+        login(userData.response);
+        console.log("current user", userData.response);
+        localStorage.setItem("token", token);
+        router.push("/");
+      } else {
+        console.error("Failed to login");
+      }
     } catch (error) {
-      console.error("Error loggin user:", error.message);
-      toast.error("Error loging user");
+      console.error("Error logging user:", error.message);
     }
   };
 

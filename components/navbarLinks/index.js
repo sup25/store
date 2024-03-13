@@ -8,12 +8,17 @@ import {
   FaSignOutAlt,
   FaSignInAlt,
 } from "react-icons/fa";
-
+import { useAuth } from "@/context/AuthContext";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const NavbarLinks = () => {
+  const { user, logout } = useAuth();
+
+  console.log("user data nav", user);
+
   const links = [
-    {
+    !user && {
       href: "/login",
       icon: <FaSignInAlt size={20} className="text-white " />,
       text: "Login",
@@ -23,10 +28,10 @@ const NavbarLinks = () => {
       icon: <FaUserPlus size={20} className="text-white " />,
       text: "Register",
     },
-    {
+    user && {
       href: "/profile",
       icon: <FaUser size={20} className="text-white " />,
-      text: "display name",
+      text: user.fullName,
     },
 
     {
@@ -42,6 +47,7 @@ const NavbarLinks = () => {
   ].filter(Boolean);
 
   const handleLogout = async () => {
+    logout();
     toast.success("User Logged out successfully");
   };
 
@@ -56,13 +62,15 @@ const NavbarLinks = () => {
         </Link>
       ))}
 
-      <div
-        className="flex flex-col items-center justify-center gap-1 transition duration-250 ease-out  hover:text-tertiary cursor-pointer"
-        onClick={handleLogout}
-      >
-        <FaSignOutAlt size={20} className="text-white " />
-        <span className="text-sm">Logout</span>
-      </div>
+      {user && (
+        <div
+          className="flex flex-col items-center justify-center gap-1 transition duration-250 ease-out  hover:text-tertiary cursor-pointer"
+          onClick={handleLogout}
+        >
+          <FaSignOutAlt size={20} className="text-white " />
+          <span className="text-sm">Logout</span>
+        </div>
+      )}
     </div>
   );
 };

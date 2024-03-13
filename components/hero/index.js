@@ -6,13 +6,20 @@ import "swiper/css";
 import "swiper/css/pagination";
 import axios from "axios";
 import Categories from "../categories";
+import { useAuth } from "@/context/AuthContext";
 const Hero = () => {
+  const { user } = useAuth();
   const [products, setProducts] = useState([]);
   useEffect(() => {
+    const token = localStorage.getItem("token");
     const fetchData = async () => {
       const url = "https://fakestoreapi.com/products";
       try {
-        const res = await axios.get(url);
+        const res = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         console.log(res);
 
         if (res.status >= 200 && res.status < 300) {
@@ -28,9 +35,17 @@ const Hero = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (user) {
+      console.log("User is logged in:", user);
+    } else {
+      console.log("No user is logged in ");
+    }
+  }, [user]);
+
   return (
     <div className="section">
-      <div className="container flex md:flex-row md:gap-2 flex-col gap-20">
+      <div className="container flex flex-col gap-20">
         <Categories />
         <Swiper
           modules={[Autoplay]}
