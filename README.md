@@ -38,5 +38,6 @@ Feel free to add more tasks as needed.
 
 ## Collaborators
 
-- [![Suparna](https://github.com/sup25.png?size=50)](https://github.com/sup25)
-- [![Elnatan](https://github.com/Elnatanv.png?size=50)](https://github.com/Elnatanv)
+[![Suparna](https://github.com/sup25.png?size=25)](https://github.com/sup25) Suparna (Owner)
+
+[![Elnatan](https://github.com/Elnatanv.png?size=25)](https://github.com/Elnatanv) Elnatan (Collaborator)
