@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Online Store App
+
+This repository contains the source code for an online store application built with Next.js, PostgreSQL, Prisma, tailwind.
 
 ## Getting Started
 
-First, run the development server:
+Follow these instructions to clone the repository and start working on the project:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Clone the repository:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   ```bash
+   git clone https://github.com/sup25/store.git
+   ```
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+2. Install dependencies:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+   ```bash
+   npm install
+   ```
 
-## Learn More
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+## Project Plan
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+For detailed project plan and tasks, please refer to [Project Plan Document](https://docs.google.com/document/d/1Rn_BVYRC5w-wIavSPnZ52J0keWrKUEvMYBtkBzn9Sww).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## To-Do List
 
-## Deploy on Vercel
+- [ ] Creating folder api structore following the plan.
+- [ ] Creating users routes / controllers / services
+- [ ] Creating admins routes / controllers / services
+- [ ] Creating products routes / controllers / services
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Feel free to add more tasks as needed.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Collaborators
+
+- [Suparna](https://github.com/sup25)
+- [Elnatan](https://github.com/elnatanv)
