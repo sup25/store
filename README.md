@@ -23,6 +23,17 @@ Follow these instructions to clone the repository and start working on the proje
    npm run dev
    ```
 
+## Env Example
+
+```
+NEXT_PUBLIC_STRIPE_SECRET_KEY= STRIPE_SECRET_KEY
+NEXT_PUBLIC_STRIPE_KEY= STRIPE_PUBLIC_KEY
+
+NEXT_PUBLIC_BACKEND_URL=http://localhost:5001
+
+DATABASE_URL= POSTGRES_URL
+```
+
 ## Project Plan
 
 For detailed project plan and tasks, please refer to [Project Plan Document](https://docs.google.com/document/d/1Rn_BVYRC5w-wIavSPnZ52J0keWrKUEvMYBtkBzn9Sww).
