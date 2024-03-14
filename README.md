@@ -29,6 +29,7 @@ For detailed project plan and tasks, please refer to [Project Plan Document](htt
 
 ## To-Do List
 
+- [ ] Adding a todo tasks according to plan.
 - [ ] Creating folder api structore following the plan.
 - [ ] Creating users routes / controllers / services
 - [ ] Creating admins routes / controllers / services
