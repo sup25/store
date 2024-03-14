@@ -13,6 +13,7 @@ export const createUserController = async (body) => {
       Password: hashedPassword,
     });
 
+    delete user.Password;
     // generate jwt tokens
     // store tokens to the db (tokens table)
     return Response.json(
