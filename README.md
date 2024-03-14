@@ -38,5 +38,5 @@ Feel free to add more tasks as needed.
 
 ## Collaborators
 
-- [Suparna](https://github.com/sup25)
-- [Elnatan](https://github.com/elnatanv)
+- [![Suparna](https://github.com/sup25.png?size=50)](https://github.com/sup25)
+- [![Elnatan](https://github.com/Elnatanv.png?size=50)](https://github.com/Elnatanv)
