@@ -14,18 +14,10 @@ export const createUserController = async (body) => {
     });
 
     delete user.Password;
-    // generate jwt tokens
-    // store tokens to the db (tokens table)
-    return Response.json(
-      {
-        message: "User registered successfully",
-        data: { user },
-      },
-      { status: 201 }
-    );
+    return user;
   } catch (error) {
     console.error("Error registering user:", error.message);
-    return Response.json({ error: "Internal Server Error" }, { status: 500 });
+    throw new Error("Error registering user");
   }
 };
 
