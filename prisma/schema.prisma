@@ -8,10 +8,9 @@ datasource db {
 }
 
 model user_information {
-  Full_Name String @map("Full Name") @db.VarChar(20)
-  Email     String @db.VarChar(20)
-  Password  String @db.VarChar(20)
-  Id        String @id @db.Uuid
+  Full_Name String @map("Full Name") @db.VarChar(255)
+  Email     String @db.VarChar(255) @unique
+  Password  String @db.VarChar(255)
 
   @@map("user information")
 }

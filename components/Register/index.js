@@ -24,10 +24,7 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        "http://localhost:5001/registeruser",
-        formData
-      );
+      const response = await axios.post("/api/v1/user/auth/register", formData);
 
       if (response.status !== 201) {
         throw new Error("Failed to register user");
