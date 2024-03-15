@@ -5,7 +5,10 @@ import { internalRes } from "@/app/api/utils/globalResponse";
 export async function POST(request) {
   const body = await request.json();
 
-  createUserValidation(body);
+  const errors = createUserValidation(body);
+  if (errors.length > 0)
+    return internalRes("Validation Error", { errors }, 422);
+
   try {
     const user = await createUserController(body);
 

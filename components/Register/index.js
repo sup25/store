@@ -12,6 +12,7 @@ const Register = () => {
     password: "",
   });
 
+  const [errors, setErrors] = useState([]);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -32,8 +33,9 @@ const Register = () => {
 
       toast.success("User registered successfully");
     } catch (error) {
-      console.error("Error registering user:", error.message);
-      toast.error(error.message);
+      console.log("Error registering user:", error.response.data);
+      setErrors(error.response.data.returnedData.errors);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -60,6 +62,10 @@ const Register = () => {
                 required
                 className="py-2 px-2 w-full"
               />
+              {errors.map(
+                (error) =>
+                  error.field === "fullName" && <div>{error.message}</div>
+              )}
             </div>
             <div className="flex flex-col gap-2">
               <label htmlFor="email" className="text-lg font-semibold">
@@ -74,6 +80,9 @@ const Register = () => {
                 required
                 className="py-2 px-2 w-full"
               />
+              {errors.map(
+                (error) => error.field === "email" && <div>{error.message}</div>
+              )}
             </div>
             <div className="flex flex-col gap-2">
               <label htmlFor="password" className="text-lg font-semibold">
@@ -88,6 +97,10 @@ const Register = () => {
                 required
                 className="py-2 px-2 w-full"
               />
+              {errors.map(
+                (error) =>
+                  error.field === "password" && <div>{error.message}</div>
+              )}
             </div>
             <button
               type="submit"
