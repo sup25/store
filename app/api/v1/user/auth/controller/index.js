@@ -1,5 +1,5 @@
 import { createUserService } from "../service";
-import { hashPassword } from "../untils/hashPassword";
+import { hashPassword } from "../utils/hashPassword";
 
 export const createUserController = async (body) => {
   const { fullName, email, password } = body;

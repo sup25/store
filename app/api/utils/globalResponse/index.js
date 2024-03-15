@@ -6,14 +6,15 @@
  * @returns
  */
 export const internalRes = (message, data, status) => {
-  return Response.json(
-    {
-      message,
-      data: { data },
-      status,
-    },
-    {
-      status,
-    }
-  );
+  let resObj = {
+    message,
+    returnedData: data,
+    status,
+  };
+  if (status >= 400) {
+    resObj.error = message;
+  }
+  return Response.json(resObj, {
+    status,
+  });
 };

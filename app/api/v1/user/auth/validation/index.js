@@ -1,13 +1,40 @@
+import { internalRes } from "@/app/api/utils/globalResponse";
+const passwordRegex =
+  /(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{6,}/;
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export const createUserValidation = (body) => {
   const { fullName, email, password } = body;
-  // we can validate password strenght here
-  // we can also validate email here
-  // we can also validate full name length here
-  // we can create an array of errors and return them all at once. [{field: 'email', message: 'Invalid email'}] - for example
+  const errors = [];
+  if (!emailRegex.test(email)) {
+    errors.push({
+      field: "email",
+      message: "Invalid email format",
+    });
+  }
+
+  if (!passwordRegex.test(password)) {
+    errors.push({
+      field: "password",
+      message:
+        "Password must be at least 6 characters long and contain at least one letter, one number, and one symbol",
+    });
+  }
+
   if (fullName.length < 3) {
-    throw new Error("Full name must be at least 3 characters long");
+    errors.push({
+      field: "fullName",
+      message: "Full name must be at least 3 characters long",
+    });
   }
+
   if (!fullName || !email || !password) {
-    throw new Error("Invalid request body");
+    errors.push({
+      field: "all",
+      message: "All fields are required",
+    });
   }
+
+  return errors;
 };
