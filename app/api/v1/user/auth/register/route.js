@@ -1,22 +1,17 @@
-import { createUserController } from "../controller";
 import { createUserValidation } from "../validation";
+import { createUserController } from "../controller";
+import { internalRes } from "@/app/api/utils/globalResponse";
 
 export async function POST(request) {
   const body = await request.json();
 
+  createUserValidation(body);
   try {
-    createUserValidation(body);
     const user = await createUserController(body);
 
-    return Response.json(
-      {
-        message: "User registered successfully",
-        data: { user },
-      },
-      { status: 201 }
-    );
+    return internalRes("User registered successfully", user, 201);
   } catch (err) {
     console.log(err);
-    return Response.json({ error: "Internal Server Error" }, { status: 500 });
+    return internalRes("Internal Server Error", null, 500);
   }
 }
