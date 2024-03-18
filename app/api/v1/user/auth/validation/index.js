@@ -38,3 +38,23 @@ export const createUserValidation = (body) => {
 
   return errors;
 };
+
+export const loginUserValidation = (body) => {
+  const { email, password } = body;
+  const errors = [];
+
+  if (!emailRegex.test(email)) {
+    errors.push({
+      field: "email",
+      message: "Invalid email format",
+    });
+  }
+  if (password === "") {
+    errors.push({
+      field: "password",
+      message: "password is required",
+    });
+  }
+
+  return errors;
+};
