@@ -5,7 +5,7 @@ const passwordRegex =
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const createUserValidation = (body) => {
-  const { fullName, email, password } = body;
+  const { first_name, last_name, email, password } = body;
   const errors = [];
   if (!emailRegex.test(email)) {
     errors.push({
@@ -22,14 +22,14 @@ export const createUserValidation = (body) => {
     });
   }
 
-  if (fullName.length < 3) {
+  if (first_name < 3) {
     errors.push({
-      field: "fullName",
-      message: "Full name must be at least 3 characters long",
+      field: "firstName",
+      message: " Name must be at least 3 characters long",
     });
   }
 
-  if (!fullName || !email || !password) {
+  if (!first_name || !last_name || !email || !password) {
     errors.push({
       field: "all",
       message: "All fields are required",

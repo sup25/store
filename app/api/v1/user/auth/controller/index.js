@@ -4,15 +4,16 @@ import { generateAccessToken } from "../utils/generateTokens";
 import { hashPassword } from "../utils/hashPassword";
 
 export const createUserController = async (body) => {
-  const { fullName, email, password } = body;
+  const { first_name, last_name, email, password } = body;
 
   try {
     const hashedPassword = await hashPassword(password);
 
     const user = await createUserService({
-      Full_Name: fullName,
-      Email: email,
-      Password: hashedPassword,
+      first_name,
+      last_name,
+      email,
+      password: hashedPassword,
     });
 
     delete user.Password;
