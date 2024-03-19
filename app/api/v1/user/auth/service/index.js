@@ -2,7 +2,7 @@ import prisma from "@/_lib/prisma";
 import { comparePassword } from "../utils/comparePassword";
 
 export const createUserService = async (body) => {
-  const user = await prisma.user_information.create({
+  const user = await prisma.User.create({
     data: body,
   });
 
@@ -10,9 +10,9 @@ export const createUserService = async (body) => {
 };
 
 export const loginUserService = async (email, password) => {
-  const user = await prisma.user_information.findUnique({
+  const user = await prisma.User.findUnique({
     where: {
-      Email: email,
+      email,
     },
   });
 
