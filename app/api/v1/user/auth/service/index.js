@@ -2,11 +2,18 @@ import prisma from "@/_lib/prisma";
 import { comparePassword } from "../utils/comparePassword";
 
 export const createUserService = async (body) => {
-  const user = await prisma.User.create({
-    data: body,
-  });
-
-  return user;
+  try {
+    const user = await prisma.User.create({
+      data: body,
+    });
+    return user;
+  } catch (error) {
+    if (error.code === "P2002" && error.meta?.target?.includes("email")) {
+      throw new Error("Email already in use");
+    } else {
+      throw new Error("Could not create user");
+    }
+  }
 };
 
 export const loginUserService = async (email, password) => {
@@ -20,7 +27,7 @@ export const loginUserService = async (email, password) => {
     throw new Error("Email or password is incorrect");
   }
 
-  const isPasswordValid = await comparePassword(password, user.Password);
+  const isPasswordValid = await comparePassword(password, user.password);
   if (!isPasswordValid) {
     throw new Error("Email or password is incorrect");
   }

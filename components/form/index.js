@@ -1,5 +1,6 @@
-// Form.js
-import React from "react";
+import React, { useState } from "react";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import Button from "../button";
 
 /**
  * Form component for rendering a generic form with dynamic fields.
@@ -9,9 +10,24 @@ import React from "react";
  * @param {Function} onChange - Function to handle input changes.
  * @param {Array} errors - Array of error objects.
  * @param {string} buttonText - Text to display on the submit button.
+ * @param {boolean} props.isLoading - Indicates whether the form is in a loading state.
  * @returns {JSX.Element} - Rendered Form component.
  */
-const Form = ({ fields, onSubmit, formData, onChange, errors, buttonText }) => {
+const Form = ({
+  fields,
+  onSubmit,
+  formData,
+  onChange,
+  errors,
+  buttonText,
+  isLoading,
+}) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState);
+  };
+
   return (
     <form
       onSubmit={onSubmit}
@@ -22,16 +38,28 @@ const Form = ({ fields, onSubmit, formData, onChange, errors, buttonText }) => {
           <label htmlFor={field.name} className="text-lg font-semibold">
             {field.label}:
           </label>
-          <input
-            type={field.type}
-            id={field.name}
-            name={field.name}
-            value={formData[field.name]}
-            onChange={onChange}
-            required={field.required}
-            className="py-2 px-2 w-full"
-          />
-
+          <div className="relative">
+            <input
+              type={
+                field.type === "password" && showPassword ? "text" : field.type
+              }
+              id={field.name}
+              name={field.name}
+              value={formData[field.name]}
+              onChange={onChange}
+              required={field.required}
+              className="py-2 px-2 w-full"
+            />
+            {field.type === "password" && (
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute top-1/2 right-3 transform -translate-y-1/2 focus:outline-none"
+              >
+                {showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
+              </button>
+            )}
+          </div>
           {errors.map(
             (error) =>
               error.field === field.name && (
@@ -41,12 +69,13 @@ const Form = ({ fields, onSubmit, formData, onChange, errors, buttonText }) => {
         </div>
       ))}
 
-      <button
+      <Button
         type="submit"
+        isLoading={isLoading}
         className="bg-primary text-white font-bold flex items-center justify-center w-fit py-2 px-2"
       >
         {buttonText}
-      </button>
+      </Button>
     </form>
   );
 };

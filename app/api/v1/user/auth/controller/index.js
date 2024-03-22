@@ -1,5 +1,4 @@
 import { createUserService, loginUserService } from "../service";
-
 import { generateAccessToken } from "../utils/generateTokens";
 import { hashPassword } from "../utils/hashPassword";
 
@@ -28,9 +27,8 @@ export const loginUserController = async (body) => {
   const { email, password } = body;
   try {
     const user = await loginUserService(email, password);
-
-    const tokens = generateAccessToken(user);
-    return { user, tokens };
+    const token = generateAccessToken(user);
+    return { user, token };
   } catch (error) {
     console.error("Error logging in user:", error.message);
     throw new Error(error.message);

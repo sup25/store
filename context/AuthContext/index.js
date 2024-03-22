@@ -6,20 +6,22 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const savedToken = localStorage.getItem("token");
     const userData = JSON.parse(localStorage.getItem("userData"));
-
-    if (token && userData) {
+    if (userData && savedToken) {
       setUser(userData);
+      setToken(savedToken);
     }
+
     setLoading(false);
   }, []);
 
-  const login = (userData) => {
+  const login = (userData, token) => {
     setUser(userData);
-    localStorage.setItem("token", userData.token);
+    localStorage.setItem("token", token);
     localStorage.setItem("userData", JSON.stringify(userData));
   };
 

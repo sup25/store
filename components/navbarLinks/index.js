@@ -15,15 +15,13 @@ import "react-toastify/dist/ReactToastify.css";
 const NavbarLinks = () => {
   const { user, logout } = useAuth();
 
-  console.log("user data nav", user);
-
   const links = [
     !user && {
       href: "/login",
       icon: <FaSignInAlt size={20} className="text-white " />,
       text: "Login",
     },
-    {
+    !user && {
       href: "/register",
       icon: <FaUserPlus size={20} className="text-white " />,
       text: "Register",
@@ -31,7 +29,7 @@ const NavbarLinks = () => {
     user && {
       href: "/profile",
       icon: <FaUser size={20} className="text-white " />,
-      text: user.fullName,
+      text: user.first_name,
     },
 
     {

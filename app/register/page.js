@@ -1,8 +1,80 @@
-import Register from "@/components/Register";
-import React from "react";
+"use client";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const RegisterPage = () => {
-  return <Register />;
+import axios from "axios";
+import Form from "../../components/form";
+
+const Register = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+  });
+
+  const [errors, setErrors] = useState([]);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const response = await axios.post("/api/v1/user/auth/register", formData);
+
+      if (response.status !== 201) {
+        throw new Error("Failed to register user");
+      }
+
+      toast.success("User registered successfully");
+    } catch (error) {
+      console.log("Error registering user:", error.response.data);
+      setErrors(error.response?.data?.returnedData?.errors || []);
+      if (error.response?.data?.message) {
+        setErrors([error.response.data.message]);
+        toast.error("email already in use ");
+      } else {
+        // Set errors state with a generic error message
+        setErrors(["An error occurred during registration"]);
+        toast.error("An error occurred during registration");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const registerFields = [
+    { name: "first_name", label: "First Name", type: "text", required: true },
+    { name: "last_name", label: "Last Name", type: "text", required: true },
+    { name: "email", label: "Email", type: "email", required: true },
+    { name: "password", label: "Password", type: "password", required: true },
+  ];
+
+  return (
+    <div className="section">
+      <div className="container">
+        <div className="flex w-full flex-col justify-center items-center gap-10 pb-20 ">
+          <h2 className="text-2xl uppercase font-bold">Register</h2>
+          <Form
+            fields={registerFields}
+            onSubmit={handleSubmit}
+            formData={formData}
+            onChange={handleChange}
+            errors={errors}
+            buttonText="Register"
+            isLoading={isLoading}
+          />
+        </div>
+      </div>
+    </div>
+  );
 };
 
-export default RegisterPage;
+export default Register;
