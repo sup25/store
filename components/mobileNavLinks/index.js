@@ -11,7 +11,7 @@ import {
 import { useAuth } from "@/context/AuthContext";
 
 const MobileNavLinks = ({ show }) => {
-  const { user, loading, logout } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     // Prevent scrolling when the mobile navigation is open
@@ -25,29 +25,28 @@ const MobileNavLinks = ({ show }) => {
   const handleLogout = async () => {};
 
   const links = [
-    user && { icon: <FaUser size={20} />, text: "Profile" },
-    user && { icon: <FaHeart size={20} />, text: "Orders" },
-    user && { icon: <FaShoppingCart size={20} />, text: "My Cart" },
-    user && {
+    { icon: <FaUser size={20} />, text: "Profile", private: true },
+    { icon: <FaHeart size={20} />, text: "Orders", private: true },
+    { icon: <FaShoppingCart size={20} />, text: "My Cart", private: true },
+    {
       icon: <FaSignOutAlt size={20} />,
       text: "Logout",
       onclick: handleLogout,
+      private: true,
     },
-    !user && {
+    {
       href: "/login",
       icon: <FaSignInAlt size={20} className="text-black " />,
       text: "Login",
+      private: false,
     },
-    !user && {
+    {
       href: "/register",
       icon: <FaUserPlus size={20} className="text-black " />,
       text: "Register",
+      private: false,
     },
-  ].filter(Boolean);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  ];
 
   return (
     <div
@@ -56,24 +55,28 @@ const MobileNavLinks = ({ show }) => {
       } `}
     >
       <div className="h-full flex flex-col justify-start">
-        {links.map((link, index) => (
-          <div key={index} onClick={link.onclick}>
-            {link.href ? (
-              <Link
-                href={link.href}
-                className="flex items-center gap-2 text-black py-2 hover:bg-gray-200 w-full px-2"
-              >
-                {link.icon}
-                <span className="text-sm">{link.text}</span>
-              </Link>
-            ) : (
-              <div className="flex items-center gap-2 text-black py-2 hover:bg-gray-200 w-full px-2">
-                {link.icon}
-                <span className="text-sm">{link.text}</span>
+        {links.map((link, index) => {
+          if (!link.private || (link.private && user)) {
+            return (
+              <div key={index} onClick={link.onclick}>
+                {link.href ? (
+                  <Link
+                    href={link.href}
+                    className="flex items-center gap-2 text-black py-2 hover:bg-gray-200 w-full px-2"
+                  >
+                    {link.icon}
+                    <span className="text-sm">{link.text}</span>
+                  </Link>
+                ) : (
+                  <div className="flex items-center gap-2 text-black py-2 hover:bg-gray-200 w-full px-2">
+                    {link.icon}
+                    <span className="text-sm">{link.text}</span>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        ))}
+            );
+          }
+        })}
       </div>
     </div>
   );

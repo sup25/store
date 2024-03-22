@@ -27,7 +27,7 @@ export const loginUserController = async (body) => {
   const { email, password } = body;
   try {
     const user = await loginUserService(email, password);
-    const token = generateAccessToken(user);
+    const token = generateAccessToken(user.id);
     return { user, token };
   } catch (error) {
     console.error("Error logging in user:", error.message);

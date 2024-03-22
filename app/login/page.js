@@ -8,7 +8,7 @@ import axios from "axios";
 import Form from "../../components/form";
 
 const Login = () => {
-  const { login } = useAuth();
+  const { setUserStore } = useAuth();
   const [errors, setErrors] = useState([]);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -29,35 +29,18 @@ const Login = () => {
     setIsLoading(true);
     try {
       const response = await axios.post("/api/v1/user/auth/login", formData);
-
-      if (response.status === 200) {
-        const { user, token } = response.data.returnedData;
-
-        login(user, token);
-
-        router.push("/");
-      } else {
-        console.error("Failed to login");
-        toast.error("Failed to login");
-      }
+      const { user, token } = response.data.returnedData;
+      setUserStore(user, token);
+      router.push("/");
     } catch (error) {
       toast.error("Email or password is incorrect");
       setErrors(error.response?.data?.returnedData?.errors || []);
+      setIsLoading(false);
     } finally {
       setIsLoading(false);
     }
   };
-  axios.interceptors.response.use(
-    (response) => response,
-    (error) => {
-      if (error.response && error.response.status === 401) {
-        console.log("Token expired");
-        router.push("/login");
-        return Promise.reject(error);
-      }
-      return Promise.reject(error);
-    }
-  );
+
   const loginFields = [
     { name: "email", label: "Email", type: "email", required: true },
     { name: "password", label: "Password", type: "password", required: true },

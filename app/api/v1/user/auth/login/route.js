@@ -15,11 +15,6 @@ export async function POST(request) {
   try {
     const { user, token } = await loginUserController(body);
 
-    const isTokenVerified = verifyToken(token);
-
-    if (!isTokenVerified) {
-      return internalRes("Invalid access token", null, 401);
-    }
     return internalRes("User Loggedin successfully", { user, token }, 200);
   } catch (err) {
     console.log(err);

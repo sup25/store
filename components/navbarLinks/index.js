@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const NavbarLinks = () => {
-  const { user, logout } = useAuth();
+  const { user, setUserStore } = useAuth();
 
   const links = [
     !user && {
@@ -45,7 +45,7 @@ const NavbarLinks = () => {
   ].filter(Boolean);
 
   const handleLogout = async () => {
-    logout();
+    setUserStore(null, null, false);
     toast.success("User Logged out successfully");
   };
 

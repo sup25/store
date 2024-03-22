@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import config from "@/app/api/config";
 
-const generateAccessToken = (user) => {
-  const accessToken = jwt.sign(user, config.secretKey, {
+const generateAccessToken = (id) => {
+  const accessToken = jwt.sign({ id }, config.secretKey, {
     expiresIn: config.accessTokenExpiration,
   });
 
@@ -10,7 +10,7 @@ const generateAccessToken = (user) => {
 };
 
 const generateRefreshToken = (user) => {
-  const refreshToken = jwt.sign(user, config.refreshTokenSecret, {
+  const refreshToken = jwt.sign(user.id, config.refreshTokenSecret, {
     expiresIn: config.refreshTokenExpiration,
   });
   return refreshToken;
