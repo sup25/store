@@ -4,8 +4,9 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "@/context/AuthContext";
-import axios from "axios";
+
 import Form from "../../components/form";
+import axiosClient from "@/utils/axiosClient";
 
 const Login = () => {
   const { setUserStore } = useAuth();
@@ -28,7 +29,10 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axios.post("/api/v1/user/auth/login", formData);
+      const response = await axiosClient.post(
+        "/api/v1/user/auth/login",
+        formData
+      );
       const { user, token } = response.data.returnedData;
       setUserStore(user, token);
       router.push("/");

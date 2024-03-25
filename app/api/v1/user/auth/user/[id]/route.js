@@ -1,19 +1,10 @@
-import prisma from "@/_lib/prisma";
-import verifyToken from "../../utils/verifyToken";
+import auth from "@/app/api/utils/auth";
+import { internalRes } from "@/app/api/utils/globalResponse";
 
-export async function Get(request) {
-  const { id } = request.params;
-  const token = request.headers.authorization?.split(" ")[1];
-  console.log(id, request);
-  console.log(token);
-  verifyToken(token);
-  const user = await prisma.User.findUnique({
-    where: {
-      id: Number(id),
-    },
+export async function GET(request) {
+  const res = await auth(request, (req) => {
+    console.log(req);
+    return internalRes("User authenticated", null, 200);
   });
-  if (!user) {
-    return internalRes("User not found", null, 404);
-  }
-  return internalRes("User found", user, 200);
+  return res;
 }

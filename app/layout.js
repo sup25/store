@@ -4,6 +4,7 @@ import Navbar from "@/constants/navbar";
 import Footer from "@/constants/footer";
 import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "@/context/AuthContext";
+import axios from "axios";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {

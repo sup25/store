@@ -2,14 +2,15 @@
 import React from "react";
 
 import Hero from "@/components/hero";
-import axios from "axios";
+
 import { useAuth } from "@/context/AuthContext";
+import axiosClient from "@/utils/axiosClient";
 
 export default function Home() {
   const { user } = useAuth();
 
   const privateReq = async (user) => {
-    const res = await axios.get(`/api/v1/user/auth/user`, {
+    const res = await axiosClient.get(`/api/v1/user/auth/user`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
     console.log(res);
