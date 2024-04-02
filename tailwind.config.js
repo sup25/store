@@ -47,6 +47,11 @@ module.exports = {
         ".container": {
           maxWidth: theme("maxWidth.container"),
         },
+        "@media screen and (max-width: 768px)": {
+          ".none": {
+            display: "none !important",
+          },
+        },
       });
     }),
   ],

@@ -23,7 +23,7 @@ const Categories = () => {
         <Link
           key={index}
           href={items.href}
-          className="text-lg text-white w-full font-bold flex justify-center transition duration-300  hover:bg-tertiary px-4 py-2  cursor-pointer"
+          className="text-lg text-center text-white w-full font-bold flex justify-center transition duration-300  hover:bg-tertiary px-4 py-2  cursor-pointer"
         >
           {items.name}
         </Link>

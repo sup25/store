@@ -38,13 +38,12 @@ model Address {
 model Token {
   id          Int         @id @default(autoincrement())
   token       String      @unique
+  created_at  DateTime    @default(now())
+  black_list  Boolean     @default(false)
   expire      DateTime
   type        String
-  created_at  DateTime    @default(now())
-  blocked     Boolean     @default(false)
   user        User?       @relation(fields: [userId], references: [id])
   userId      Int?
   used        Boolean     @default(false)
-  used_at     DateTime?
-  metadata    Json?
+ 
 }

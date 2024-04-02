@@ -1,0 +1,156 @@
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import {
+  FaUser,
+  FaHeart,
+  FaShoppingCart,
+  FaUserPlus,
+  FaSignOutAlt,
+  FaBars,
+  FaTimes,
+} from "react-icons/fa";
+import { useAuth } from "@/context/AuthContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const NavLinks = () => {
+  const { user, setUserStore } = useAuth();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const handleLogout = async () => {
+    setUserStore(null, null, false);
+    toast.success("User logged out successfully");
+  };
+
+  const toggleDrawer = () => {
+    setIsDrawerOpen(!isDrawerOpen);
+  };
+
+  const closeDrawer = () => {
+    setIsDrawerOpen(false);
+  };
+
+  const handleLinkClick = () => {
+    closeDrawer();
+  };
+
+  const links = [
+    {
+      icon: <FaUser size={20} />,
+      text: user ? user.first_name : "profile",
+      private: true,
+    },
+    { icon: <FaHeart size={20} />, text: "Orders", private: true },
+    { icon: <FaShoppingCart size={20} />, text: "My Cart", private: true },
+    {
+      icon: <FaSignOutAlt size={20} />,
+      text: "Logout",
+      onClick: handleLogout,
+      private: true,
+    },
+    {
+      href: "/login",
+      icon: <FaUserPlus size={20} />,
+      text: "Login",
+      private: false,
+    },
+    {
+      href: "/register",
+      icon: <FaUserPlus size={20} />,
+      text: "Register",
+      private: false,
+    },
+  ];
+
+  return (
+    <>
+      <div className="md:flex none md:items-center md:space-x-4">
+        {links.map((link, index) => {
+          if ((user && link.private) || (!user && !link.private)) {
+            return (
+              <div key={index} onClick={link.onClick}>
+                {link.href ? (
+                  <Link
+                    href={link.href}
+                    onClick={handleLinkClick}
+                    className="flex items-center gap-2 py-2 text-white transition duration-250 ease-in-out hover:bg-slate-400 px-2"
+                  >
+                    {link.icon}
+                    <span className="text-sm">{link.text}</span>
+                  </Link>
+                ) : (
+                  <div
+                    onClick={link.onClick}
+                    className="flex cursor-pointer items-center gap-2 text-white py-2 transition duration-250 ease-in-out hover:bg-slate-400 px-2"
+                  >
+                    {link.icon}
+                    <span className="text-sm">{link.text}</span>
+                  </div>
+                )}
+              </div>
+            );
+          }
+          return null;
+        })}
+      </div>
+      <div className="md:hidden">
+        {!isDrawerOpen ? (
+          <div className="cursor-pointer text-white" onClick={toggleDrawer}>
+            <FaBars size={24} />
+          </div>
+        ) : (
+          <div className="cursor-pointer text-white" onClick={toggleDrawer}>
+            <FaTimes size={24} />
+          </div>
+        )}
+
+        <div
+          className={`fixed inset-0 bg-black bg-opacity-50 z-50 ${
+            isDrawerOpen ? "block" : "hidden"
+          }`}
+          onClick={closeDrawer}
+        ></div>
+
+        <div
+          className={`fixed inset-y-0 left-0 w-64 bg-white z-50 transform transition duration-300 ease-in-out ${
+            isDrawerOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          {links.map((link, index) => {
+            if ((user && link.private) || (!user && !link.private)) {
+              return (
+                <div
+                  key={index}
+                  onClick={link.onClick}
+                  className="flex items-center gap-2 py-2 text-gray-900 hover:bg-gray-100 px-4"
+                >
+                  {link.href ? (
+                    <Link
+                      href={link.href}
+                      onClick={handleLinkClick}
+                      className="flex items-center gap-2 py-2 text-gray-900 hover:bg-gray-100 px-4"
+                    >
+                      {link.icon}
+                      <span className="text-sm">{link.text}</span>
+                    </Link>
+                  ) : (
+                    <div
+                      onClick={link.onClick}
+                      className="flex cursor-pointer items-center gap-2 text-gray-900 hover:bg-gray-100 px-4"
+                    >
+                      {link.icon}
+                      <span className="text-sm">{link.text}</span>
+                    </div>
+                  )}
+                </div>
+              );
+            }
+            return null;
+          })}
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default NavLinks;
