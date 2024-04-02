@@ -1,13 +1,17 @@
 import jwt from "jsonwebtoken";
 import config from "@/app/api/config";
 
-const verifyToken = async (token) => {
+const verifyToken = async (token, isRefreshToken = false) => {
   try {
-    const payload = jwt.verify(token, config.secretKey);
+    const verifySecretKey = isRefreshToken
+      ? config.refreshTokenSecret
+      : config.secretKey;
+
+    const payload = jwt.verify(token, verifySecretKey);
 
     return payload;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     if (error.name === "TokenExpiredError") {
       return { error: "Token expired" };
     }

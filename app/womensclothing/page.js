@@ -1,6 +1,9 @@
-import WomensClothing from "@/components/womensclothing";
+import ProductCategory from "@/components/productCategory";
+
 import React from "react";
 
 export default function page() {
-  return <WomensClothing />;
+  return (
+    <ProductCategory categoryUrl="https://fakestoreapi.com/products/category/women's%20clothing" />
+  );
 }

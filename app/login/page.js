@@ -33,8 +33,8 @@ const Login = () => {
         "/api/v1/user/auth/login",
         formData
       );
-      const { user, token } = response.data.returnedData;
-      setUserStore(user, token);
+      const { user, accessToken, refreshToken } = response.data.returnedData;
+      setUserStore(user, accessToken, refreshToken);
       router.push("/");
     } catch (error) {
       toast.error("Email or password is incorrect");

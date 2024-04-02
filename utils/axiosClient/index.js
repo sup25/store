@@ -12,7 +12,8 @@ const refreshToken = async () => {
     "/api/v1/user/auth/refreshToken",
     JSON.stringify({ refreshToken: localStorage.getItem("refreshToken") })
   );
-  return res;
+
+  return res.data.returnedData.accessToken;
 };
 axiosClient.interceptors.response.use(
   (response) => response,
@@ -24,24 +25,23 @@ axiosClient.interceptors.response.use(
       error.config
     ) {
       const { config: originalRequest } = error;
-      console.log(error);
-      // Token expired, redirect to login page or handle as appropriate
       console.log("Token expired");
-      // Refresh access token
-      const res = await refreshToken();
-      console.log(res);
-      // store new token to local storage
 
-      if (res.status === 200) {
-        return axiosClient.request({
-          ...originalRequest,
-          data: originalRequest.data ? JSON.parse(originalRequest.data) : {},
-          headers: { Authorization: `Bearer ${res.data.tokens.access}` },
-        });
+      try {
+        // Refresh access token
+        const newAccessToken = await refreshToken();
+
+        // Store the new access token in local storage
+        localStorage.setItem("accessToken", newAccessToken);
+
+        // Retry the original request with the new access token
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        return axiosClient(originalRequest);
+      } catch (refreshError) {
+        console.error("Error refreshing token:", refreshError.message);
+
+        return Promise.reject(refreshError);
       }
-      // hanlde refresh token error
-
-      return Promise.reject(error);
     }
     return Promise.reject(error);
   }

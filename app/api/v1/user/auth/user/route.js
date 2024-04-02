@@ -1,10 +1,10 @@
 import prisma from "@/_lib/prisma";
-import verifyToken from "../utils/verifyToken";
+
 import { internalRes } from "@/app/api/utils/globalResponse";
 import auth from "@/app/api/utils/auth";
 
 export async function GET(request) {
-  const test = async (request) => {
+  const getUserInfo = async (request) => {
     console.log(request.user);
     const user = await prisma.User.findUnique({
       where: {
@@ -17,6 +17,6 @@ export async function GET(request) {
     }
     return internalRes("User found", user, 200);
   };
-  const res = await auth(request, test);
+  const res = await auth(request, getUserInfo);
   return res;
 }

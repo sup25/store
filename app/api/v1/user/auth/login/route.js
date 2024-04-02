@@ -1,9 +1,6 @@
-import prisma from "@/_lib/prisma";
 import { loginUserValidation } from "../validation";
 import { internalRes } from "@/app/api/utils/globalResponse";
 import { loginUserController } from "../controller";
-
-import verifyToken from "../utils/verifyToken";
 
 export async function POST(request) {
   const body = await request.json();
@@ -13,9 +10,13 @@ export async function POST(request) {
     return internalRes("Validation Error", { errors }, 422);
 
   try {
-    const { user, token } = await loginUserController(body);
+    const { user, accessToken, refreshToken } = await loginUserController(body);
 
-    return internalRes("User Loggedin successfully", { user, token }, 200);
+    return internalRes(
+      "User Loggedin successfully",
+      { user, accessToken, refreshToken },
+      200
+    );
   } catch (err) {
     console.log(err);
     return internalRes("Internal Server Error", null, 500);

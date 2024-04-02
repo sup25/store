@@ -1,21 +1,11 @@
 "use client";
-
-import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import NavbarLinks from "@/components/navbarLinks";
-
-import ToggleNavIcon from "@/modules/toggleNavIcon";
-import MobileNavLinks from "@/components/mobileNavLinks";
+import NavLinks from "@/components/navLinks";
 
 export default function Navbar() {
   const router = useRouter();
   const redirectToHome = () => {
     router.push("/");
-  };
-  const [show, setShow] = useState(false);
-
-  const handleIconClick = () => {
-    setShow((prevState) => !prevState);
   };
 
   return (
@@ -29,13 +19,7 @@ export default function Navbar() {
             >
               store
             </h2>
-
-            <ToggleNavIcon show={show} onClick={handleIconClick} />
-            <MobileNavLinks show={show} />
-
-            <div className="hidden lg:block">
-              <NavbarLinks />
-            </div>
+            <NavLinks />
           </div>
         </div>
       </div>

@@ -1,37 +1,35 @@
 "use client";
-import axios from "axios";
 
-import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import Card from "../../modules/card";
+import axios from "axios";
+import Card from "../card";
 
-const Jewelery = () => {
+const ProductCategory = ({ categoryUrl }) => {
   const [datas, setDatas] = useState([]);
 
   useEffect(() => {
-    const fetchJewelery = async () => {
-      const jeweleryUrl = "https://fakestoreapi.com/products/category/jewelery";
+    const fetchProducts = async () => {
       try {
-        const res = await axios.get(jeweleryUrl);
-        console.log(res);
+        const res = await axios.get(categoryUrl);
+        console.log("response", res);
 
         if (res.status >= 200 && res.status < 300) {
           setDatas(res.data);
         } else {
-          throw new Error("Failed to get the jewelery");
+          throw new Error(`Failed to get the ${title}`);
         }
       } catch (error) {
         console.log("error", error);
       }
     };
 
-    fetchJewelery();
-  }, []);
+    fetchProducts();
+  }, [categoryUrl]);
 
   return (
     <div className="section">
-      <div className="container ">
-        <div className="flex w-full justify-between gap-10  flex-wrap  ">
+      <div className="container">
+        <div className="flex md:flex-row flex-col w-full justify-between gap-10  flex-wrap">
           {datas.map((item, index) => (
             <Card
               key={index}
@@ -48,4 +46,4 @@ const Jewelery = () => {
   );
 };
 
-export default Jewelery;
+export default ProductCategory;

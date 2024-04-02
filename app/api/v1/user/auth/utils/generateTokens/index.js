@@ -9,8 +9,8 @@ const generateAccessToken = (id) => {
   return accessToken;
 };
 
-const generateRefreshToken = (user) => {
-  const refreshToken = jwt.sign(user.id, config.refreshTokenSecret, {
+const generateRefreshToken = (id) => {
+  const refreshToken = jwt.sign({ id }, config.refreshTokenSecret, {
     expiresIn: config.refreshTokenExpiration,
   });
   return refreshToken;
