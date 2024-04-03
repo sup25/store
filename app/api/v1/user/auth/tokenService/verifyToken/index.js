@@ -1,5 +1,8 @@
 import jwt from "jsonwebtoken";
 import config from "@/app/api/config";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 const verifyToken = async (token, isRefreshToken = false) => {
   try {
@@ -8,6 +11,18 @@ const verifyToken = async (token, isRefreshToken = false) => {
       : config.secretKey;
 
     const payload = jwt.verify(token, verifySecretKey);
+
+    const blacklistedToken = await prisma.token.findFirst({
+      where: {
+        token,
+        black_list: true,
+        id: payload.id,
+      },
+    });
+
+    if (blacklistedToken) {
+      throw new Error("Token blacklisted");
+    }
 
     return payload;
   } catch (error) {
