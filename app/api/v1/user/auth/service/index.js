@@ -32,3 +32,28 @@ export const loginUserService = async (email, password) => {
   delete user.Password;
   return user;
 };
+
+export const invalidateUserTokens = async (token) => {
+  const result = await prisma.token.updateMany({
+    where: {
+      token,
+      black_list: false,
+    },
+    data: {
+      black_list: true,
+    },
+  });
+
+  return result;
+};
+
+export const isTokenBlacklisted = async (token) => {
+  const blacklistedToken = await prisma.token.findFirst({
+    where: {
+      token,
+      black_list: true,
+    },
+  });
+
+  return blacklistedToken !== null;
+};
