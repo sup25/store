@@ -1,9 +1,9 @@
+import { hashPassword } from "@/app/api/utils/hashPassword";
 import { createUserService, loginUserService } from "../service";
 import {
   generateAccessToken,
   generateRefreshToken,
 } from "../tokenService/generateTokens";
-import { hashPassword } from "../utils/hashPassword";
 
 export const createUserController = async (body) => {
   const { first_name, last_name, email, password } = body;
@@ -21,10 +21,10 @@ export const createUserController = async (body) => {
 export const loginUserController = async (body) => {
   const { email, password } = body;
 
-  const user = await loginUserService(email, password);
+  const { user, role } = await loginUserService(email, password);
   const accessToken = await generateAccessToken(user);
 
   const refreshToken = await generateRefreshToken(user);
 
-  return { user, accessToken, refreshToken };
+  return { user, role, accessToken, refreshToken };
 };

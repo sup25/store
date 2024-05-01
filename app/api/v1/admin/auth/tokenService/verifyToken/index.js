@@ -1,14 +1,11 @@
 import jwt from "jsonwebtoken";
 import config from "@/app/api/config";
 
-const verifyToken = async (token, isRefreshToken = false) => {
+const adminVerifyToken = async (token) => {
   try {
-    const verifySecretKey = isRefreshToken
-      ? config.refreshTokenSecret
-      : config.secretKey;
-
+    const verifySecretKey = config.secretKey;
     const payload = jwt.verify(token, verifySecretKey);
-
+    console.log(payload);
     return payload;
   } catch (error) {
     console.error(error);
@@ -19,4 +16,4 @@ const verifyToken = async (token, isRefreshToken = false) => {
   }
 };
 
-export default verifyToken;
+export default adminVerifyToken;

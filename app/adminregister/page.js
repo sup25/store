@@ -2,18 +2,15 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import axios from "axios";
 import Form from "../../components/form";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const Register = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
-    first_name: "",
-    last_name: "",
+    name: "",
     email: "",
     password: "",
   });
@@ -31,14 +28,15 @@ const Register = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("/api/v1/user/auth/register", formData);
-
+      const response = await axios.post(
+        "/api/v1/admin/auth/register",
+        formData
+      );
       if (response.status !== 201) {
         throw new Error("Failed to register user");
       }
-
       toast.success("User registered successfully");
-      router.push("/");
+      router.push("admindashboard");
     } catch (error) {
       console.log("Error registering user:", error.response.data);
       setErrors(error.response?.data?.returnedData?.errors || []);
@@ -54,8 +52,7 @@ const Register = () => {
     }
   };
   const registerFields = [
-    { name: "first_name", label: "First Name", type: "text", required: true },
-    { name: "last_name", label: "Last Name", type: "text", required: true },
+    { name: "name", label: "Name", type: "text", required: true },
     { name: "email", label: "Email", type: "email", required: true },
     { name: "password", label: "Password", type: "password", required: true },
   ];
@@ -64,7 +61,9 @@ const Register = () => {
     <div className="section">
       <div className="container">
         <div className="flex w-full flex-col justify-center items-center gap-10 pb-20 ">
-          <h2 className="text-2xl uppercase font-bold">Register</h2>
+          <h2 className="text-2xl uppercase font-bold">
+            Register Business Account
+          </h2>
           <Form
             fields={registerFields}
             onSubmit={handleSubmit}
@@ -74,12 +73,6 @@ const Register = () => {
             buttonText="Register"
             isLoading={isLoading}
           />
-          <Link
-            href="/adminregister"
-            className="hover:border-b border-primary transition duration-300 ease-in-out"
-          >
-            Businees Account
-          </Link>
         </div>
       </div>
     </div>

@@ -1,15 +1,17 @@
 "use client";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import axiosClient from "@/utils/axiosClient";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-
+  const [admin, setAdmin] = useState(null);
   /**
    *
    * @param {Object | null} userData
-   * @param {String} token
+   * @param {String} accessToken
+   * @param {String} refreshToken
    * @param {Boolean} setToLocal
    * @example
    * setUserStore({user}, 'token') //login
@@ -19,20 +21,52 @@ export const AuthProvider = ({ children }) => {
     userData,
     accessToken,
     refreshToken,
-    setToLocal = true
+    setToLocal = true,
+    isAdmin = false
   ) => {
-    setUser(userData);
-    if (setToLocal) {
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
+    if (isAdmin) {
+      setAdmin(userData);
+      if (setToLocal) {
+        localStorage.setItem("adminAccessToken", accessToken);
+      } else {
+        localStorage.removeItem("adminAccessToken");
+      }
     } else {
-      localStorage.removeItem("accessToken", accessToken);
-      localStorage.removeItem("refreshToken", refreshToken);
+      setUser(userData);
+      if (setToLocal) {
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
+      } else {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+      }
     }
   };
 
+  const privateReq = async () => {
+    try {
+      const res = await axiosClient.get(`/api/v1/user/auth/user`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      console.log(res);
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        console.log("User is not logged in");
+        setUserStore(null, null, false);
+      } else {
+        console.error("An error occurred:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    privateReq();
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ setUserStore, user }}>
+    <AuthContext.Provider value={{ setUserStore, user, admin }}>
       {children}
     </AuthContext.Provider>
   );
