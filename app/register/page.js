@@ -2,11 +2,10 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import axios from "axios";
-import Form from "../../components/form";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import AuthForm from "../../components/authForm";
 
 const Register = () => {
   const router = useRouter();
@@ -65,7 +64,7 @@ const Register = () => {
       <div className="container">
         <div className="flex w-full flex-col justify-center items-center gap-10 pb-20 ">
           <h2 className="text-2xl uppercase font-bold">Register</h2>
-          <Form
+          <AuthForm
             fields={registerFields}
             onSubmit={handleSubmit}
             formData={formData}

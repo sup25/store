@@ -4,8 +4,8 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "@/context/AuthContext";
-import Form from "@/components/form";
 import axiosAdmin from "@/utils/axiosAdmin";
+import AuthForm from "@/components/authForm";
 
 const AdminLogin = () => {
   const { setUserStore } = useAuth();
@@ -54,7 +54,7 @@ const AdminLogin = () => {
       <div className="container">
         <div className="flex w-full flex-col justify-center items-center gap-10 pb-20 ">
           <h2 className="text-2xl uppercase font-bold">Login</h2>
-          <Form
+          <AuthForm
             fields={loginFields}
             onSubmit={handleSubmit}
             formData={formData}

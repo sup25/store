@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect } from "react";
 import withAuthAdmin from "../api/utils/adminHoc/page";
+import AllProducts from "../allproducts/page";
 
-const adminDashboard = () => {
-  return <div>test</div>;
+const AdminDashboard = () => {
+  return <AllProducts />;
 };
 
-export default withAuthAdmin(adminDashboard);
+export default withAuthAdmin(AdminDashboard);

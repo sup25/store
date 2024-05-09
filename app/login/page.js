@@ -4,10 +4,9 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "@/context/AuthContext";
-
-import Form from "../../components/form";
 import axiosClient from "@/utils/axiosClient";
 import Link from "next/link";
+import AuthForm from "../../components/authForm";
 
 const Login = () => {
   const { setUserStore } = useAuth();
@@ -56,7 +55,7 @@ const Login = () => {
       <div className="container">
         <div className="flex w-full flex-col justify-center items-center gap-10 pb-20 ">
           <h2 className="text-2xl uppercase font-bold">Login</h2>
-          <Form
+          <AuthForm
             fields={loginFields}
             onSubmit={handleSubmit}
             formData={formData}

@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import Form from "../../components/form";
 import { useRouter } from "next/navigation";
+import AuthForm from "../../components/authForm";
 
 const Register = () => {
   const router = useRouter();
@@ -33,12 +33,12 @@ const Register = () => {
         formData
       );
       if (response.status !== 201) {
-        throw new Error("Failed to register user");
+        throw new Error("Failed to register ");
       }
-      toast.success("User registered successfully");
-      router.push("admindashboard");
+      toast.success("registered successfully");
+      router.push("/");
     } catch (error) {
-      console.log("Error registering user:", error.response.data);
+      console.log("Error registering:", error.response.data);
       setErrors(error.response?.data?.returnedData?.errors || []);
       if (error.response?.data?.message) {
         setErrors([error.response.data.message]);
@@ -64,7 +64,7 @@ const Register = () => {
           <h2 className="text-2xl uppercase font-bold">
             Register Business Account
           </h2>
-          <Form
+          <AuthForm
             fields={registerFields}
             onSubmit={handleSubmit}
             formData={formData}

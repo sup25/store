@@ -3,7 +3,7 @@ import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import Button from "../button";
 
 /**
- * Form component for rendering a generic form with dynamic fields.
+ * Auth Form component for rendering a generic form with dynamic fields.
  * @param {Array} fields - Array of objects containing field details.
  * @param {Function} onSubmit - Function to handle form submission.
  * @param {Object} formData - Object containing form data.
@@ -13,7 +13,7 @@ import Button from "../button";
  * @param {boolean} props.isLoading - Indicates whether the form is in a loading state.
  * @returns {JSX.Element} - Rendered Form component.
  */
-const Form = ({
+const AuthForm = ({
   fields,
   onSubmit,
   formData,
@@ -80,4 +80,4 @@ const Form = ({
   );
 };
 
-export default Form;
+export default AuthForm;
