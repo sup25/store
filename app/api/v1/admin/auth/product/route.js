@@ -1,7 +1,5 @@
-// routes.js
-
 import { internalRes } from "@/app/api/utils/globalResponse";
-import { createProductController, getProductsController } from "./controller";
+import { createProductController } from "./controller";
 import { ProductValidation } from "./validation";
 
 export async function POST(request) {
@@ -12,8 +10,8 @@ export async function POST(request) {
   try {
     const createdProduct = await createProductController(body);
     return internalRes("Product created successfully", createdProduct, 200);
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
     return internalRes("Internal Server Error", null, 500);
   }
 }

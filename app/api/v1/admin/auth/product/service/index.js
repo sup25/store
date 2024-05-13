@@ -61,3 +61,14 @@ export const updateProductService = async (productId) => {
   });
   return product;
 };
+
+export const deleteProductService = async (productId) => {
+  const parsedProductId = parseInt(productId, 10);
+  const deletedProduct = await prisma.product.delete({
+    where: {
+      id: parsedProductId,
+    },
+  });
+
+  return deletedProduct;
+};

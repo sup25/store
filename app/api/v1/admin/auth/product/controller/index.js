@@ -1,5 +1,6 @@
 import {
   createProductService,
+  deleteProductService,
   getProductService,
   updateProductService,
 } from "../service";
@@ -17,4 +18,9 @@ export async function getProductsController(adminId) {
 export async function updateProductController(productId) {
   const updateProduct = updateProductService(productId);
   return updateProduct;
+}
+
+export async function deleteProductController(prductId) {
+  const deleteProduct = await deleteProductService(prductId);
+  return deleteProduct;
 }
