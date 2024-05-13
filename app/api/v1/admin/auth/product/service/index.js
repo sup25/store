@@ -43,16 +43,21 @@ export const createProductService = async (body) => {
 };
 
 export const getProductService = async (adminId) => {
-  try {
-    const parsedAdminId = parseInt(adminId);
-    const products = await prisma.product.findMany({
-      where: {
-        adminId: parsedAdminId,
-      },
-    });
+  const parsedAdminId = parseInt(adminId);
+  const products = await prisma.product.findMany({
+    where: {
+      adminId: parsedAdminId,
+    },
+  });
 
-    return products;
-  } catch (error) {
-    throw new Error(`Error fetching products: ${error.message}`);
-  }
+  return products;
+};
+
+export const updateProductService = async (productId) => {
+  const product = await prisma.product.findUnique({
+    where: {
+      id: productId,
+    },
+  });
+  return product;
 };

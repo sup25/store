@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import { useSearchParams } from "next/navigation";
 import ProductHandlerForm from "@/components/productHandlerForm";
 import fields from "@/components/productFields";
 
@@ -22,6 +22,16 @@ const CreateProductAdmin = () => {
   const [errors, setErrors] = useState([]);
   const [adminId, setAdminId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const productData = searchParams.get("product");
+    if (productData) {
+      const decodedProductData = JSON.parse(decodeURIComponent(productData));
+      console.log("productData", decodedProductData);
+      setFormData(decodedProductData);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const adminToken = localStorage.getItem("adminAccessToken");
