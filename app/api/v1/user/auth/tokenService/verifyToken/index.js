@@ -1,7 +1,13 @@
 import jwt from "jsonwebtoken";
 import config from "@/app/api/config";
 
+import { isTokenBlacklisted } from "../../service";
+
 const verifyToken = async (token, isRefreshToken = false) => {
+  /*  const isBlacklisted = await isTokenBlacklisted(token);
+  if (isBlacklisted) {
+    throw new Error("Token blacklisted");
+  } */
   try {
     const verifySecretKey = isRefreshToken
       ? config.refreshTokenSecret

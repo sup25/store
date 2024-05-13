@@ -1,4 +1,4 @@
-import verifyToken from "../../v1/user/auth/utils/verifyToken";
+import verifyToken from "../../v1/user/auth/tokenService/verifyToken";
 import { internalRes } from "../globalResponse";
 
 const auth = async (req, cb) => {
@@ -9,8 +9,6 @@ const auth = async (req, cb) => {
   }
 
   const token = authHeader.split(" ")[1];
-
-  console.log("token auth:", token);
 
   const payload = await verifyToken(token);
 
