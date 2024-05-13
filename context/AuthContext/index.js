@@ -27,18 +27,18 @@ export const AuthProvider = ({ children }) => {
     if (isAdmin) {
       setAdmin(userData);
       if (setToLocal) {
-        localStorage.setItem("adminAccessToken", accessToken);
+        sessionStorage.setItem("adminAccessToken", accessToken);
       } else {
-        localStorage.removeItem("adminAccessToken");
+        sessionStorage.removeItem("adminAccessToken");
       }
     } else {
       setUser(userData);
       if (setToLocal) {
-        localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("refreshToken", refreshToken);
+        sessionStorage.setItem("accessToken", accessToken);
+        sessionStorage.setItem("refreshToken", refreshToken);
       } else {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
+        sessionStorage.removeItem("accessToken");
+        sessionStorage.removeItem("refreshToken");
       }
     }
   };
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await axiosClient.get(`/api/v1/user/auth/user`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
         },
       });
       console.log(res);

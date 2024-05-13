@@ -10,7 +10,7 @@ const axiosClient = axios.create({
 const refreshToken = async () => {
   const res = await axiosClient.post(
     "/api/v1/user/auth/refreshToken",
-    JSON.stringify({ refreshToken: localStorage.getItem("refreshToken") })
+    JSON.stringify({ refreshToken: sessionStorage.getItem("refreshToken") })
   );
 
   return res.data.returnedData.accessToken;
@@ -35,7 +35,7 @@ axiosClient.interceptors.response.use(
 
         try {
           const newAccessToken = await refreshToken();
-          localStorage.setItem("accessToken", newAccessToken);
+          sessionStorage.setItem("accessToken", newAccessToken);
 
           // Retry the original request with the new access token
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
@@ -51,7 +51,7 @@ axiosClient.interceptors.response.use(
       } else {
         return new Promise((resolve) => {
           refreshQueue.push(() => {
-            originalRequest.headers.Authorization = `Bearer ${localStorage.getItem(
+            originalRequest.headers.Authorization = `Bearer ${sessionStorage.getItem(
               "accessToken"
             )}`;
             resolve(axiosClient(originalRequest));

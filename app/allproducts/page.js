@@ -10,7 +10,7 @@ const AllProducts = () => {
   const [adminId, setAdminId] = useState(null);
 
   useEffect(() => {
-    const adminToken = localStorage.getItem("adminAccessToken");
+    const adminToken = sessionStorage.getItem("adminAccessToken");
     if (adminToken) {
       const decodedToken = JSON.parse(atob(adminToken.split(".")[1]));
       setAdminId(decodedToken.id);
