@@ -1,23 +1,21 @@
 "use client";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useAuth } from "@/context/AuthContext";
-import axiosClient from "@/utils/axiosClient";
-import Link from "next/link";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import AuthForm from "../../components/authForm";
 
-const Login = () => {
-  const { setUserStore } = useAuth();
-  const [errors, setErrors] = useState([]);
+const Register = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
   });
 
+  const [errors, setErrors] = useState([]);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -28,24 +26,33 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+
     try {
-      const response = await axiosClient.post(
-        "/api/v1/user/auth/login",
+      const response = await axios.post(
+        "/api/v1/admin/auth/register",
         formData
       );
-      const { user, accessToken, refreshToken } = response.data.returnedData;
-      setUserStore(user, accessToken, refreshToken);
-      router.push("/userdashboard");
+      if (response.status !== 201) {
+        throw new Error("Failed to register ");
+      }
+      toast.success("registered successfully");
+      router.push("/");
     } catch (error) {
-      toast.error("Email or password is incorrect");
+      console.log("Error registering:", error.response.data);
       setErrors(error.response?.data?.returnedData?.errors || []);
-      setIsLoading(false);
+      if (error.response?.data?.message) {
+        setErrors([error.response.data.message]);
+        toast.error("email already in use ");
+      } else {
+        setErrors(["An error occurred during registration"]);
+        toast.error("An error occurred during registration");
+      }
     } finally {
       setIsLoading(false);
     }
   };
-
-  const loginFields = [
+  const registerFields = [
+    { name: "name", label: "Name", type: "text", required: true },
     { name: "email", label: "Email", type: "email", required: true },
     { name: "password", label: "Password", type: "password", required: true },
   ];
@@ -54,26 +61,22 @@ const Login = () => {
     <div className="section">
       <div className="container">
         <div className="flex w-full flex-col justify-center items-center gap-10 pb-20 ">
-          <h2 className="text-2xl uppercase font-bold">Login</h2>
+          <h2 className="text-2xl uppercase font-bold">
+            Register Business Account
+          </h2>
           <AuthForm
-            fields={loginFields}
+            fields={registerFields}
             onSubmit={handleSubmit}
             formData={formData}
             onChange={handleChange}
             errors={errors}
-            buttonText="Login"
+            buttonText="Register"
             isLoading={isLoading}
           />
-          <Link
-            href="/adminlogin"
-            className="hover:border-b border-primary transition duration-300 ease-in-out"
-          >
-            Administrative Login
-          </Link>
         </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Register;

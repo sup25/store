@@ -10,11 +10,15 @@ const axiosClient = axios.create({
 const refreshToken = async () => {
   const res = await axiosClient.post(
     "/api/v1/user/auth/refreshToken",
-    JSON.stringify({ refreshToken: localStorage.getItem("refreshToken") })
+    JSON.stringify({ refreshToken: sessionStorage.getItem("refreshToken") })
   );
 
   return res.data.returnedData.accessToken;
 };
+
+let isRefreshing = false;
+let refreshQueue = [];
+
 axiosClient.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -24,23 +28,35 @@ axiosClient.interceptors.response.use(
       error.response.data.message === "Token expired" &&
       error.config
     ) {
-      const { config: originalRequest } = error;
-      console.log("Token expired");
+      const originalRequest = error.config;
 
-      try {
-        // Refresh access token
-        const newAccessToken = await refreshToken();
+      if (!isRefreshing) {
+        isRefreshing = true;
 
-        // Store the new access token in local storage
-        localStorage.setItem("accessToken", newAccessToken);
+        try {
+          const newAccessToken = await refreshToken();
+          sessionStorage.setItem("accessToken", newAccessToken);
 
-        // Retry the original request with the new access token
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        return axiosClient(originalRequest);
-      } catch (refreshError) {
-        console.error("Error refreshing token:", refreshError.message);
-
-        return Promise.reject(refreshError);
+          // Retry the original request with the new access token
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          return axiosClient(originalRequest);
+        } catch (refreshError) {
+          console.error("Error refreshing token:", refreshError.message);
+          return Promise.reject(refreshError);
+        } finally {
+          isRefreshing = false;
+          refreshQueue.forEach((prom) => prom());
+          refreshQueue = [];
+        }
+      } else {
+        return new Promise((resolve) => {
+          refreshQueue.push(() => {
+            originalRequest.headers.Authorization = `Bearer ${sessionStorage.getItem(
+              "accessToken"
+            )}`;
+            resolve(axiosClient(originalRequest));
+          });
+        });
       }
     }
     return Promise.reject(error);

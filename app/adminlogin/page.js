@@ -4,11 +4,10 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "@/context/AuthContext";
-import axiosClient from "@/utils/axiosClient";
-import Link from "next/link";
-import AuthForm from "../../components/authForm";
+import axiosAdmin from "@/utils/axiosAdmin";
+import AuthForm from "@/components/authForm";
 
-const Login = () => {
+const AdminLogin = () => {
   const { setUserStore } = useAuth();
   const [errors, setErrors] = useState([]);
   const router = useRouter();
@@ -29,13 +28,13 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axiosClient.post(
-        "/api/v1/user/auth/login",
+      const response = await axiosAdmin.post(
+        "/api/v1/admin/auth/login",
         formData
       );
-      const { user, accessToken, refreshToken } = response.data.returnedData;
-      setUserStore(user, accessToken, refreshToken);
-      router.push("/userdashboard");
+      const { admin, accessToken } = response.data.returnedData;
+      setUserStore(admin, accessToken, null, true, true);
+      router.push("/admindashboard");
     } catch (error) {
       toast.error("Email or password is incorrect");
       setErrors(error.response?.data?.returnedData?.errors || []);
@@ -64,16 +63,10 @@ const Login = () => {
             buttonText="Login"
             isLoading={isLoading}
           />
-          <Link
-            href="/adminlogin"
-            className="hover:border-b border-primary transition duration-300 ease-in-out"
-          >
-            Administrative Login
-          </Link>
         </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default AdminLogin;

@@ -8,42 +8,129 @@ datasource db {
 }
 
 model User {
-  id              Int         @id @default(autoincrement())
-  first_name      String      @db.VarChar(255)
-  last_name       String      @db.VarChar(255)
-  email           String      @unique @db.VarChar(255)
-  password        String      @db.VarChar(255)
-  addresses       Address[]   
-  phone           String?     @default("") @db.VarChar(255)
-  role            String?     @default("user") @db.VarChar(255)
-  personalize     Json?
-  verified_phone  Boolean?    @default(false)
-  verified_email  Boolean?    @default(false)
-  created_at      DateTime    @default(now())
-  tokens          Token[]     
+  id             Int       @id @default(autoincrement())
+  first_name     String    @db.VarChar(255)
+  last_name      String    @db.VarChar(255)
+  email          String    @unique @db.VarChar(255)
+  password       String    @db.VarChar(255)
+  addresses      Address[]
+  phone          String?   @default("") @db.VarChar(255)
+  role           String?   @default("user") @db.VarChar(255)
+  personalize    Json?
+  verified_phone Boolean?  @default(false)
+  verified_email Boolean?  @default(false)
+  created_at     DateTime  @default(now())
+  tokens         Token[]
+  Order          Order[]
 }
 
 model Address {
-  id       Int      @id @default(autoincrement())
-  street   String   @db.VarChar(255)
-  city     String   @db.VarChar(255)
-  state    String   @db.VarChar(255)
-  country  String   @db.VarChar(255)
-  zipcode  String   @db.VarChar(255)
-  apt      String?  @db.VarChar(255)
-  user     User     @relation(fields: [userId], references: [id])
-  userId   Int      @unique
+  id      Int     @id @default(autoincrement())
+  street  String  @db.VarChar(255)
+  city    String  @db.VarChar(255)
+  state   String  @db.VarChar(255)
+  country String  @db.VarChar(255)
+  zipcode String  @db.VarChar(255)
+  apt     String? @db.VarChar(255)
+  user    User    @relation(fields: [userId], references: [id])
+  userId  Int     @unique
 }
 
 model Token {
-  id          Int         @id @default(autoincrement())
-  token       String      @unique
-  created_at  DateTime    @default(now())
-  black_list  Boolean     @default(false)
-  expire      DateTime
-  type        String
-  user        User?       @relation(fields: [userId], references: [id])
-  userId      Int?
-  used        Boolean     @default(false)
- 
+  id         Int      @id @default(autoincrement())
+  token      String   @unique
+  created_at DateTime @default(now())
+  black_list Boolean  @default(false)
+  expire     DateTime
+  type       String
+  user       User?    @relation(fields: [userId], references: [id])
+  userId     Int?
+  used       Boolean  @default(false)
+  admin      Admin?   @relation(fields: [adminId], references: [id])
+  adminId    Int?
+}
+
+model Admin {
+  id       Int       @id @default(autoincrement())
+  name     String    @db.VarChar(255)
+  email    String    @unique @db.VarChar(255)
+  password String    @db.VarChar(255)
+  role     String?   @default("admin") @db.VarChar(255)
+  tokens   Token[]
+  products Product[]
+  Status   Status[]
+
+  @@map("admin")
+}
+
+model Product {
+  id         Int            @id @default(autoincrement())
+  title      String         @db.VarChar(255)
+  handle     String         @unique @db.VarChar(255)
+  desc       String?
+  short_desc String?
+  price      Int
+  quantity   Int
+  sku        String?        @db.VarChar(255)
+  tags       String[]
+  type       String
+  images     ProductImage[]
+  sales      Sale[]
+  reviews    Review[]
+  Admin      Admin?         @relation(fields: [adminId], references: [id])
+  adminId    Int?
+  Order      Order?         @relation(fields: [orderId], references: [id])
+  orderId    Int?
+}
+
+model ProductImage {
+  id           Int     @id @default(autoincrement())
+  original_url String  @db.VarChar(255)
+  thumbnail    String  @db.VarChar(255)
+  index        Int
+  productId    Int
+  product      Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+
+model Sale {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt 
+  products   Product[] 
+  orders    Order[]
+}
+
+
+
+model Order {
+  id          Int       @id @default(autoincrement())
+  address     String
+  total_price Int
+  net_price   Int
+  sale        Sale      @relation(fields: [saleId], references: [id])
+  saleId      Int
+  status      Status[]
+  notes       String?
+  products    Product[]
+  user        User      @relation(fields: [userId], references: [id])
+  userId      Int
+}
+
+model Status {
+  id      Int      @id @default(autoincrement())
+  name    String
+  date    DateTime @default(now())
+  admin   Admin    @relation(fields: [adminId], references: [id])
+  adminId Int
+  orderId Int
+  order   Order    @relation(fields: [orderId], references: [id])
+}
+
+model Review {
+  id        Int     @id @default(autoincrement())
+  score     Float
+  message   String
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
 }

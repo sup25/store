@@ -1,14 +1,18 @@
 import jwt from "jsonwebtoken";
 import config from "@/app/api/config";
 import { PrismaClient } from "@prisma/client";
-import Expiration from "../../utils/checkExpiration";
+import Expiration from "@/app/api/utils/checkExpiration";
 
 const prisma = new PrismaClient();
 
 const generateAccessToken = async (user) => {
-  const accessToken = jwt.sign({ id: user.id }, config.secretKey, {
-    expiresIn: config.accessTokenExpiration,
-  });
+  const accessToken = jwt.sign(
+    { id: user.id, role: user.role },
+    config.secretKey,
+    {
+      expiresIn: config.accessTokenExpiration,
+    }
+  );
 
   const expDate = Expiration(config.accessTokenExpiration);
 
@@ -26,9 +30,13 @@ const generateAccessToken = async (user) => {
 };
 
 const generateRefreshToken = async (user) => {
-  const refreshToken = jwt.sign({ id: user.id }, config.refreshTokenSecret, {
-    expiresIn: config.refreshTokenExpiration,
-  });
+  const refreshToken = jwt.sign(
+    { id: user.id, role: user.role },
+    config.refreshTokenSecret,
+    {
+      expiresIn: config.refreshTokenExpiration,
+    }
+  );
 
   const expDate = Expiration(config.refreshTokenExpiration);
   await prisma.token.create({

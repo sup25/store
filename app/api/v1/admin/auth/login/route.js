@@ -1,23 +1,21 @@
-import { loginUserValidation } from "../validation";
 import { internalRes } from "@/app/api/utils/globalResponse";
-import { loginUserController } from "../controller";
+
+import { loginAdminValidation } from "../validation";
+import { loginAdminController } from "../controller";
 
 export async function POST(request) {
   const body = await request.json();
 
-  const errors = loginUserValidation(body);
+  const errors = loginAdminValidation(body);
   if (errors.length > 0)
     return internalRes("Validation Error", { errors }, 422);
 
   try {
-    const { user, accessToken, role, refreshToken } = await loginUserController(
-      body
-    );
-
+    const { admin, role, accessToken } = await loginAdminController(body);
     return internalRes(
-      "User Loggedin successfully",
-      { user, accessToken, role, refreshToken },
-      200
+      "Admin Logged in successfully",
+      { admin, role, accessToken },
+      201
     );
   } catch (err) {
     console.log(err);

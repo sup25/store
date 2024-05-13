@@ -2,11 +2,13 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import axios from "axios";
-import Form from "../../components/form";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import AuthForm from "../../components/authForm";
 
 const Register = () => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     first_name: "",
@@ -35,6 +37,7 @@ const Register = () => {
       }
 
       toast.success("User registered successfully");
+      router.push("/");
     } catch (error) {
       console.log("Error registering user:", error.response.data);
       setErrors(error.response?.data?.returnedData?.errors || []);
@@ -42,7 +45,6 @@ const Register = () => {
         setErrors([error.response.data.message]);
         toast.error("email already in use ");
       } else {
-        // Set errors state with a generic error message
         setErrors(["An error occurred during registration"]);
         toast.error("An error occurred during registration");
       }
@@ -62,7 +64,7 @@ const Register = () => {
       <div className="container">
         <div className="flex w-full flex-col justify-center items-center gap-10 pb-20 ">
           <h2 className="text-2xl uppercase font-bold">Register</h2>
-          <Form
+          <AuthForm
             fields={registerFields}
             onSubmit={handleSubmit}
             formData={formData}
@@ -71,6 +73,12 @@ const Register = () => {
             buttonText="Register"
             isLoading={isLoading}
           />
+          <Link
+            href="/adminregister"
+            className="hover:border-b border-primary transition duration-300 ease-in-out"
+          >
+            Businees Account
+          </Link>
         </div>
       </div>
     </div>

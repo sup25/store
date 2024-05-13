@@ -1,5 +1,6 @@
 import prisma from "@/_lib/prisma";
-import { comparePassword } from "../utils/comparePassword";
+import { comparePassword } from "@/app/api/utils/comparePassword";
+
 export const createUserService = async (body) => {
   try {
     const user = await prisma.User.create({
@@ -30,7 +31,7 @@ export const loginUserService = async (email, password) => {
     throw new Error("Email or password is incorrect");
   }
   delete user.Password;
-  return user;
+  return { user, role: user.role };
 };
 
 export const invalidateUserTokens = async (token) => {
@@ -45,15 +46,4 @@ export const invalidateUserTokens = async (token) => {
   });
 
   return result;
-};
-
-export const isTokenBlacklisted = async (token) => {
-  const blacklistedToken = await prisma.token.findFirst({
-    where: {
-      token,
-      black_list: true,
-    },
-  });
-
-  return blacklistedToken !== null;
 };
