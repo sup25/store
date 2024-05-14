@@ -25,7 +25,11 @@ export const AuthProvider = ({ children }) => {
     isAdmin = false
   ) => {
     if (isAdmin) {
-      setAdmin(userData);
+      if (userData) {
+        setAdmin(userData);
+      } else {
+        setAdmin(null);
+      }
       if (setToLocal) {
         sessionStorage.setItem("adminAccessToken", accessToken);
       } else {
