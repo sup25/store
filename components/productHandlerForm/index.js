@@ -25,7 +25,7 @@ const ProductHandlerForm = ({
   return (
     <form
       onSubmit={onSubmit}
-      className="bg-slate-400 py-10 px-10 md:w-1/2 w-full rounded flex flex-col gap-5"
+      className="bg-slate-400 py-10 px-10  max-w-[800px] rounded flex flex-col gap-5"
     >
       {fields.map((field) => (
         <div key={field.name} className="flex flex-col gap-2">
@@ -86,11 +86,7 @@ const ProductHandlerForm = ({
         </div>
       ))}
 
-      <Button
-        type="submit"
-        isLoading={isLoading}
-        className="bg-primary text-white font-bold flex items-center justify-center w-fit py-2 px-2"
-      >
+      <Button type="submit" isLoading={isLoading} className="w-[200px]">
         {buttonText}
       </Button>
     </form>

@@ -42,23 +42,59 @@ export const createProductService = async (body) => {
   return product;
 };
 
-export const getProductService = async (adminId) => {
+export const getProductsService = async (adminId) => {
   const parsedAdminId = parseInt(adminId);
   const products = await prisma.product.findMany({
     where: {
       adminId: parsedAdminId,
     },
+    include: {
+      images: true,
+    },
   });
 
   return products;
 };
-
-export const updateProductService = async (productId) => {
-  const product = await prisma.product.findUnique({
-    where: {
-      id: productId,
+export const getAllProductsService = async () => {
+  const products = await prisma.product.findMany({
+    include: {
+      images: true,
     },
   });
+  return products;
+};
+
+export const updateProductService = async (productId, updatedFields) => {
+  const { images, ...rest } = updatedFields;
+
+  const product = await prisma.product.update({
+    where: {
+      id: Number(productId),
+    },
+    data: {
+      ...rest,
+    },
+  });
+
+  if (images && images.length > 0) {
+    await prisma.productImage.deleteMany({
+      where: {
+        productId: Number(productId),
+      },
+    });
+
+    for (const image of images) {
+      await prisma.productImage.create({
+        data: {
+          original_url: image.original_url,
+          thumbnail: image.thumbnail,
+          index: parseInt(image.index),
+          product: { connect: { id: Number(productId) } },
+        },
+      });
+    }
+  }
+
   return product;
 };
 

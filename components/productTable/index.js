@@ -9,6 +9,8 @@ import "react-toastify/dist/ReactToastify.css";
 const ProductTable = ({ products, onDelete }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
 
   const handleEditProduct = (product) => {
     const productQuery = encodeURIComponent(JSON.stringify(product));
@@ -26,6 +28,10 @@ const ProductTable = ({ products, onDelete }) => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
   };
 
   return (
@@ -52,34 +58,54 @@ const ProductTable = ({ products, onDelete }) => {
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => (
-            <tr key={product.id} className="hover:bg-gray-100">
-              <td className="border px-4 py-2">{product.id}</td>
-              <td className="border px-4 py-2">{product.title}</td>
-              <td className="border px-4 py-2">{product.handle}</td>
-              <td className="border px-4 py-2">{product.desc}</td>
-              <td className="border px-4 py-2">{product.short_desc}</td>
-              <td className="border px-4 py-2">{product.price}</td>
-              <td className="border px-4 py-2">{product.quantity}</td>
-              <td className="border px-4 py-2">{product.sku}</td>
-              <td className="border px-4 py-2">{product.tags.join(", ")}</td>
-              <td className="border px-4 py-2">{product.type}</td>
-              <td className="px-4 py-2 flex items-center justify-center gap-2">
-                <MdOutlineModeEdit
-                  size={20}
-                  className="text-blue-500 cursor-pointer hover:text-black"
-                  onClick={() => handleEditProduct(product)}
-                />
-                <MdDeleteOutline
-                  size={20}
-                  className="text-red-500 cursor-pointer hover:text-black"
-                  onClick={() => handleDeleteProduct(product.id)}
-                />
-              </td>
-            </tr>
-          ))}
+          {products
+            .map((product) => (
+              <tr key={product.id} className="hover:bg-gray-100">
+                <td className="border px-4 py-2">{product.id}</td>
+                <td className="border px-4 py-2">{product.title}</td>
+                <td className="border px-4 py-2">{product.handle}</td>
+                <td className="border px-4 py-2">{product.desc}</td>
+                <td className="border px-4 py-2">{product.short_desc}</td>
+                <td className="border px-4 py-2">{product.price}</td>
+                <td className="border px-4 py-2">{product.quantity}</td>
+                <td className="border px-4 py-2">{product.sku}</td>
+                <td className="border px-4 py-2">{product.tags.join(", ")}</td>
+                <td className="border px-4 py-2">{product.type}</td>
+                <td className="px-4 py-2 flex items-center justify-center gap-2">
+                  <MdOutlineModeEdit
+                    size={20}
+                    className="text-blue-500 cursor-pointer hover:text-black"
+                    onClick={() => handleEditProduct(product)}
+                  />
+                  <MdDeleteOutline
+                    size={20}
+                    className="text-red-500 cursor-pointer hover:text-black"
+                    onClick={() => handleDeleteProduct(product.id)}
+                  />
+                </td>
+              </tr>
+            ))
+            .slice(
+              (currentPage - 1) * itemsPerPage,
+              currentPage * itemsPerPage
+            )}
         </tbody>
       </table>
+      <div className="flex justify-center mt-4">
+        {[...Array(Math.ceil(products.length / itemsPerPage)).keys()].map(
+          (number) => (
+            <div
+              key={number}
+              className={`px-3 py-1 cursor-pointer ${
+                currentPage === number + 1 ? "bg-gray-300" : ""
+              }`}
+              onClick={() => handlePageChange(number + 1)}
+            >
+              {number + 1}
+            </div>
+          )
+        )}
+      </div>
     </>
   );
 };

@@ -17,8 +17,10 @@ export async function GET(request, { params }) {
 }
 export async function PUT(request, { params }) {
   const productId = params.id;
+  const body = await request.json();
+  console.log("updatedFields", body);
   try {
-    const productList = await updateProductController(productId);
+    const productList = await updateProductController(productId, body);
     return internalRes("Product updated successfully", productList, 200);
   } catch (err) {
     console.error(err);
