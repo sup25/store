@@ -2,17 +2,19 @@
 
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { loadStripe } from "@stripe/stripe-js";
-import axios from "axios";
+
 import SelectProductQuantity from "@/components/selectProductQuantity";
+import BtnCheckout from "@/components/btnCheckout";
+import LoginPopUp from "@/components/loginPopup";
+import { useAuth } from "@/context/AuthContext";
+import BtnAddToCart from "@/components/btnAddToCart";
 
 function ProductDetail() {
   const searchParams = useSearchParams();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
-  const stripePromise = loadStripe(publishableKey);
-
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const { user } = useAuth();
   useEffect(() => {
     const productData = searchParams.get("product");
     if (productData) {
@@ -21,45 +23,8 @@ function ProductDetail() {
     }
   }, []);
 
-  const handleAddToCart = () => {
-    console.log("Product added to cart:", product);
-  };
-
-  const handleCheckout = async (e) => {
-    e.preventDefault();
-    const stripe = await stripePromise;
-    const priceInCents = Math.round(product.price * 100);
-    try {
-      const checkoutSession = await axios.post(
-        "/api/v1/payment",
-        {
-          product: product.id,
-          price: priceInCents,
-          quantity: quantity,
-          name: product.title,
-          description: product.short_desc,
-          images: [product.images[0].original_url],
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const sessionId = checkoutSession.data.sessionId;
-
-      const result = await stripe.redirectToCheckout({
-        sessionId: sessionId,
-      });
-
-      if (result.error) {
-        throw new Error(result.error.message);
-      }
-    } catch (error) {
-      console.error("Error during checkout:", error.message);
-      alert("Error during checkout. Please try again later.");
-    }
+  const handleCloseLoginPopup = () => {
+    setShowLoginPopup(false);
   };
 
   return (
@@ -92,22 +57,22 @@ function ProductDetail() {
               />
               <p>{product.desc}</p>
               <div className="w-full flex flex-col md:flex-row justify-between gap-5">
-                <div
-                  className="w-full cursor-pointer flex items-center justify-center px-2 py-2 bg-btn hover:bg-primary text-white font-bold text-lg transition duration-150 ease-out hover:ease-in"
-                  onClick={handleAddToCart}
-                >
-                  Add to Cart
-                </div>
-                <div
-                  className="w-full cursor-pointer flex items-center justify-center px-2 py-2 bg-tertiary hover:bg-primary hover:text-white text-black font-bold text-lg transition duration-150 ease-out hover:ease-in"
-                  onClick={handleCheckout}
-                >
-                  Checkout Now
-                </div>
+                <BtnAddToCart
+                  product={product}
+                  showLoginPopup={() => setShowLoginPopup(true)}
+                  user={user}
+                />
+                <BtnCheckout
+                  product={product}
+                  quantity={quantity}
+                  showLoginPopup={() => setShowLoginPopup(true)}
+                  user={user}
+                />
               </div>
             </div>
           </div>
         )}
+        {showLoginPopup && <LoginPopUp onClose={handleCloseLoginPopup} />}
       </div>
     </div>
   );

@@ -31,7 +31,7 @@ const AuthForm = ({
   return (
     <form
       onSubmit={onSubmit}
-      className="bg-slate-400 py-10 px-10 md:w-1/2 w-full rounded flex flex-col gap-5"
+      className="bg-slate-400 py-10 px-10 md:w-[600px] w-full rounded flex flex-col gap-5"
     >
       {fields.map((field) => (
         <div key={field.name} className="flex flex-col gap-2">
