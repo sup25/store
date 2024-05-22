@@ -33,9 +33,7 @@ const CreateProductAdmin = () => {
       setFormData(decodedProductData);
       setIsUpdating(true);
     }
-  }, [searchParams]);
 
-  useEffect(() => {
     const adminToken = sessionStorage.getItem("adminAccessToken");
     if (adminToken) {
       const decodedToken = JSON.parse(atob(adminToken.split(".")[1]));
@@ -60,46 +58,6 @@ const CreateProductAdmin = () => {
     }
   };
 
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "fx78igma");
-
-    try {
-      const response = await axios.post(
-        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUD_NAME}/image/upload`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      if (response.status === 200) {
-        const data = response.data;
-        const imageUrl = data.secure_url;
-        const thumbnailUrl = imageUrl;
-
-        const images = formData.images || [];
-
-        const index = images.length;
-
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          images: [
-            ...images,
-            { original_url: imageUrl, thumbnail: thumbnailUrl, index: index },
-          ],
-        }));
-      } else {
-        console.error("Failed to upload image to Cloudinary");
-      }
-    } catch (error) {
-      console.error("Error uploading image:", error);
-    }
-  };
-
   const resetForm = () => {
     setFormData(initialFormData);
   };
@@ -111,7 +69,6 @@ const CreateProductAdmin = () => {
     try {
       let response;
       const productId = parseInt(formData.id);
-      console.log("formData before submit:", formData);
       if (isUpdating) {
         response = await axios.put(
           `/api/v1/admin/auth/product/${productId}`,
@@ -162,11 +119,11 @@ const CreateProductAdmin = () => {
           fields={fields}
           onSubmit={handleSubmit}
           formData={formData}
+          setFormData={setFormData}
           errors={errors}
           onChange={handleChange}
           buttonText={buttonText}
           isLoading={isLoading}
-          handleFileChange={handleFileChange}
         />
       </div>
     </div>

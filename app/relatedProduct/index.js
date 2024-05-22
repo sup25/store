@@ -24,11 +24,6 @@ const RelatedProduct = () => {
     fetchProducts();
   }, []);
 
-  const getRandomProducts = () => {
-    const shuffledProducts = [...products].sort(() => 0.5 - Math.random());
-    return shuffledProducts.slice(0, 8);
-  };
-
   return (
     <div className="section">
       <div className="container">
@@ -55,7 +50,7 @@ const RelatedProduct = () => {
                 <CgSpinnerTwo size={30} className="animate-spin" />
               ) : (
                 Array.isArray(products) &&
-                getRandomProducts().map((product) => (
+                products.map((product) => (
                   <SwiperSlide
                     key={product.id}
                     style={{

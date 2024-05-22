@@ -55,4 +55,5 @@ const AdminDashboard = () => {
   );
 };
 
-export default withAuthAdmin(AdminDashboard);
+/* export default withAuthAdmin(AdminDashboard); */
+export default AdminDashboard;
