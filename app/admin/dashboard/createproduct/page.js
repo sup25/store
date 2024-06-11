@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
-import ProductHandlerForm from "@/components/productHandlerForm";
-import fields from "@/components/productFields";
+import ProductHandlerForm from "@/app/admin/dashboard/components/productHandlerForm";
+import fields from "../components/productFields";
 
 const CreateProductAdmin = () => {
   const initialFormData = {

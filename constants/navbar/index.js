@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import NavLinks from "@/components/navLinks";
+import NavLinks from "@/common/navLinks";
 
 export default function Navbar() {
   const router = useRouter();

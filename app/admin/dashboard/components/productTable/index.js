@@ -14,7 +14,7 @@ const ProductTable = ({ products, onDelete }) => {
 
   const handleEditProduct = (product) => {
     const productQuery = encodeURIComponent(JSON.stringify(product));
-    router.push(`/createproduct?product=${productQuery}`);
+    router.push(`/admin/dashboard/createproduct?product=${productQuery}`);
   };
 
   const handleDeleteProduct = async (productId) => {

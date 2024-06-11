@@ -1,9 +1,8 @@
-import ProductCategory from "@/components/productCategory";
-
 import React from "react";
+import ProductCategoryList from "../admin/dashboard/components/productCategoryList";
 
 export default function page() {
   return (
-    <ProductCategory categoryUrl="https://fakestoreapi.com/products/category/women's%20clothing" />
+    <ProductCategoryList categoryUrl="https://fakestoreapi.com/products/category/women's%20clothing" />
   );
 }
