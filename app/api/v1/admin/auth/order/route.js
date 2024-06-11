@@ -1,12 +1,13 @@
 import Stripe from "stripe";
 import { NextResponse } from "next/server";
+import { createOrderController, getOrderController } from "./controller";
 
 export async function POST(request) {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
   const requestData = await request.json();
   console.log("requestData", requestData);
 
-  const { price, name, description, images, quantity } = requestData;
+  const { price, name, description, images, quantity, user } = requestData;
 
   try {
     const session = await stripe.checkout.sessions.create({
@@ -28,8 +29,12 @@ export async function POST(request) {
       mode: "payment",
       success_url: "http://localhost:3000/ordersuccess",
       cancel_url: "http://localhost:3000/ordercancel",
+      metadata: {
+        userId: user.id,
+      },
     });
 
+    await createOrderController(requestData);
     return NextResponse.json({ sessionId: session.id });
   } catch (error) {
     console.error("Error creating Checkout session:", error);

@@ -3,6 +3,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 
 const BtnCheckout = ({ product, quantity, showLoginPopup, user }) => {
+  console.log("user", user);
   const proceedCheckout = async (e) => {
     e.preventDefault();
     const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
@@ -11,7 +12,7 @@ const BtnCheckout = ({ product, quantity, showLoginPopup, user }) => {
 
     try {
       const checkoutSession = await axios.post(
-        "/api/v1/payment",
+        "/api/v1/admin/auth/order",
         {
           product: product.id,
           price: priceInCents,
@@ -19,6 +20,7 @@ const BtnCheckout = ({ product, quantity, showLoginPopup, user }) => {
           name: product.title,
           description: product.short_desc,
           images: [product.images[0].original_url],
+          user: user.id,
         },
         {
           headers: {
@@ -44,7 +46,7 @@ const BtnCheckout = ({ product, quantity, showLoginPopup, user }) => {
 
   const handleClick = (e) => {
     if (!user) {
-      showLoginPopup();
+      proceedCheckout(e);
     } else {
       proceedCheckout(e);
     }
