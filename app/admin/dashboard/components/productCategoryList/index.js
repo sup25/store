@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Card from "../card";
+import Card from "../../../../common/card";
 
-const ProductCategory = ({ categoryUrl }) => {
+const ProductCategoryList = ({ categoryUrl }) => {
   const [datas, setDatas] = useState([]);
 
   useEffect(() => {
@@ -46,4 +46,4 @@ const ProductCategory = ({ categoryUrl }) => {
   );
 };
 
-export default ProductCategory;
+export default ProductCategoryList;

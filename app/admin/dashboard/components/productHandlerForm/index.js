@@ -1,7 +1,9 @@
 import { useState } from "react";
-import Button from "../button";
-import { handleFileInputChange, handleRemoveImage } from "../imageHandler";
+
 import { CgSpinnerTwo } from "react-icons/cg";
+import { deleteImageFromCloudinary } from "../deleteImageFromCloudinary";
+import { handleImageUpload } from "../imageUploadHandler";
+import Button from "@/common/button";
 const ProductHandlerForm = ({
   fields,
   onSubmit,
@@ -78,7 +80,7 @@ const ProductHandlerForm = ({
                   name={field.name}
                   onChange={(event) => {
                     setUploading(true);
-                    handleFileInputChange(
+                    handleImageUpload(
                       event,
                       selectedFiles,
                       setSelectedFiles,
@@ -115,7 +117,7 @@ const ProductHandlerForm = ({
                   type="button"
                   onClick={() => {
                     setRemoving(true);
-                    handleRemoveImage(
+                    deleteImageFromCloudinary(
                       file.public_id,
                       selectedFiles,
                       setSelectedFiles,

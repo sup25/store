@@ -1,9 +1,9 @@
 "use client";
-
-import ProductTable from "@/components/productTable";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import ProductTable from "../components/productTable";
 import { CgSpinnerTwo } from "react-icons/cg";
+
 const AllProducts = () => {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);

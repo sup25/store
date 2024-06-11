@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "@/context/AuthContext";
 import axiosClient from "@/utils/axiosClient";
 import Link from "next/link";
-import AuthForm from "../../components/authForm";
+import AuthForm from "../../common/authForm";
 
 const Login = ({ isPopup }) => {
   const { setUserStore } = useAuth();
@@ -67,7 +67,7 @@ const Login = ({ isPopup }) => {
             />
 
             <Link
-              href="/adminlogin"
+              href="/admin/auth/login"
               className="hover:border-b border-primary transition duration-300 ease-in-out"
             >
               Administrative Login

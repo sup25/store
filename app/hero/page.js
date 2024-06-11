@@ -5,7 +5,7 @@ import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import axios from "axios";
-import Categories from "@/components/categories";
+import Categories from "@/common/categories";
 
 const Hero = () => {
   const [products, setProducts] = useState([]);

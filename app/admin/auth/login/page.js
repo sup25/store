@@ -5,9 +5,9 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "@/context/AuthContext";
 import axiosAdmin from "@/utils/axiosAdmin";
-import AuthForm from "@/components/authForm";
+import AuthForm from "@/common/authForm";
 
-const AdminLogin = () => {
+const Login = () => {
   const { setUserStore } = useAuth();
   const [errors, setErrors] = useState([]);
   const router = useRouter();
@@ -34,7 +34,7 @@ const AdminLogin = () => {
       );
       const { admin, accessToken } = response.data.returnedData;
       setUserStore(admin, accessToken, null, true, true);
-      router.push("/admindashboard");
+      router.push("/admin/dashboard");
     } catch (error) {
       toast.error("Email or password is incorrect");
       setErrors(error.response?.data?.returnedData?.errors || []);
@@ -69,4 +69,4 @@ const AdminLogin = () => {
   );
 };
 
-export default AdminLogin;
+export default Login;

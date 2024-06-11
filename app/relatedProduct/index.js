@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
-import Card from "@/components/card";
+import Card from "@/common/card";
 import { CgSpinnerTwo } from "react-icons/cg";
 
 const RelatedProduct = () => {
