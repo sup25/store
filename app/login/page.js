@@ -8,7 +8,7 @@ import axiosClient from "@/utils/axiosClient";
 import Link from "next/link";
 import AuthForm from "../../components/authForm";
 
-const Login = () => {
+const Login = ({ isPopup }) => {
   const { setUserStore } = useAuth();
   const [errors, setErrors] = useState([]);
   const router = useRouter();
@@ -52,26 +52,40 @@ const Login = () => {
 
   return (
     <div className="section">
-      <div className="container">
-        <div className="flex w-full flex-col justify-center items-center gap-10 pb-20 ">
-          <h2 className="text-2xl uppercase font-bold">Login</h2>
-          <AuthForm
-            fields={loginFields}
-            onSubmit={handleSubmit}
-            formData={formData}
-            onChange={handleChange}
-            errors={errors}
-            buttonText="Login"
-            isLoading={isLoading}
-          />
-          <Link
-            href="/adminlogin"
-            className="hover:border-b border-primary transition duration-300 ease-in-out"
-          >
-            Administrative Login
-          </Link>
+      {!isPopup && (
+        <div className="container">
+          <div className="flex w-full flex-col justify-center items-center gap-10">
+            <h2 className="text-2xl uppercase font-bold">Login</h2>
+            <AuthForm
+              fields={loginFields}
+              onSubmit={handleSubmit}
+              formData={formData}
+              onChange={handleChange}
+              errors={errors}
+              buttonText="Login"
+              isLoading={isLoading}
+            />
+
+            <Link
+              href="/adminlogin"
+              className="hover:border-b border-primary transition duration-300 ease-in-out"
+            >
+              Administrative Login
+            </Link>
+          </div>
         </div>
-      </div>
+      )}
+      {isPopup && (
+        <AuthForm
+          fields={loginFields}
+          onSubmit={handleSubmit}
+          formData={formData}
+          onChange={handleChange}
+          errors={errors}
+          buttonText="Login"
+          isLoading={isLoading}
+        />
+      )}
     </div>
   );
 };

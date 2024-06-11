@@ -6,7 +6,7 @@ import ProductHandlerForm from "@/components/productHandlerForm";
 import fields from "@/components/productFields";
 
 const CreateProductAdmin = () => {
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     title: "",
     handle: "",
     desc: "",
@@ -17,23 +17,23 @@ const CreateProductAdmin = () => {
     tags: "",
     type: "",
     images: [],
-  });
+  };
 
+  const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState([]);
   const [adminId, setAdminId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const searchParams = useSearchParams();
 
   useEffect(() => {
     const productData = searchParams.get("product");
     if (productData) {
       const decodedProductData = JSON.parse(decodeURIComponent(productData));
-      console.log("productData", decodedProductData);
       setFormData(decodedProductData);
+      setIsUpdating(true);
     }
-  }, [searchParams]);
 
-  useEffect(() => {
     const adminToken = sessionStorage.getItem("adminAccessToken");
     if (adminToken) {
       const decodedToken = JSON.parse(atob(adminToken.split(".")[1]));
@@ -57,36 +57,9 @@ const CreateProductAdmin = () => {
       }));
     }
   };
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "fx78igma");
 
-    try {
-      const response = await axios.post(
-        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUD_NAME}/image/upload`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      if (response.status === 200) {
-        const data = response.data;
-        const imageUrl = data.secure_url;
-        const thumbnailUrl = imageUrl;
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          images: [{ original_url: imageUrl, thumbnail: thumbnailUrl }],
-        }));
-      } else {
-        console.error("Failed to upload image to Cloudinary");
-      }
-    } catch (error) {
-      console.error("Error uploading image:", error);
-    }
+  const resetForm = () => {
+    setFormData(initialFormData);
   };
 
   const handleSubmit = async (e) => {
@@ -94,15 +67,38 @@ const CreateProductAdmin = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("/api/v1/admin/auth/product", {
-        ...formData,
-
-        adminId: adminId,
-      });
-      if (response.status === 200) {
-        console.log("Product created successfully");
+      let response;
+      const productId = parseInt(formData.id);
+      if (isUpdating) {
+        response = await axios.put(
+          `/api/v1/admin/auth/product/${productId}`,
+          JSON.stringify(formData),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log("updated data", response);
       } else {
-        console.error("Failed to create product");
+        response = await axios.post("/api/v1/admin/auth/product", {
+          ...formData,
+          adminId: adminId,
+        });
+      }
+
+      if (response.status === 200) {
+        console.log(
+          isUpdating
+            ? "Product updated successfully"
+            : "Product created successfully"
+        );
+
+        resetForm();
+      } else {
+        console.error(
+          isUpdating ? "Failed to update product" : "Failed to create product"
+        );
       }
     } catch (error) {
       console.error("Error:", error);
@@ -110,27 +106,25 @@ const CreateProductAdmin = () => {
       const err = error.response?.data?.returnedData?.errors;
       console.log("errrrr", err);
       console.log("Validation Error");
-      setIsLoading(false);
     } finally {
       setIsLoading(false);
     }
   };
 
+  const buttonText = isUpdating ? "Update Product" : "Create Product";
   return (
     <div className="section">
       <div className="container">
-        <div className="">
-          <ProductHandlerForm
-            fields={fields}
-            onSubmit={handleSubmit}
-            formData={formData}
-            errors={errors}
-            onChange={handleChange}
-            buttonText="Create Product"
-            isLoading={isLoading}
-            handleFileChange={handleFileChange}
-          />
-        </div>
+        <ProductHandlerForm
+          fields={fields}
+          onSubmit={handleSubmit}
+          formData={formData}
+          setFormData={setFormData}
+          errors={errors}
+          onChange={handleChange}
+          buttonText={buttonText}
+          isLoading={isLoading}
+        />
       </div>
     </div>
   );

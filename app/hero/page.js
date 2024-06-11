@@ -48,7 +48,7 @@ const Hero = () => {
               slidesPerView: 3,
             },
           }}
-          className="border-b border-black w-full "
+          className=" w-full "
         >
           {products.map((product) => (
             <SwiperSlide

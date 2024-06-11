@@ -53,7 +53,7 @@ function Accordion({ icon, title, items, onItemClick }) {
             <MenuItem key={index}>
               <div
                 onClick={() => onItemClick(item)}
-                className="block data-[focus]:bg-blue-100 hover:bg-slate-200 transition duration-300 cursor-pointer "
+                className="block data-[focus]:bg-blue-100 px-2 py-2 bg-white hover:bg-slate-200 transition duration-300 cursor-pointer"
               >
                 {item.text}
               </div>

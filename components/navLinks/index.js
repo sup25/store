@@ -14,12 +14,16 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const NavLinks = () => {
-  const { user, setUserStore } = useAuth();
+  const { user, setUserStore, admin } = useAuth();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const handleLogout = async () => {
-    setUserStore(null, null, false);
-    toast.success("User logged out successfully");
+  const handleLogout = async (isAdmin = false) => {
+    setUserStore(null, null, false, true, isAdmin);
+    if (!isAdmin) {
+      toast.success("User logged out successfully");
+    } else {
+      toast.success("Admin logged out successfully");
+    }
   };
 
   const toggleDrawer = () => {
@@ -34,39 +38,61 @@ const NavLinks = () => {
     closeDrawer();
   };
 
-  const links = [
-    {
-      icon: <FaUser size={20} />,
-      text: user ? user.first_name : "profile",
-      private: true,
-    },
-    { icon: <FaHeart size={20} />, text: "Orders", private: true },
-    { icon: <FaShoppingCart size={20} />, text: "My Cart", private: true },
-    {
-      icon: <FaSignOutAlt size={20} />,
-      text: "Logout",
-      onClick: handleLogout,
-      private: true,
-    },
-    {
-      href: "/login",
-      icon: <FaUserPlus size={20} />,
-      text: "Login",
-      private: false,
-    },
-    {
-      href: "/register",
-      icon: <FaUserPlus size={20} />,
-      text: "Register",
-      private: false,
-    },
-  ];
+  let links = [];
+
+  if (user) {
+    links = [
+      {
+        icon: <FaUser size={20} />,
+        text: user.first_name,
+        private: true,
+      },
+      { icon: <FaHeart size={20} />, text: "Orders", private: true },
+      { icon: <FaShoppingCart size={20} />, text: "My Cart", private: true },
+      {
+        icon: <FaSignOutAlt size={20} />,
+        text: "Logout",
+        onClick: () => handleLogout(),
+        private: true,
+      },
+    ];
+  } else if (admin) {
+    links = [
+      {
+        icon: <FaUser size={20} />,
+        text: admin.name,
+        private: true,
+      },
+      {
+        icon: <FaSignOutAlt size={20} />,
+        text: "Logout",
+        onClick: () => handleLogout(true),
+        private: true,
+      },
+    ];
+  } else {
+    links = [
+      {
+        href: "/login",
+        icon: <FaUserPlus size={20} />,
+        text: "Login",
+        private: false,
+      },
+      {
+        href: "/register",
+        icon: <FaUserPlus size={20} />,
+        text: "Register",
+        private: false,
+      },
+    ];
+  }
 
   return (
     <>
       <div className="md:flex none md:items-center md:space-x-4">
         {links.map((link, index) => {
-          if ((user && link.private) || (!user && !link.private)) {
+          const shouldDisplay = link.private ? user || admin : !user && !admin;
+          if (shouldDisplay) {
             return (
               <div key={index} onClick={link.onClick}>
                 {link.href ? (
@@ -117,7 +143,10 @@ const NavLinks = () => {
           }`}
         >
           {links.map((link, index) => {
-            if ((user && link.private) || (!user && !link.private)) {
+            const shouldDisplay = link.private
+              ? user || admin
+              : !user && !admin;
+            if (shouldDisplay) {
               return (
                 <div
                   key={index}

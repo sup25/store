@@ -25,7 +25,11 @@ export const AuthProvider = ({ children }) => {
     isAdmin = false
   ) => {
     if (isAdmin) {
-      setAdmin(userData);
+      if (userData) {
+        setAdmin(userData);
+      } else {
+        setAdmin(null);
+      }
       if (setToLocal) {
         sessionStorage.setItem("adminAccessToken", accessToken);
       } else {
@@ -50,7 +54,7 @@ export const AuthProvider = ({ children }) => {
           Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
         },
       });
-      console.log(res);
+      console.log("response :", res);
     } catch (error) {
       if (error.response && error.response.status === 401) {
         console.log("User is not logged in");

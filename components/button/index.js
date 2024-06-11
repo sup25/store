@@ -7,6 +7,7 @@ import React from "react";
  * @param {boolean} props.isLoading - Indicates whether the button is in a loading state.
  * @param {boolean} props.disabled - Indicates whether the button is disabled.
  * @param {string} props.type - Type of the button (e.g., "button", "submit", "reset").
+ * @param {string} props.className - Extra class names to be added to the button.
  * @param {React.ReactNode} props.children - Content to be displayed inside the button.
  * @returns {JSX.Element} - Rendered button component.
  * @example
@@ -26,7 +27,7 @@ import React from "react";
  *
  *   return (
  *     <div>
- *       <Button onClick={handleClick} isLoading={isLoading}>
+ *       <Button onClick={handleClick} isLoading={isLoading} className="my-custom-class">
  *         {isLoading ? "Loading..." : "Click Me"}
  *       </Button>
  *     </div>
@@ -36,15 +37,22 @@ import React from "react";
  * export default MyComponent;
  */
 
-const Button = ({ onClick, isLoading, disabled, children, type }) => {
+const Button = ({
+  onClick,
+  isLoading,
+  disabled,
+  children,
+  type,
+  className,
+}) => {
   return (
     <button
       onClick={onClick}
       disabled={isLoading || disabled}
       type={type}
-      className={`py-2 px-4 rounded-md bg-primary hover:bg-secondary transition duration-300 ease-in-out  text-white font-semibold flex items-center justify-center ${
+      className={`py-2 px-4 w-full rounded-md bg-primary hover:bg-secondary transition duration-300 ease-in-out  text-white font-semibold flex items-center justify-center ${
         isLoading || disabled ? "opacity-50 cursor-not-allowed" : ""
-      }`}
+      } ${className}`}
     >
       {isLoading ? (
         <svg
