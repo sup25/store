@@ -4,6 +4,7 @@ import axios from "axios";
 
 const BtnCheckout = ({ product, quantity, showLoginPopup, user }) => {
   console.log("user", user);
+  console.log("product", product);
   const proceedCheckout = async (e) => {
     e.preventDefault();
     const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
@@ -21,6 +22,7 @@ const BtnCheckout = ({ product, quantity, showLoginPopup, user }) => {
           description: product.short_desc,
           images: [product.images[0].original_url],
           user: user.id,
+          address: user.address || "Dummy Address",
         },
         {
           headers: {

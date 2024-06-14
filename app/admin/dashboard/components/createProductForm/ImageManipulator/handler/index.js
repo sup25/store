@@ -1,4 +1,5 @@
-import UploadImage from "../uploadImage";
+import { deleteImageFromCloudinary } from "../../../deleteImageFromCloudinary";
+import UploadImage from "../../../uploadImage";
 
 export const handleImageUpload = async (
   event,
@@ -34,4 +35,20 @@ export const handleImageUpload = async (
     ...prevFormData,
     images: updatedSelectedFiles,
   }));
+};
+
+export const handleDeleteImage = (
+  file,
+  selectedFiles,
+  setSelectedFiles,
+  setFormData,
+  setRemoving
+) => {
+  setRemoving(true);
+  deleteImageFromCloudinary(
+    file.public_id,
+    selectedFiles,
+    setSelectedFiles,
+    setFormData
+  ).finally(() => setRemoving(false));
 };

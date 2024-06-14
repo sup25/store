@@ -28,7 +28,7 @@ const RelatedProduct = () => {
     <div className="section">
       <div className="container">
         <div className="flex flex-col">
-          <p className="md:text-3xl text-base font-bold mb-10">
+          <p className="md:text-5xl font-black text-base mb-10 font-atf ">
             Related Products
           </p>
           <div className="swiper-container">

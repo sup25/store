@@ -2,7 +2,9 @@ import adminVerifyToken from "@/app/api/v1/admin/auth/tokenService/verifyToken";
 import { internalRes } from "../../globalResponse";
 
 const adminAuth = async (req, cb) => {
-  const authHeader = req.headers.get("Authorization");
+  console.log("request", req);
+  const authHeader = req.headers.get("authorization");
+  console.log(authHeader);
   if (!authHeader) {
     return internalRes("Authorization header missing", null, 401);
   }

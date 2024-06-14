@@ -1,6 +1,6 @@
 "use client";
+
 import React, { createContext, useContext, useEffect, useState } from "react";
-import axiosClient from "@/utils/axiosClient";
 
 const AuthContext = createContext();
 
@@ -16,7 +16,32 @@ export const AuthProvider = ({ children }) => {
    * @example
    * setUserStore({user}, 'token') //login
    * setUserStore(null, null, false) //logout
+   *
    */
+
+  const getUserFromStorage = () => {
+    const storedUser = sessionStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    } else {
+      setUser(null);
+    }
+  };
+
+  const getAdminFromStorage = () => {
+    const storedAdmin = sessionStorage.getItem("admin");
+    if (storedAdmin) {
+      setAdmin(JSON.parse(storedAdmin));
+    } else {
+      setAdmin(null);
+    }
+  };
+
+  useEffect(() => {
+    getUserFromStorage();
+    getAdminFromStorage();
+  }, []);
+
   const setUserStore = (
     userData,
     accessToken,
@@ -32,6 +57,7 @@ export const AuthProvider = ({ children }) => {
       }
       if (setToLocal) {
         sessionStorage.setItem("adminAccessToken", accessToken);
+        sessionStorage.setItem("admin", JSON.stringify(userData));
       } else {
         sessionStorage.removeItem("adminAccessToken");
       }
@@ -40,34 +66,13 @@ export const AuthProvider = ({ children }) => {
       if (setToLocal) {
         sessionStorage.setItem("accessToken", accessToken);
         sessionStorage.setItem("refreshToken", refreshToken);
+        sessionStorage.setItem("user", JSON.stringify(userData));
       } else {
         sessionStorage.removeItem("accessToken");
         sessionStorage.removeItem("refreshToken");
       }
     }
   };
-
-  const privateReq = async () => {
-    try {
-      const res = await axiosClient.get(`/api/v1/user/auth/user`, {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-        },
-      });
-      console.log("response :", res);
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        console.log("User is not logged in");
-        setUserStore(null, null, false);
-      } else {
-        console.error("An error occurred:", error);
-      }
-    }
-  };
-
-  useEffect(() => {
-    privateReq();
-  }, []);
 
   return (
     <AuthContext.Provider value={{ setUserStore, user, admin }}>
