@@ -1,13 +1,20 @@
 import Stripe from "stripe";
 import { NextResponse } from "next/server";
-import { createOrderController, getOrderController } from "./controller";
-
+import appConfig from "@/config";
 export async function POST(request) {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
   const requestData = await request.json();
   console.log("requestData", requestData);
 
-  const { price, name, description, images, quantity, user } = requestData;
+  const { price, name, description, images, quantity, user, product } =
+    requestData;
+
+  if (!user || !product) {
+    console.error("User or product information is missing or incomplete.");
+    return NextResponse.error(
+      "User or product information is missing or incomplete."
+    );
+  }
 
   try {
     const session = await stripe.checkout.sessions.create({
@@ -26,15 +33,18 @@ export async function POST(request) {
           quantity: quantity,
         },
       ],
+
       mode: "payment",
-      success_url: "http://localhost:3000/ordersuccess",
-      cancel_url: "http://localhost:3000/ordercancel",
+      success_url: `${appConfig.baseUrl}/ordersuccess`,
+      cancel_url: `${appConfig.baseUrl}/ordercancel`,
       metadata: {
-        userId: user.id,
+        userId: user,
+        name: name,
+        product: product,
+        address: user.address || "Dummy Address",
       },
     });
 
-    await createOrderController(requestData);
     return NextResponse.json({ sessionId: session.id });
   } catch (error) {
     console.error("Error creating Checkout session:", error);

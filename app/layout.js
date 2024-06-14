@@ -1,10 +1,11 @@
 import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/constants/navbar";
 import Footer from "@/constants/footer";
 import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "@/context/AuthContext";
-import axios from "axios";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -12,9 +13,20 @@ export const metadata = {
   description: "A market place",
 };
 
+const atf = localFont({
+  src: [
+    {
+      path: "../public/fonts/AlternateGothic.ttf",
+      weight: "bold",
+    },
+  ],
+  weight: "bold",
+  variable: "--font-atf",
+});
+
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" style={{ height: "100%" }}>
+    <html className={`${atf.variable}`} lang="en" style={{ height: "100%" }}>
       <body
         className={inter.className}
         style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}

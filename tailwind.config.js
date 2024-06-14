@@ -14,6 +14,7 @@ module.exports = {
       animation: {
         wiggle: "wiggle 1s ease-in-out infinite",
       },
+
       keyframes: {
         wiggle: {
           "0%, 100%": { transform: "rotate(-5deg)" },
@@ -35,6 +36,7 @@ module.exports = {
       },
       fontFamily: {
         poppins: "var(--poppins-font)",
+        atf: "var(--font-atf)",
       },
       maxWidth: {
         container: "1280px",

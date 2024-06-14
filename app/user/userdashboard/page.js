@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
-import withAuthUser from "../api/utils/userHoc/page";
+import withAuthUser from "@/app/api/utils/userHoc/page";
 
 const userDashboard = () => {
   const { user } = useAuth();

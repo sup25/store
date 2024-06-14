@@ -1,4 +1,4 @@
-const fields = [
+export const fields = [
   {
     name: "title",
     label: "Title",
@@ -56,7 +56,4 @@ const fields = [
     required: true,
     placeholder: "Cargo Pants",
   },
-  { name: "images", label: "Image", type: "file" },
 ];
-
-export default fields;

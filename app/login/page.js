@@ -35,7 +35,7 @@ const Login = ({ isPopup }) => {
       );
       const { user, accessToken, refreshToken } = response.data.returnedData;
       setUserStore(user, accessToken, refreshToken);
-      router.push("/userdashboard");
+      router.push("/user/userdashboard");
     } catch (error) {
       toast.error("Email or password is incorrect");
       setErrors(error.response?.data?.returnedData?.errors || []);
