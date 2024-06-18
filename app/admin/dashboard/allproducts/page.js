@@ -1,8 +1,8 @@
 "use client";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ProductTable from "../components/productTable";
 import { CgSpinnerTwo } from "react-icons/cg";
+import { getProducts } from "../utils";
 
 const AllProducts = () => {
   const [loading, setLoading] = useState(true);
@@ -16,22 +16,10 @@ const AllProducts = () => {
       setAdminId(decodedToken.id);
     }
     if (adminId) {
-      getProducts(adminId);
+      setLoading(true);
+      getProducts(adminId, setProducts, setLoading);
     }
   }, [adminId]);
-
-  const getProducts = async (adminId) => {
-    try {
-      const response = await axios.get(`/api/v1/admin/auth/product/${adminId}`);
-      setProducts(response.data.returnedData);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  };
-  const handleDelete = () => {
-    getProducts(adminId);
-  };
 
   return (
     <div className="section">
@@ -42,7 +30,7 @@ const AllProducts = () => {
           <div>
             <h1 className="text-2xl font-bold mb-4">Product List</h1>
             <div className="overflow-x-auto">
-              <ProductTable products={products} onDelete={handleDelete} />
+              <ProductTable products={products} setProducts={setProducts} />
             </div>
           </div>
         )}

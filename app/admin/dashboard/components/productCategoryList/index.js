@@ -2,27 +2,25 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Card from "../../../../common/card";
+import Card from "@/common/card";
 
 const ProductCategoryList = ({ categoryUrl }) => {
   const [datas, setDatas] = useState([]);
+  const fetchProducts = async () => {
+    try {
+      const res = await axios.get(categoryUrl);
+      console.log("response", res);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await axios.get(categoryUrl);
-        console.log("response", res);
-
-        if (res.status >= 200 && res.status < 300) {
-          setDatas(res.data);
-        } else {
-          throw new Error(`Failed to get the ${title}`);
-        }
-      } catch (error) {
-        console.log("error", error);
+      if (res.status >= 200 && res.status < 300) {
+        setDatas(res.data);
+      } else {
+        throw new Error(`Failed to get the ${title}`);
       }
-    };
-
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+  useEffect(() => {
     fetchProducts();
   }, [categoryUrl]);
 

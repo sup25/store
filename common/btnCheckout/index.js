@@ -1,12 +1,14 @@
-import React from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
+import { useState } from "react";
+import { CgSpinner } from "react-icons/cg";
 
 const BtnCheckout = ({ product, quantity, showLoginPopup, user }) => {
-  console.log("user", user);
-  console.log("product", product);
+  const [loading, setLoading] = useState(false);
+
   const proceedCheckout = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
     const stripe = await loadStripe(publishableKey);
     const priceInCents = Math.round(product.price * 100);
@@ -24,6 +26,7 @@ const BtnCheckout = ({ product, quantity, showLoginPopup, user }) => {
           user: user.id,
           address: user.address || "Dummy Address",
         },
+
         {
           headers: {
             "Content-Type": "application/json",
@@ -43,12 +46,14 @@ const BtnCheckout = ({ product, quantity, showLoginPopup, user }) => {
     } catch (error) {
       console.error("Error during checkout:", error.message);
       alert("Error during checkout. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleClick = (e) => {
     if (!user) {
-      proceedCheckout(e);
+      showLoginPopup(e);
     } else {
       proceedCheckout(e);
     }
@@ -57,9 +62,13 @@ const BtnCheckout = ({ product, quantity, showLoginPopup, user }) => {
   return (
     <div
       className="w-full cursor-pointer flex items-center justify-center px-2 py-2 bg-tertiary hover:bg-primary text-white  font-bold text-lg transition duration-150 ease-out hover:ease-in"
-      onClick={handleClick}
+      onClick={loading ? null : handleClick}
     >
-      Checkout Now
+      {loading ? (
+        <CgSpinner size={20} className="animate-spin" />
+      ) : (
+        "Checkout Now"
+      )}
     </div>
   );
 };
