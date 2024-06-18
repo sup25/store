@@ -1,27 +1,33 @@
+import React, { useState } from "react";
 import Login from "@/app/login/page";
 import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
 import { IoIosClose } from "react-icons/io";
+import "./styles.css";
 
-const LoginPopUp = ({ onClose }) => {
-  const popupRef = useRef();
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    setTimeout(() => setIsVisible(true), 100);
-  }, []);
+const LoginPopUp = ({ handler }) => {
+  const [isVisible, setIsVisible] = useState(true);
 
   const handleClose = () => {
     setIsVisible(false);
-    setTimeout(onClose, 200);
+    setTimeout(() => {
+      handler();
+    }, 300);
+  };
+  const handleBackgroundClick = (e) => {
+    if (e.target.id === "loginPopUp") {
+      handler();
+    }
   };
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-30  z-50">
+    <div
+      id="loginPopUp"
+      className="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-30  z-[9999]"
+      onClick={handleBackgroundClick}
+    >
       <div
-        ref={popupRef}
-        className={`bg-white w-[1000px]  flex justify-between transform  transition-all duration-300 ${
-          isVisible ? "scale-100 opacity-100" : "scale-0 opacity-0"
+        className={`bg-white w-[1000px]  flex justify-between  ${
+          isVisible ? "scale-in fade-in" : "scale-out fade-out"
         }`}
       >
         <div className="flex w-full justify-center items-center  flex-col gap-5 py-10">

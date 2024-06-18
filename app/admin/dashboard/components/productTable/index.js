@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
+
 import { useRouter } from "next/navigation";
 import { MdOutlineModeEdit, MdDeleteOutline } from "react-icons/md";
 import { CgSpinnerTwo } from "react-icons/cg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { handleDeleteProduct } from "../handler";
 
-const ProductTable = ({ products, onDelete }) => {
+const ProductTable = ({ products, setProducts }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -15,19 +16,6 @@ const ProductTable = ({ products, onDelete }) => {
   const handleEditProduct = (product) => {
     const productQuery = encodeURIComponent(JSON.stringify(product));
     router.push(`/admin/dashboard/createproduct?product=${productQuery}`);
-  };
-
-  const handleDeleteProduct = async (productId) => {
-    setIsLoading(true);
-    try {
-      await axios.delete(`/api/v1/admin/auth/product/${productId}`);
-      toast.success("Product deleted successfully");
-      onDelete();
-    } catch (error) {
-      console.log("Error deleting product:", error);
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   const handlePageChange = (pageNumber) => {
@@ -80,7 +68,15 @@ const ProductTable = ({ products, onDelete }) => {
                   <MdDeleteOutline
                     size={20}
                     className="text-red-500 cursor-pointer hover:text-black"
-                    onClick={() => handleDeleteProduct(product.id)}
+                    onClick={() =>
+                      handleDeleteProduct(
+                        product.id,
+                        setProducts,
+                        products,
+                        setIsLoading,
+                        toast
+                      )
+                    }
                   />
                 </td>
               </tr>

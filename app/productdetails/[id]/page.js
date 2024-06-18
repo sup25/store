@@ -34,6 +34,7 @@ function ProductDetail() {
 
   return (
     <div className="section">
+      {showLoginPopup && <LoginPopUp handler={handleCloseLoginPopup} />}
       <div className="container">
         {product && (
           <div className="flex md:flex-row flex-col w-full gap-10">
@@ -96,7 +97,6 @@ function ProductDetail() {
             </div>
           </div>
         )}
-        {showLoginPopup && <LoginPopUp onClose={handleCloseLoginPopup} />}
       </div>
     </div>
   );
