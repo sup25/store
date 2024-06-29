@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Login from "@/app/login/page";
 import Link from "next/link";
 import { IoIosClose } from "react-icons/io";
-import "./styles.css";
+import "../styles.css";
 
 const LoginPopUp = ({ handler }) => {
   const [isVisible, setIsVisible] = useState(true);

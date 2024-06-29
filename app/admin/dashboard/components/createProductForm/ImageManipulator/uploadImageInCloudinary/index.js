@@ -1,7 +1,7 @@
 import { generateSignature } from "@/utils/generateSignature";
 import axios from "axios";
 
-const UploadImage = async (file, formData) => {
+const uploadImageInCloudinary = async (file, formData) => {
   formData.append("file", file);
 
   try {
@@ -36,4 +36,4 @@ const UploadImage = async (file, formData) => {
   }
 };
 
-export default UploadImage;
+export default uploadImageInCloudinary;

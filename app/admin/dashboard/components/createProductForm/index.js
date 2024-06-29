@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import Button from "@/common/button";
-import { fields } from "../productFields";
+import { fields } from "./productFields";
 import { handleSubmit } from "../../createproduct/handler";
 import { ImageManipulator } from "./ImageManipulator";
 

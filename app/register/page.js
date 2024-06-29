@@ -6,7 +6,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import AuthForm from "../../common/authForm";
-common;
+
 const Register = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);

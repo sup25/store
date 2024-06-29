@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-
 import CreateProductForm from "@/app/admin/dashboard/components/createProductForm";
 import { handleChange } from "./handler";
 
