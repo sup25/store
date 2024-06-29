@@ -1,5 +1,10 @@
 import { hashPassword } from "@/app/api/utils/hashPassword";
-import { createUserService, loginUserService } from "../service";
+import {
+  addAddressService,
+  createUserService,
+  loginUserService,
+  sendVerificationEmailService,
+} from "../service";
 import {
   generateAccessToken,
   generateRefreshToken,
@@ -27,4 +32,12 @@ export const loginUserController = async (body) => {
   const refreshToken = await generateRefreshToken(user);
 
   return { user, role, accessToken, refreshToken };
+};
+
+export const addAddressController = async (userId, addressData) => {
+  await addAddressService(userId, addressData);
+};
+
+export const sendVerificationEmailController = async (user, token) => {
+  await sendVerificationEmailService(user, token);
 };

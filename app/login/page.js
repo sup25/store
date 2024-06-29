@@ -8,7 +8,7 @@ import axiosClient from "@/utils/axiosClient";
 import Link from "next/link";
 import AuthForm from "../../common/authForm";
 
-const Login = ({ isPopup }) => {
+const Login = ({ isPopup, redirectToVerification }) => {
   const { setUserStore } = useAuth();
   const [errors, setErrors] = useState([]);
   const router = useRouter();
@@ -35,7 +35,12 @@ const Login = ({ isPopup }) => {
       );
       const { user, accessToken, refreshToken } = response.data.returnedData;
       setUserStore(user, accessToken, refreshToken);
-      router.push("/user/userdashboard");
+      if (redirectToVerification) {
+        const redirectUrl = `/verify-email?token=${searchParams.get("token")}`;
+        router.push(redirectUrl);
+      } else {
+        router.push("/user/dashboard");
+      }
     } catch (error) {
       toast.error("Email or password is incorrect");
       setErrors(error.response?.data?.returnedData?.errors || []);

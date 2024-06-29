@@ -1,5 +1,5 @@
-import { deleteImageFromCloudinary } from "../../../deleteImageFromCloudinary";
-import UploadImage from "../../../uploadImage";
+import { deleteImageFromCloudinary } from "../deleteImageFromCloudinary";
+import uploadImageInCloudinary from "../uploadImageInCloudinary";
 
 export const handleImageUpload = async (
   event,
@@ -13,7 +13,7 @@ export const handleImageUpload = async (
   for (let file of files.slice(0, 6 - selectedFiles.length)) {
     const uploadFormData = new FormData();
     try {
-      const uploadResult = await UploadImage(file, uploadFormData);
+      const uploadResult = await uploadImageInCloudinary(file, uploadFormData);
       console.log(uploadResult);
       if (uploadResult) {
         newSelectedFiles.push({

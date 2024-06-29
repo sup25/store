@@ -1,5 +1,6 @@
 import prisma from "@/_lib/prisma";
 import { comparePassword } from "@/app/api/utils/comparePassword";
+import nodemailer from "nodemailer";
 
 export const createUserService = async (body) => {
   try {
@@ -47,3 +48,54 @@ export const invalidateUserTokens = async (token) => {
 
   return result;
 };
+
+export const addAddressService = async (userId, addressData) => {
+  const userIdNumber = parseInt(userId, 10);
+
+  if (isNaN(userIdNumber)) {
+    throw new Error("Invalid userId");
+  }
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userIdNumber,
+    },
+    include: {
+      addresses: true,
+    },
+  });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const address = await prisma.address.create({
+    data: {
+      ...addressData,
+      userId: userIdNumber,
+    },
+  });
+
+  return address;
+};
+
+export async function sendVerificationEmailService(user, token) {
+  console.log(user.email);
+  const transporter = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: process.env.NEXT_PUBLIC_USER_EMAIL,
+      pass: process.env.NEXT_PUBLIC_USER_PASSWORD,
+    },
+  });
+
+  const mailOptions = {
+    from: process.env.NEXT_PUBLIC_USER_EMAIL,
+    to: user.email,
+    subject: "Verify your email",
+    text: `Please verify your email by clicking the following link: 
+    http://localhost:3000/user/userdata/email/verifyEmail?token=${token}`,
+  };
+
+  await transporter.sendMail(mailOptions);
+}
