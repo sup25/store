@@ -44,6 +44,7 @@ const Login = ({ isPopup, redirectToVerification }) => {
     } catch (error) {
       toast.error("Email or password is incorrect");
       setErrors(error.response?.data?.returnedData?.errors || []);
+      console.log(error.response?.data?.returnedData?.errors);
       setIsLoading(false);
     } finally {
       setIsLoading(false);
@@ -73,7 +74,7 @@ const Login = ({ isPopup, redirectToVerification }) => {
 
             <Link
               href="/admin/auth/login"
-              className="hover:border-b border-primary transition duration-300 ease-in-out"
+              className="hover:text-secondary  transition duration-300 ease-in-out"
             >
               Administrative Login
             </Link>

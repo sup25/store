@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+"use client";
+import React, { useState } from "react";
 import Link from "next/link";
 import {
   FaUser,
@@ -18,11 +19,12 @@ const NavLinks = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const handleLogout = async (isAdmin = false) => {
-    setUserStore(null, null, false, true, isAdmin);
-    if (!isAdmin) {
-      toast.success("User logged out successfully");
-    } else {
+    if (isAdmin) {
+      setUserStore(null, null, false, true, true);
       toast.success("Admin logged out successfully");
+    } else if (user) {
+      setUserStore(null, null, false, true, false);
+      toast.success("User logged out successfully");
     }
   };
 
@@ -52,7 +54,7 @@ const NavLinks = () => {
       {
         icon: <FaSignOutAlt size={20} />,
         text: "Logout",
-        onClick: () => handleLogout(),
+        onClick: () => handleLogout(false),
         private: true,
       },
     ];
@@ -94,7 +96,7 @@ const NavLinks = () => {
           const shouldDisplay = link.private ? user || admin : !user && !admin;
           if (shouldDisplay) {
             return (
-              <div key={index} onClick={link.onClick}>
+              <div key={index}>
                 {link.href ? (
                   <Link
                     href={link.href}
@@ -148,11 +150,7 @@ const NavLinks = () => {
               : !user && !admin;
             if (shouldDisplay) {
               return (
-                <div
-                  key={index}
-                  onClick={link.onClick}
-                  className="flex items-center gap-2 py-2 text-gray-900 hover:bg-gray-100 px-4"
-                >
+                <div key={index}>
                   {link.href ? (
                     <Link
                       href={link.href}

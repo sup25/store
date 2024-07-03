@@ -3,7 +3,7 @@ import axios from "axios";
 import crypto from "crypto";
 import { useAuth } from "@/context/AuthContext";
 import { MdOutlineVerified } from "react-icons/md";
-import { CgSpinnerTwo } from "react-icons/cg";
+import Spinner from "@/common/spinner";
 
 const SendVerificationEmail = () => {
   const [verificationStatus, setVerificationStatus] = useState("");
@@ -72,11 +72,7 @@ const SendVerificationEmail = () => {
         onClick={handleSendVerificationEmail}
         disabled={loading}
       >
-        {loading ? (
-          <CgSpinnerTwo size={30} className="animate-spin" />
-        ) : (
-          "Verify Email"
-        )}
+        {loading ? <Spinner /> : "Verify Email"}
       </button>
       {verificationStatus && <p>{verificationStatus}</p>}
     </div>

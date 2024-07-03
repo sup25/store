@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
-import { CgSpinnerTwo } from "react-icons/cg";
 import { handleDeleteImage, handleImageUpload } from "./handler";
+import Spinner from "@/common/spinner";
 
 export const ImageManipulator = ({ formData, setFormData }) => {
   const [uploading, setUploading] = useState(false);
@@ -18,11 +18,7 @@ export const ImageManipulator = ({ formData, setFormData }) => {
             : "cursor-pointer bg-blue-500 text-white py-2 px-4 rounded-md transition duration-300 hover:bg-blue-600 w-[150px] flex items-center justify-center"
         }
       >
-        {uploading ? (
-          <CgSpinnerTwo size={30} className="animate-spin" />
-        ) : (
-          "Upload Image"
-        )}
+        {uploading ? <Spinner /> : "Upload Image"}
       </label>
       <input
         type="file"
@@ -66,11 +62,7 @@ export const ImageManipulator = ({ formData, setFormData }) => {
                   className="text-white cursor-pointer border py-1 px-1 hover:border-blue-500 transition ease-in-out duration-300 flex items-center justify-center w-[100px]"
                   disabled={removing}
                 >
-                  {removing ? (
-                    <CgSpinnerTwo size={20} className="animate-spin" />
-                  ) : (
-                    "Remove"
-                  )}
+                  {removing ? <Spinner /> : "Remove"}
                 </button>
               </div>
             </div>

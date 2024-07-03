@@ -1,7 +1,9 @@
+"use client";
 import React from "react";
+import withAuthAdmin from "../utils/adminHoc/page";
 
-const page = () => {
-  return <div>page</div>;
+const Dashboard = () => {
+  return <div>Dashboard</div>;
 };
 
-export default page;
+export default withAuthAdmin(Dashboard);
