@@ -86,6 +86,7 @@ function ProductDetail() {
                   product={product}
                   showLoginPopup={() => setShowLoginPopup(true)}
                   user={user}
+                  quantity={quantity}
                 />
                 <BtnCheckout
                   product={product}
