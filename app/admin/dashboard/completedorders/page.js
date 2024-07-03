@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { CgSpinnerTwo } from "react-icons/cg";
+import Spinner from "@/common/spinner";
 
 const CompletedOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -31,7 +31,7 @@ const CompletedOrders = () => {
       <div className="container mx-auto mt-8">
         <h2 className="text-2xl font-bold mb-4">Completed Orders</h2>
         {loading ? (
-          <CgSpinnerTwo size={30} className="animate-spin" />
+          <Spinner />
         ) : (
           <div className="overflow-x-auto">
             <table className="table-auto w-full border-collapse">

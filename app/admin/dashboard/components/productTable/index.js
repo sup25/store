@@ -2,10 +2,10 @@ import React, { useState } from "react";
 
 import { useRouter } from "next/navigation";
 import { MdOutlineModeEdit, MdDeleteOutline } from "react-icons/md";
-import { CgSpinnerTwo } from "react-icons/cg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { handleDeleteProduct } from "../handler";
+import Spinner from "@/common/spinner";
 
 const ProductTable = ({ products, setProducts }) => {
   const router = useRouter();
@@ -26,7 +26,7 @@ const ProductTable = ({ products, setProducts }) => {
     <>
       {isLoading && (
         <div className="flex justify-center items-center h-full">
-          <CgSpinnerTwo size={30} className="animate-spin" />
+          <Spinner />
         </div>
       )}
       <table className="table-auto border-collapse border w-full">

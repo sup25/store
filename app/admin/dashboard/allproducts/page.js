@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import ProductTable from "../components/productTable";
-import { CgSpinnerTwo } from "react-icons/cg";
 import { getProducts } from "../utils";
+import Spinner from "@/common/spinner";
 
 const AllProducts = () => {
   const [loading, setLoading] = useState(true);
@@ -24,16 +24,14 @@ const AllProducts = () => {
   return (
     <div className="section">
       <div className="container mx-auto">
-        {loading ? (
-          <CgSpinnerTwo size={30} className="animate-spin" />
-        ) : (
-          <div>
-            <h1 className="text-2xl font-bold mb-4">Product List</h1>
-            <div className="overflow-x-auto">
-              <ProductTable products={products} setProducts={setProducts} />
-            </div>
-          </div>
-        )}
+        <h1 className="text-2xl font-bold mb-4">Product List</h1>
+        <div className="overflow-x-auto">
+          {loading ? (
+            <Spinner />
+          ) : (
+            <ProductTable products={products} setProducts={setProducts} />
+          )}
+        </div>
       </div>
     </div>
   );

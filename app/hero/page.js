@@ -14,7 +14,6 @@ const Hero = () => {
       const url = "https://fakestoreapi.com/products";
       try {
         const res = await axios.get(url);
-        console.log(res);
 
         if (res.status >= 200 && res.status < 300) {
           setProducts(res.data);

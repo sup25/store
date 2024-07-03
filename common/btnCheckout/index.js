@@ -1,7 +1,7 @@
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import { useState } from "react";
-import { CgSpinner } from "react-icons/cg";
+import Spinner from "../spinner";
 
 const BtnCheckout = ({ product, quantity, showLoginPopup, user }) => {
   const [loading, setLoading] = useState(false);
@@ -64,11 +64,7 @@ const BtnCheckout = ({ product, quantity, showLoginPopup, user }) => {
       className="w-full cursor-pointer flex items-center justify-center px-2 py-2 bg-tertiary hover:bg-primary text-white  font-bold text-lg transition duration-150 ease-out hover:ease-in"
       onClick={loading ? null : handleClick}
     >
-      {loading ? (
-        <CgSpinner size={20} className="animate-spin" />
-      ) : (
-        "Checkout Now"
-      )}
+      {loading ? <Spinner /> : "Checkout Now"}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 "use client";
-import withAuthUser from "@/app/api/utils/userHoc/page";
 import Userdata from "../userdata";
+import withAuthUser from "../utils/userHoc/page";
 
 const Dashboard = () => {
   return (
@@ -12,4 +12,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default withAuthUser(Dashboard);

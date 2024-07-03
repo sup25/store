@@ -7,17 +7,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [admin, setAdmin] = useState(null);
-  /**
-   *
-   * @param {Object | null} userData
-   * @param {String} accessToken
-   * @param {String} refreshToken
-   * @param {Boolean} setToLocal
-   * @example
-   * setUserStore({user}, 'token') //login
-   * setUserStore(null, null, false) //logout
-   *
-   */
+  const [isInitializing, setIsInitializing] = useState(true);
 
   const getUserFromStorage = () => {
     const storedUser = sessionStorage.getItem("user");
@@ -40,6 +30,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     getUserFromStorage();
     getAdminFromStorage();
+    setIsInitializing(false);
   }, []);
 
   const setUserStore = (
@@ -75,7 +66,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ setUserStore, user, admin }}>
+    <AuthContext.Provider value={{ setUserStore, user, admin, isInitializing }}>
       {children}
     </AuthContext.Provider>
   );

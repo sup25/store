@@ -3,7 +3,7 @@ import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
 import Card from "@/common/card";
-import { CgSpinnerTwo } from "react-icons/cg";
+import Spinner from "@/common/spinner";
 
 const RelatedProduct = () => {
   const [products, setProducts] = useState([]);
@@ -47,7 +47,7 @@ const RelatedProduct = () => {
               }}
             >
               {loading ? (
-                <CgSpinnerTwo size={30} className="animate-spin" />
+                <Spinner />
               ) : (
                 Array.isArray(products) &&
                 products.map((product) => (
