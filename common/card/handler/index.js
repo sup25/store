@@ -1,13 +1,13 @@
 import appConfig from "@/config";
 import axios from "axios";
 
-export const handleAddToCart = async (
+export const handleAddToCart = async ({
   userId,
   productId,
   setAddedToCart,
   toast,
-  updateCartItems
-) => {
+  updateCartItems,
+}) => {
   try {
     await axios.post("/api/v1/user/products", {
       userId,
