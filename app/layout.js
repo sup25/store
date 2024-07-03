@@ -5,6 +5,7 @@ import Navbar from "@/constants/navbar";
 import Footer from "@/constants/footer";
 import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "@/context/AuthContext";
+import { CartProvider } from "@/context/cartContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,13 +34,15 @@ export default function RootLayout({ children }) {
       >
         <ToastContainer />
         <AuthProvider>
-          <div className="w-full mb-10 ">
-            <Navbar />
-          </div>
-          <div style={{ flex: 1 }}>{children}</div>
-          <div className="w-full md:mt-24 mt-20">
-            <Footer />
-          </div>
+          <CartProvider>
+            <div className="w-full mb-10 ">
+              <Navbar />
+            </div>
+            <div style={{ flex: 1 }}>{children}</div>
+            <div className="w-full md:mt-24 mt-20">
+              <Footer />
+            </div>
+          </CartProvider>
         </AuthProvider>
       </body>
     </html>

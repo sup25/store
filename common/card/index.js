@@ -2,16 +2,23 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { FaShoppingCart } from "react-icons/fa";
+import { useAuth } from "@/context/AuthContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { handleAddToCart } from "./handler";
+import LoginPopUp from "../loginPopup";
+import { useCart } from "@/context/cartContext";
+import Spinner from "../spinner";
+import { CgSpinner } from "react-icons/cg";
 
 const Card = ({ product }) => {
+  const { user } = useAuth();
+  const [isLoginPopupVisible, setIsLoginPopupVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const userId = user?.id;
   const { id, title, description, images, price } = product;
   const [addedToCart, setAddedToCart] = useState(false);
-
-  const handleAddToCart = () => {
-    console.log("product added to cart");
-    setAddedToCart(true);
-  };
-
+  const { updateCartItems } = useCart();
   const getImage = () => {
     if (images && images.length > 0 && images[0].thumbnail) {
       return images[0].thumbnail;
@@ -19,38 +26,70 @@ const Card = ({ product }) => {
     return "";
   };
 
+  const handleCartClick = async () => {
+    if (!user) {
+      setIsLoginPopupVisible(true);
+    } else {
+      setIsLoading(true);
+      try {
+        await handleAddToCart(
+          userId,
+          id,
+          setAddedToCart,
+          toast,
+          updateCartItems
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  const handleCloseLoginPopup = () => {
+    setIsLoginPopupVisible(false);
+  };
+
   return (
-    <div className="relative md:w-[300px] h-[400px] cursor-pointer flex flex-col items-center justify-center px-6 py-4 shadow-lg rounded-20 gap-4 transform transition ease-in hover:scale-105">
-      <Link
-        href={{
-          pathname: `/productdetails/${id}`,
-          query: { product: JSON.stringify(product) },
-        }}
-      >
-        <div className="flex flex-col items-center">
-          <img
-            className="w-60 h-60 object-cover"
-            src={getImage()}
-            alt={title}
-          />
-          <div className="font-bold text-center text-lg">{title}</div>
-          <p className="text-gray-700 text-sm text-center">{description}</p>
-          <p className="text-[#BFA100] text-xl font-bold">${price}</p>
+    <>
+      {isLoginPopupVisible && <LoginPopUp handler={handleCloseLoginPopup} />}
+      <div className="relative md:w-[300px] h-[400px] cursor-pointer flex flex-col items-center justify-center px-6 py-4 shadow-lg rounded-20 gap-4 transform transition ease-in hover:scale-105">
+        <Link
+          href={{
+            pathname: `/productdetails/${id}`,
+            query: { product: JSON.stringify(product) },
+          }}
+        >
+          <div className="flex flex-col items-center">
+            <img
+              className="w-60 h-60 object-cover"
+              src={getImage()}
+              alt={title}
+            />
+            <div className="font-bold text-center text-lg">{title}</div>
+            <p className="text-gray-700 text-sm text-center">{description}</p>
+            <p className="text-[#BFA100] text-xl font-bold">${price}</p>
+          </div>
+        </Link>
+        <div className="relative group">
+          {isLoading ? (
+            <CgSpinner className="animate-spin" />
+          ) : (
+            <>
+              <FaShoppingCart
+                size={25}
+                onClick={handleCartClick}
+                fill={addedToCart ? "red" : "black"}
+                stroke={addedToCart ? "red" : "black"}
+                className="cursor-pointer"
+              />
+              <span className="absolute right-[-100px] top-0 bg-primary text-white text-xs py-1 px-2 rounded transition-transform transform translate-x-[100%] opacity-0 group-hover:translate-x-0 group-hover:opacity-100">
+                Add to cart
+              </span>
+            </>
+          )}
         </div>
-      </Link>
-      <div className="relative  group">
-        <FaShoppingCart
-          size={25}
-          onClick={handleAddToCart}
-          fill={addedToCart ? "red" : "black"}
-          stroke={addedToCart ? "red" : "black"}
-          className="cursor-pointer"
-        />
-        <span className="absolute right-[-100px] top-0 bg-primary text-white text-xs py-1 px-2 rounded transition-transform transform translate-x-[100%] opacity-0 group-hover:translate-x-0 group-hover:opacity-100">
-          Add to cart
-        </span>
       </div>
-    </div>
+    </>
   );
 };
 

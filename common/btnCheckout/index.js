@@ -3,7 +3,14 @@ import axios from "axios";
 import { useState } from "react";
 import Spinner from "../spinner";
 
-const BtnCheckout = ({ product, quantity, showLoginPopup, user }) => {
+const BtnCheckout = ({
+  product,
+  quantity,
+  showLoginPopup,
+  user,
+  deleteItem,
+  itemId,
+}) => {
   const [loading, setLoading] = useState(false);
 
   const proceedCheckout = async (e) => {
@@ -14,6 +21,7 @@ const BtnCheckout = ({ product, quantity, showLoginPopup, user }) => {
     const priceInCents = Math.round(product.price * 100);
 
     try {
+      await deleteItem(itemId);
       const checkoutSession = await axios.post(
         "/api/v1/admin/auth/order",
         {
@@ -61,7 +69,7 @@ const BtnCheckout = ({ product, quantity, showLoginPopup, user }) => {
 
   return (
     <div
-      className="w-full cursor-pointer flex items-center justify-center px-2 py-2 bg-tertiary hover:bg-primary text-white  font-bold text-lg transition duration-150 ease-out hover:ease-in"
+      className="w-full min-h-[50px] cursor-pointer flex items-center justify-center px-2 py-2 bg-tertiary hover:bg-primary text-white  font-bold text-lg transition duration-150 ease-out hover:ease-in"
       onClick={loading ? null : handleClick}
     >
       {loading ? <Spinner /> : "Checkout Now"}

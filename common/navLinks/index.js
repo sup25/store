@@ -13,9 +13,12 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useCart } from "@/context/cartContext";
 
 const NavLinks = () => {
   const { user, setUserStore, admin } = useAuth();
+  const { cartItems } = useCart();
+
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const handleLogout = async (isAdmin = false) => {
@@ -48,9 +51,16 @@ const NavLinks = () => {
         icon: <FaUser size={20} />,
         text: user.first_name,
         private: true,
+        href: "/user/dashboard",
       },
-      { icon: <FaHeart size={20} />, text: "Orders", private: true },
-      { icon: <FaShoppingCart size={20} />, text: "My Cart", private: true },
+
+      {
+        icon: <FaShoppingCart size={20} />,
+        text: `My Cart (${cartItems.length})`,
+        href: "/user/mycart",
+
+        private: true,
+      },
       {
         icon: <FaSignOutAlt size={20} />,
         text: "Logout",
