@@ -21,7 +21,7 @@ export const CartProvider = ({ children }) => {
         `${appConfig.baseUrl}/api/v1/user/products/${user.id}`
       );
       const data = response.data.returnedData;
-      console.log("data", data);
+
       setCartItems(data);
     } catch (error) {
       console.error("Error fetching cart data:", error);

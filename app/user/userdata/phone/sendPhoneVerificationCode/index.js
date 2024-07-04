@@ -11,7 +11,6 @@ import "react-toastify/dist/ReactToastify.css";
 const SendPhoneVerificationCode = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const { user } = useAuth();
-  console.log(user);
   const sendVerificationCode = async () => {
     const response = await axios.post(
       "/api/v1/user/auth/phoneverification/sendVerificationCode",
@@ -20,7 +19,6 @@ const SendPhoneVerificationCode = () => {
         headers: { "Content-Type": "application/json" },
       }
     );
-    console.log(response);
 
     if (response.data.message) {
       toast.success("Verification code sent!");
