@@ -2,6 +2,7 @@ import { ProfileDetails } from "./profileDetails";
 import { AddressDetails } from "./addressDetails";
 import { RegistrationTime } from "./registrationTime";
 import SendVerificationEmail from "./email/SendVerificationEmail";
+import SendPhoneVerificationCode from "./phone/sendPhoneVerificationCode";
 
 const Userdata = () => {
   return (
@@ -12,6 +13,7 @@ const Userdata = () => {
           <AddressDetails />
           <RegistrationTime />
           <SendVerificationEmail />
+          <SendPhoneVerificationCode />
         </div>
       </div>
     </div>

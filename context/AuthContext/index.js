@@ -64,9 +64,16 @@ export const AuthProvider = ({ children }) => {
       }
     }
   };
+  const updateUserPhone = (phoneNumber) => {
+    const updatedUser = { ...user, phone: phoneNumber, verified_phone: true };
+    setUser(updatedUser);
+    sessionStorage.setItem("user", JSON.stringify(updatedUser));
+  };
 
   return (
-    <AuthContext.Provider value={{ setUserStore, user, admin, isInitializing }}>
+    <AuthContext.Provider
+      value={{ setUserStore, user, admin, isInitializing, updateUserPhone }}
+    >
       {children}
     </AuthContext.Provider>
   );
