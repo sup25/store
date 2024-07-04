@@ -3,7 +3,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import "../../../../../common/styles.css";
 import { IoIosClose } from "react-icons/io";
-const InputAddressPopUp = ({ userId, handler }) => {
+import Spinner from "@/common/spinner";
+const InputAddressPopUp = ({ userId, handler, updateUserAddress }) => {
+  const [loading, setLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [addressData, setAddressData] = useState({
     street: "",
@@ -30,15 +32,19 @@ const InputAddressPopUp = ({ userId, handler }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post(
         `/api/v1/user/auth/address/${userId}`,
         addressData
       );
       console.log(response.data);
+      updateUserAddress(response.data.returnedData.address);
       handler();
     } catch (error) {
       console.error("Error adding address:", error);
+    } finally {
+      setLoading(false);
     }
   };
   const handleBackgroundClick = (e) => {
@@ -93,10 +99,10 @@ const InputAddressPopUp = ({ userId, handler }) => {
               </label>
             ))}
             <button
-              className="m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="m-2 min-h-[30px] bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               type="submit"
             >
-              Submit
+              {loading ? <Spinner /> : "Submit"}
             </button>
           </form>
         </div>

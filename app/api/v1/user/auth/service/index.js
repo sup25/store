@@ -22,6 +22,9 @@ export const loginUserService = async (email, password) => {
     where: {
       email,
     },
+    include: {
+      addresses: true,
+    },
   });
 
   if (!user) {

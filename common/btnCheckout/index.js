@@ -8,7 +8,7 @@ const BtnCheckout = ({
   quantity,
   showLoginPopup,
   user,
-  deleteItem,
+  deleteItem = null,
   itemId,
 }) => {
   const [loading, setLoading] = useState(false);
@@ -21,7 +21,9 @@ const BtnCheckout = ({
     const priceInCents = Math.round(product.price * 100);
 
     try {
-      await deleteItem(itemId);
+      if (deleteItem) {
+        await deleteItem(itemId);
+      }
       const checkoutSession = await axios.post(
         "/api/v1/admin/auth/order",
         {

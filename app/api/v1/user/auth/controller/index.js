@@ -35,7 +35,8 @@ export const loginUserController = async (body) => {
 };
 
 export const addAddressController = async (userId, addressData) => {
-  await addAddressService(userId, addressData);
+  const address = await addAddressService(userId, addressData);
+  return address;
 };
 
 export const sendVerificationEmailController = async (user, token) => {
