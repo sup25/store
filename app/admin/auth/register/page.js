@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import AuthForm from "../../common/authForm";
+import AuthForm from "@/common/authForm";
 
 const Register = () => {
   const router = useRouter();
