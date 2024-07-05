@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "@/context/AuthContext";
 import axiosClient from "@/utils/axiosClient";
 import Link from "next/link";
-import AuthForm from "../../common/authForm";
+import AuthForm from "@/common/authForm";
 
 const Login = ({ isPopup, redirectToVerification }) => {
   const { setUserStore } = useAuth();
