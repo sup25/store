@@ -1,3 +1,4 @@
+"use client";
 import Spinner from "@/common/spinner";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
