@@ -2,7 +2,7 @@ import prisma from "@/_lib/prisma";
 
 export const createOrderService = async (orderData) => {
   const dataWithDefaults = {
-    address: orderData.address || "Dummy Address",
+    address: orderData.address,
     price: parseInt(orderData.price, 10) || 0,
     name: orderData.name,
     product: parseInt(orderData.product, 10),

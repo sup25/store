@@ -2,7 +2,8 @@ import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import { useState } from "react";
 import Spinner from "../spinner";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const BtnCheckout = ({
   product,
   quantity,
@@ -12,7 +13,6 @@ const BtnCheckout = ({
   itemId,
 }) => {
   const [loading, setLoading] = useState(false);
-
   const proceedCheckout = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -24,6 +24,11 @@ const BtnCheckout = ({
       if (deleteItem) {
         await deleteItem(itemId);
       }
+      if (!user.address || !user.verified_email || !user.verified_phone) {
+        toast.error("Please complete your profile before checking out");
+        return;
+      }
+
       const checkoutSession = await axios.post(
         "/api/v1/admin/auth/order",
         {
@@ -34,7 +39,7 @@ const BtnCheckout = ({
           description: product.short_desc,
           images: [product.images[0].original_url],
           user: user.id,
-          address: user.address || "Dummy Address",
+          address: user.address,
         },
 
         {

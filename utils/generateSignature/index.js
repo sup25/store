@@ -7,7 +7,6 @@ export async function generateSignature(paramsToSign) {
       api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
     });
 
-    console.log("paramsToSign", paramsToSign);
     if (!response.data.returnedData.signature) {
       throw new Error("Signature not found in response");
     }

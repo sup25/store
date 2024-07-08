@@ -1,6 +1,3 @@
-import { deleteImageFromCloudinary } from "../deleteImageFromCloudinary";
-import uploadImageInCloudinary from "../uploadImageInCloudinary";
-
 export const handleImageUpload = async (
   event,
   selectedFiles,
@@ -11,30 +8,24 @@ export const handleImageUpload = async (
   const newSelectedFiles = [];
 
   for (let file of files.slice(0, 6 - selectedFiles.length)) {
-    const uploadFormData = new FormData();
-    try {
-      const uploadResult = await uploadImageInCloudinary(file, uploadFormData);
-      console.log(uploadResult);
-      if (uploadResult) {
-        newSelectedFiles.push({
-          file,
-          id: Date.now() + Math.random(),
-          original_url: uploadResult.secure_url,
-          thumbnail: uploadResult.secure_url,
-          public_id: uploadResult.public_id,
-        });
-      }
-    } catch (error) {
-      console.error("Error uploading image:", error);
-    }
-  }
+    const fileReader = new FileReader();
+    fileReader.onload = () => {
+      newSelectedFiles.push({
+        file,
+        id: Date.now() + Math.random(),
+        original_url: fileReader.result,
+        thumbnail: fileReader.result,
+      });
 
-  const updatedSelectedFiles = [...selectedFiles, ...newSelectedFiles];
-  setSelectedFiles(updatedSelectedFiles);
-  setFormData((prevFormData) => ({
-    ...prevFormData,
-    images: updatedSelectedFiles,
-  }));
+      const updatedSelectedFiles = [...selectedFiles, ...newSelectedFiles];
+      setSelectedFiles(updatedSelectedFiles);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        images: updatedSelectedFiles,
+      }));
+    };
+    fileReader.readAsDataURL(file);
+  }
 };
 
 export const handleDeleteImage = (
@@ -45,10 +36,13 @@ export const handleDeleteImage = (
   setRemoving
 ) => {
   setRemoving(true);
-  deleteImageFromCloudinary(
-    file.public_id,
-    selectedFiles,
-    setSelectedFiles,
-    setFormData
-  ).finally(() => setRemoving(false));
+  const updatedSelectedFiles = selectedFiles.filter(
+    (selectedFile) => selectedFile.id !== file.id
+  );
+  setSelectedFiles(updatedSelectedFiles);
+  setFormData((prevFormData) => ({
+    ...prevFormData,
+    images: updatedSelectedFiles,
+  }));
+  setRemoving(false);
 };
