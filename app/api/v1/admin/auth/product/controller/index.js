@@ -4,6 +4,7 @@ import {
   deleteProductService,
   getProductsService,
   updateProductService,
+  getProductSalesDataService,
 } from "../service";
 
 export async function createProductController(body) {
@@ -26,7 +27,11 @@ export async function updateProductController(productId, updatedFields) {
   return updateProduct;
 }
 
-export async function deleteProductController(prductId) {
-  const deleteProduct = await deleteProductService(prductId);
+export async function deleteProductController(productId) {
+  const deleteProduct = await deleteProductService(productId);
   return deleteProduct;
+}
+export async function getProductSalesDataController() {
+  const getProduct = await getProductSalesDataService();
+  return getProduct;
 }

@@ -22,3 +22,13 @@ export const deleteProductById = async (productId) => {
     throw error;
   }
 };
+
+export const getProductSales = async () => {
+  try {
+    const response = getRequest("/api/v1/admin/auth/product/sales");
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -57,13 +57,15 @@ const SideBar = () => {
         <div key={index}>
           {!item.subItems ? (
             <div
-              className={`flex cursor-pointer px-8 py-2 items-center rounded transition ease-in duration-300 ${
+              className={`flex cursor-pointer px-2 gap-2 py-2 items-center  rounded transition ease-in duration-300 ${
                 activeItem === item.name ? "bg-tertiary" : ""
               }`}
               onClick={() => handleItemClick(item.name, item.path)}
             >
               {item.icon}
-              <span className="pl-4">{item.name}</span>
+              <span className=" text-base md:text-lg font-bold">
+                {item.name}
+              </span>
             </div>
           ) : (
             <Accordion
