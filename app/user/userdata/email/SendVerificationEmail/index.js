@@ -3,10 +3,11 @@ import axios from "axios";
 import crypto from "crypto";
 import { useAuth } from "@/context/AuthContext";
 import { MdOutlineVerified } from "react-icons/md";
-import Spinner from "@/common/spinner";
+import { UserBtn } from "../../common";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SendVerificationEmail = () => {
-  const [verificationStatus, setVerificationStatus] = useState("");
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
 
@@ -29,13 +30,13 @@ const SendVerificationEmail = () => {
       console.log(response);
 
       if (response.status === 200) {
-        setVerificationStatus("Verification email sent");
+        toast.success("Verification email sent");
       } else {
-        setVerificationStatus("Failed to send verification email");
+        toast.error("Failed to send verification email");
       }
     } catch (error) {
       console.error("Error sending verification email:", error);
-      setVerificationStatus("Failed to send verification email");
+      toast.error("Failed to send verification email");
     } finally {
       setLoading(false);
     }
@@ -67,14 +68,12 @@ const SendVerificationEmail = () => {
       <p className="text-sm font-medium">
         Click the button below to send a verification email:
       </p>
-      <button
-        className="px-1 py-1 outline hover:bg-tertiary flex items-center justify-center"
-        onClick={handleSendVerificationEmail}
-        disabled={loading}
-      >
-        {loading ? <Spinner /> : "Verify Email"}
-      </button>
-      {verificationStatus && <p>{verificationStatus}</p>}
+
+      <UserBtn
+        handler={handleSendVerificationEmail}
+        text=" Verify Email"
+        loading={loading}
+      />
     </div>
   );
 };

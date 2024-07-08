@@ -3,7 +3,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import "../../../../../common/styles.css";
 import { IoIosClose } from "react-icons/io";
-import Spinner from "@/common/spinner";
+import { UserBtn } from "../../common";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const InputAddressPopUp = ({ userId, handler, updateUserAddress }) => {
   const [loading, setLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -40,9 +43,10 @@ const InputAddressPopUp = ({ userId, handler, updateUserAddress }) => {
       );
       console.log(response.data);
       updateUserAddress(response.data.returnedData.address);
+      toast.success("address updated successfully");
       handler();
     } catch (error) {
-      console.error("Error adding address:", error);
+      toast.error("Error adding address");
     } finally {
       setLoading(false);
     }
@@ -98,12 +102,8 @@ const InputAddressPopUp = ({ userId, handler, updateUserAddress }) => {
                 />
               </label>
             ))}
-            <button
-              className="m-2 min-h-[30px] bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              type="submit"
-            >
-              {loading ? <Spinner /> : "Submit"}
-            </button>
+
+            <UserBtn text="Submit" loading={loading} />
           </form>
         </div>
       </div>
