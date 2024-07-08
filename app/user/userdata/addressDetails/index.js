@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-
 import { IoLocationOutline } from "react-icons/io5";
 import InputAddressPopUp from "./inputAddressPopUp";
 
@@ -24,7 +23,7 @@ export const AddressDetails = () => {
         <p className="text-base font-bold">User Address</p>
         {!user.addresses || user.addresses.length === 0 ? (
           <div
-            className="underline cursor-pointer text-sm font-medium"
+            className="underline cursor-pointer text-sm text-primary font-medium"
             onClick={handleAddAddress}
           >
             Add Address
