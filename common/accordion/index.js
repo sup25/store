@@ -23,7 +23,7 @@ function Accordion({ icon, title, items, onItemClick }) {
   return (
     <Menu>
       <MenuButton
-        className="flex items-center justify-between w-full"
+        className="flex items-center px-2 gap-2 justify-between w-full"
         onClick={handleMenuClick}
       >
         <div className="flex items-center gap-2">

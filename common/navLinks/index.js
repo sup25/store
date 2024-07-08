@@ -74,6 +74,7 @@ const NavLinks = () => {
         icon: <FaUser size={20} />,
         text: admin.name,
         private: true,
+        href: "/admin/dashboard",
       },
       {
         icon: <FaSignOutAlt size={20} />,

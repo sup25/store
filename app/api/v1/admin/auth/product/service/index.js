@@ -108,3 +108,18 @@ export const deleteProductService = async (productId) => {
 
   return deletedProduct;
 };
+
+export const getProductSalesDataService = async () => {
+  const products = await prisma.product.findMany({
+    include: {
+      sales: true,
+    },
+  });
+
+  const productSalesData = products.map((product) => ({
+    title: product.title,
+    sold: product.sales.length,
+  }));
+
+  return productSalesData;
+};
