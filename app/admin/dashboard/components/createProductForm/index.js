@@ -1,9 +1,9 @@
 import { useState } from "react";
-
 import Button from "@/common/button";
 import { fields } from "./productFields";
 import { handleSubmit } from "../../createproduct/handler";
 import { ImageManipulator } from "./ImageManipulator";
+import uploadImageInCloudinary from "./ImageManipulator/uploadImageInCloudinary";
 
 const CreateProductForm = ({
   resetForm,
@@ -17,19 +17,55 @@ const CreateProductForm = ({
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const uploadedImages = [];
+      for (const image of formData.images) {
+        const uploadFormData = new FormData();
+        const uploadResult = await uploadImageInCloudinary(
+          image.file,
+          uploadFormData
+        );
+        if (uploadResult) {
+          uploadedImages.push({
+            ...image,
+            original_url: uploadResult.secure_url,
+            public_id: uploadResult.public_id,
+            thumbnail: uploadResult.secure_url,
+          });
+        }
+      }
+
+      const updatedFormData = {
+        ...formData,
+        images: uploadedImages,
+      };
+
+      await handleSubmit(
+        updatedFormData,
+        isUpdating,
+        adminId,
+        setIsLoading,
+        setErrors,
+        resetForm
+      );
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (error) {
+      console.error("Error uploading images:", error);
+      setErrors([{ field: "images", message: "Failed to upload images" }]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleSubmit(
-          formData,
-          isUpdating,
-          adminId,
-          setIsLoading,
-          setErrors,
-          resetForm
-        );
-      }}
+      onSubmit={handleFormSubmit}
       className="bg-slate-400 py-10 px-10 max-w-[800px] w-full rounded flex flex-col gap-5"
     >
       {fields.map((field) => (

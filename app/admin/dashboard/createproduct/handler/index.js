@@ -1,5 +1,6 @@
 import axios from "axios";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export const handleSubmit = async (
   formData,
   isUpdating,
@@ -32,11 +33,9 @@ export const handleSubmit = async (
     }
 
     if (response.status === 200) {
-      console.log(
-        isUpdating
-          ? "Product updated successfully"
-          : "Product created successfully"
-      );
+      isUpdating
+        ? toast.success("Product updated successfully")
+        : toast.success("Product created successfully");
 
       resetForm();
     } else {

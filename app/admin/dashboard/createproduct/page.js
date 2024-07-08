@@ -19,10 +19,9 @@ const CreateProductAdmin = () => {
   };
 
   const [formData, setFormData] = useState(initialFormData);
-
   const [adminId, setAdminId] = useState("");
-
   const [isUpdating, setIsUpdating] = useState(false);
+
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -41,7 +40,10 @@ const CreateProductAdmin = () => {
   }, []);
 
   const resetForm = () => {
-    setFormData(initialFormData);
+    setFormData({
+      ...initialFormData,
+      images: [],
+    });
   };
 
   const buttonText = isUpdating ? "Update Product" : "Create Product";

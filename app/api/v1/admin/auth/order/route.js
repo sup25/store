@@ -41,7 +41,7 @@ export async function POST(request) {
         userId: user,
         name: name,
         product: product,
-        address: user.address || "Dummy Address",
+        address: user.address,
       },
     });
 
