@@ -61,3 +61,15 @@ export const deleteCartService = async (productId) => {
 
   return deleteCart;
 };
+
+export const showProductAccordingToTagService = async (tags) => {
+  const products = await prisma.product.findMany({
+    where: {
+      tags: {
+        hasSome: tags,
+      },
+    },
+  });
+
+  return products;
+};

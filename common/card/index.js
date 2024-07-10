@@ -52,7 +52,7 @@ const Card = ({ product }) => {
   return (
     <>
       {isLoginPopupVisible && <LoginPopUp handler={handleCloseLoginPopup} />}
-      <div className="relative md:w-[300px] h-[400px] cursor-pointer flex flex-col items-center justify-center px-6 py-4 shadow-lg rounded-20 gap-4 transform transition ease-in hover:scale-105">
+      <div className="relative mx-2 md:w-[300px] h-[400px] cursor-pointer flex flex-col items-center justify-center px-6 py-4 shadow-lg rounded-20 gap-4 transform transition ease-in hover:scale-105">
         <Link
           href={{
             pathname: `/productdetails/${id}`,
