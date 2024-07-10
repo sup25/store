@@ -29,12 +29,12 @@ const Cart = () => {
           Your Cart ({items.length}) {items.length === 1 ? "item" : "items"}
         </h2>
         {loading && <Spinner />}
-        <div className="flex  flex-col w-full justify-between  gap-2  ">
+        <div className="flex  flex-col  w-full justify-between  gap-2  ">
           {items.length > 0 ? (
             items.map((item) => (
               <div
                 key={item.id}
-                className="flex w-full justify-between items-end gap-2 border-b-2 py-2"
+                className="flex w-full md:flex-row flex-col justify-between items-end gap-2 border-b-2 py-2"
               >
                 <div className="flex flex-col w-full px-1 gap-1">
                   {item.product.images.length > 0 && (
@@ -44,7 +44,7 @@ const Cart = () => {
                       className="w-20 h-20 object-cover"
                     />
                   )}
-                  <div className="flex w-full text-lg font-bold">
+                  <div className="flex w-full text-lg  font-bold">
                     {item.product.title}
                   </div>
                   <div className="flex w-full text-base font-medium">
@@ -87,7 +87,7 @@ const Cart = () => {
                     }
                   />
                 </div>
-                <div className="flex w-full text-[#BFA100] text-xl font-bold ">
+                <div className="flex w-full text-[#BFA100] text-xl  font-bold ">
                   Total Price: ${item.product.price * item.quantity}
                 </div>
 

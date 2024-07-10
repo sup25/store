@@ -2,6 +2,7 @@ import {
   createCartService,
   deleteCartService,
   getCartService,
+  showProductAccordingToTagService,
 } from "../service";
 
 export const createCartController = async (userId, productId, quantity) => {
@@ -16,3 +17,11 @@ export const deleteCartController = async (productId) => {
   const deleteCart = await deleteCartService(productId);
   return deleteCart;
 };
+
+export async function showProductAccordingToTagController(tags) {
+  if (!Array.isArray(tags) || tags.length === 0) {
+    throw new Error("Tags should be a non-empty array");
+  }
+  const getProductWithTag = await showProductAccordingToTagService(tags);
+  return getProductWithTag;
+}

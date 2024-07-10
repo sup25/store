@@ -1,5 +1,8 @@
 import { internalRes } from "@/app/api/utils/globalResponse";
-import { createCartController } from "./controller";
+import {
+  createCartController,
+  showProductAccordingToTagController,
+} from "./controller";
 
 export async function POST(request) {
   try {
@@ -17,6 +20,22 @@ export async function POST(request) {
   } catch (error) {
     console.error(error);
 
+    return internalRes("Internal Server Error", null, 500);
+  }
+}
+
+export async function GET(request) {
+  try {
+    const url = new URL(request.url);
+    const tags = url.searchParams.getAll("tags");
+    console.log(tags);
+    let products;
+    if (tags.length > 0) {
+      products = await showProductAccordingToTagController(tags);
+    }
+    return internalRes("Products retrieved successfully", products, 200);
+  } catch (error) {
+    console.error(error);
     return internalRes("Internal Server Error", null, 500);
   }
 }

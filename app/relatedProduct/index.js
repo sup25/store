@@ -31,19 +31,22 @@ const RelatedProduct = () => {
           <p className="md:text-5xl font-black text-base mb-10 font-atf ">
             Related Products
           </p>
-          <div className="swiper-container">
+          <div>
             <Swiper
               slidesPerView={1}
               breakpoints={{
                 768: {
+                  slidesPerView: 2,
+                },
+                960: {
                   slidesPerView: 3,
                 },
               }}
               style={{
-                padding: "15px 0",
+                display: "flex",
+                padding: "15px 15px",
                 alignItems: "center",
                 justifyContent: "center",
-                flexWrap: "wrap",
               }}
             >
               {loading ? (
