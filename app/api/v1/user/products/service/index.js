@@ -69,6 +69,9 @@ export const showProductAccordingToTagService = async (tags) => {
         hasSome: tags,
       },
     },
+    include: {
+      images: true,
+    },
   });
 
   return products;
