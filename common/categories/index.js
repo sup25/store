@@ -5,7 +5,7 @@ const Categories = () => {
   const LinkItems = [
     {
       name: "Jewelery",
-      href: "/jewelery",
+      href: "/productsByTags",
     },
     {
       name: " Men's Clothing",
