@@ -76,3 +76,48 @@ export const showProductAccordingToTagService = async (tags) => {
 
   return products;
 };
+
+export const showProductAccordingToPriceService = async (
+  minPrice,
+  maxPrice
+) => {
+  let productsQuery = {};
+  if (minPrice && maxPrice) {
+    productsQuery = {
+      where: {
+        price: {
+          gte: minPrice, // Greater than or equal to minPrice
+          lte: maxPrice, // Less than or equal to maxPrice
+        },
+      },
+      include: {
+        images: true,
+      },
+    };
+  } else if (minPrice) {
+    productsQuery = {
+      where: {
+        price: {
+          gte: minPrice,
+        },
+      },
+      include: {
+        images: true,
+      },
+    };
+  } else if (maxPrice) {
+    productsQuery = {
+      where: {
+        price: {
+          lte: maxPrice,
+        },
+      },
+      include: {
+        images: true,
+      },
+    };
+  }
+
+  const products = await prisma.product.findMany(productsQuery);
+  return products;
+};

@@ -2,6 +2,7 @@ import {
   createCartService,
   deleteCartService,
   getCartService,
+  showProductAccordingToPriceService,
   showProductAccordingToTagService,
 } from "../service";
 
@@ -24,4 +25,15 @@ export async function showProductAccordingToTagController(tags) {
   }
   const getProductWithTag = await showProductAccordingToTagService(tags);
   return getProductWithTag;
+}
+
+export async function showProductAccordingToPriceController(
+  minPrice,
+  maxPrice
+) {
+  const getProductWithPriceFilter = showProductAccordingToPriceService(
+    minPrice,
+    maxPrice
+  );
+  return getProductWithPriceFilter;
 }
