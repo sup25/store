@@ -9,7 +9,7 @@ const Categories = () => {
     },
     {
       name: " Men's Clothing",
-      href: "/mensclothing",
+      href: "/productByPrice",
     },
     {
       name: "Women's Clothing",
