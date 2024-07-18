@@ -113,13 +113,20 @@ export const getProductSalesDataService = async () => {
   const products = await prisma.product.findMany({
     include: {
       sales: true,
+      images: {
+        select: {
+          original_url: true,
+          thumbnail: true,
+        },
+      },
     },
   });
 
   const productSalesData = products.map((product) => ({
     title: product.title,
     sold: product.sales.length,
+    image: product.images.map((image) => image.original_url),
   }));
-
+  productSalesData.sort((a, b) => b.sold - a.sold);
   return productSalesData;
 };

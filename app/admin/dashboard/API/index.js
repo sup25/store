@@ -28,6 +28,7 @@ export const getProductSales = async () => {
     const response = await getRequest(
       `${appConfig.baseUrl}/api/v1/admin/auth/product/sales`
     );
+
     return response;
   } catch (error) {
     throw error;
