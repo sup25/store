@@ -121,3 +121,22 @@ export const showProductAccordingToPriceService = async (
   const products = await prisma.product.findMany(productsQuery);
   return products;
 };
+
+export const getPurchasedProductsService = async (userId) => {
+  const orders = await prisma.Order.findMany({
+    where: {
+      userId: Number(userId),
+    },
+    include: {
+      products: {
+        include: {
+          images: true,
+        },
+      },
+    },
+  });
+
+  const products = orders.flatMap((order) => order.products);
+
+  return products;
+};

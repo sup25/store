@@ -14,7 +14,7 @@ export const fetchItems = async (
 
   setLoading(true);
   try {
-    if (user?.id) {
+    if (user.id) {
       const response = await axios.get(
         `${appConfig.baseUrl}/api/v1/user/products/${user.id}`
       );

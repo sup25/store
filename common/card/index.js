@@ -8,14 +8,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { handleAddToCart } from "./handler";
 import LoginPopUp from "../loginPopup";
 import { useCart } from "@/context/cartContext";
-import Spinner from "../spinner";
 import { CgSpinner } from "react-icons/cg";
 
 const Card = ({ product }) => {
   const { user } = useAuth();
   const [isLoginPopupVisible, setIsLoginPopupVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const userId = user?.id;
   const { id, title, description, images, price } = product;
   const [addedToCart, setAddedToCart] = useState(false);
   const { updateCartItems } = useCart();
@@ -32,13 +30,13 @@ const Card = ({ product }) => {
     } else {
       setIsLoading(true);
       try {
-        await handleAddToCart(
-          userId,
-          id,
+        await handleAddToCart({
+          userId: user.id,
+          productId: id,
           setAddedToCart,
           toast,
-          updateCartItems
-        );
+          updateCartItems,
+        });
       } finally {
         setIsLoading(false);
       }
