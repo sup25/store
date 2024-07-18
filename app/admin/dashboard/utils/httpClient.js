@@ -1,19 +1,11 @@
 import axios from "axios";
 
 export const getRequest = async (url) => {
-  try {
-    const response = await axios.get(url);
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
+  const response = await axios.get(url);
+  return response.data;
 };
 
 export const deleteRequest = async (url) => {
-  try {
-    const response = await axios.delete(url);
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
+  const response = await axios.delete(url);
+  return response.data;
 };

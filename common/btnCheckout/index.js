@@ -21,10 +21,16 @@ const BtnCheckout = ({
     const priceInCents = Math.round(product.price * 100);
 
     try {
+      console.log(user);
       if (deleteItem) {
         await deleteItem(itemId);
       }
-      if (!user.address || !user.verified_email || !user.verified_phone) {
+      if (
+        !user.addresses ||
+        user.addresses.length === 0 ||
+        !user.verified_email ||
+        !user.verified_phone
+      ) {
         toast.error("Please complete your profile before checking out");
         return;
       }

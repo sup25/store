@@ -20,7 +20,7 @@ const Cart = () => {
 
   useEffect(() => {
     fetchItems(user, setLoading, updateCartItems, setItems);
-  }, [user?.id]);
+  }, [user.id]);
 
   return (
     <div className="section">

@@ -18,3 +18,11 @@ export const fetchProductsByTag = async (tag) => {
   );
   return response.data.returnedData;
 };
+
+export const getPurchasedProducts = async ({ userId }) => {
+  const response = await axios.get(
+    `${appConfig.baseUrl}/api/v1/user/products/order/${userId}`
+  );
+  console.log("response: ", response);
+  return response.data.returnedData;
+};
