@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ProductTable from "../components/productTable";
 import { getProducts } from "../utils";
 import Spinner from "@/common/spinner";
+import Table from "../components/table";
 
 const AllProducts = () => {
   const [loading, setLoading] = useState(true);
@@ -22,14 +23,14 @@ const AllProducts = () => {
   }, [adminId]);
 
   return (
-    <div className="section">
-      <div className="container mx-auto">
-        <h1 className="text-2xl font-bold mb-4">Product List</h1>
-        <div className="overflow-x-auto">
+    <div className="section overflow-hidden">
+      <div className="container ">
+        <h1 className="text-2xl font-bold mb-4 w-fit pl-6">Product List</h1>
+        <div className="overflow-hidden">
           {loading ? (
             <Spinner />
           ) : (
-            <ProductTable products={products} setProducts={setProducts} />
+            <Table products={products} setProducts={setProducts} />
           )}
         </div>
       </div>

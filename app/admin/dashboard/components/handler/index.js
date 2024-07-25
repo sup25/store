@@ -1,19 +1,21 @@
 import { deleteProductById } from "../../API";
 
-export const handleDeleteProduct = async (
+export const handleDeleteProduct = async ({
+  e,
   productId,
   setProducts,
   products,
   setIsLoading,
-  toast
-) => {
+  toast,
+}) => {
+  e.stopPropagation();
   setIsLoading(true);
   try {
     await deleteProductById(productId);
     const updatedProducts = products.filter(
       (product) => product.id !== productId
     );
-    setProducts(updatedProducts);
+    setProducts([...updatedProducts]);
     toast.success("Product deleted successfully");
   } catch (error) {
     console.log("Error deleting product:", error);
