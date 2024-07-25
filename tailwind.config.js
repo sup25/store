@@ -58,6 +58,11 @@ module.exports = {
         ".container": {
           maxWidth: theme("maxWidth.container"),
         },
+        ".table-container": {
+          "@media (max-width: 1200px)": {
+            overflowX: "scroll",
+          },
+        },
         "@media screen and (max-width: 768px)": {
           ".none": {
             display: "none !important",
