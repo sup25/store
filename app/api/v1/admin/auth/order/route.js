@@ -4,10 +4,18 @@ import appConfig from "@/config";
 export async function POST(request) {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
   const requestData = await request.json();
-  console.log("requestData", requestData);
-
-  const { price, name, description, images, quantity, user, product } =
-    requestData;
+  console.log(requestData);
+  const {
+    price,
+    name,
+    description,
+    images,
+    quantity,
+    user,
+    product,
+    address,
+    admin,
+  } = requestData;
 
   if (!user || !product) {
     console.error("User or product information is missing or incomplete.");
@@ -41,7 +49,8 @@ export async function POST(request) {
         userId: user,
         name: name,
         product: product,
-        address: user.address,
+        address: address,
+        adminId: admin,
       },
     });
 

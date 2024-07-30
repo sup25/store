@@ -19,8 +19,10 @@ function ProductDetail() {
   const [showLoginPopup, setShowLoginPopup] = useState(false);
 
   const { user } = useAuth();
+  console.log("productData", product);
   useEffect(() => {
     const productData = searchParams.get("product");
+
     if (productData) {
       const decodedProductData = JSON.parse(decodeURIComponent(productData));
       setProduct(decodedProductData);
@@ -93,6 +95,7 @@ function ProductDetail() {
                   quantity={quantity}
                   showLoginPopup={() => setShowLoginPopup(true)}
                   user={user}
+                  admin={product.adminId}
                 />
               </div>
             </div>

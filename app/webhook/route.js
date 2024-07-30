@@ -33,6 +33,7 @@ export async function POST(request) {
         product: checkoutSessionCompleted.metadata.product,
         user: checkoutSessionCompleted.metadata.userId,
         address: checkoutSessionCompleted.metadata.address,
+        admin: checkoutSessionCompleted.metadata.adminId,
       };
 
       console.log("Extracted order details:", orderDetails);
