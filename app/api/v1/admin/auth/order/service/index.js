@@ -1,12 +1,14 @@
 import prisma from "@/_lib/prisma";
 
 export const createOrderService = async (orderData) => {
+  const addressData = JSON.parse(orderData.address)[0];
   const dataWithDefaults = {
-    address: orderData.address,
+    address: addressData,
     price: parseInt(orderData.price, 10) || 0,
     name: orderData.name,
     product: parseInt(orderData.product, 10),
     user: parseInt(orderData.user, 10),
+    admin: parseInt(orderData.admin, 10),
   };
 
   if (
@@ -19,7 +21,19 @@ export const createOrderService = async (orderData) => {
 
   const order = await prisma.order.create({
     data: {
-      address: dataWithDefaults.address,
+      address: {
+        create: {
+          street: dataWithDefaults.address.street,
+          city: dataWithDefaults.address.city,
+          state: dataWithDefaults.address.state,
+          country: dataWithDefaults.address.country,
+          zipcode: dataWithDefaults.address.zipcode,
+          apt: dataWithDefaults.address.apt,
+          user: {
+            connect: { id: dataWithDefaults.user },
+          },
+        },
+      },
       total_price: dataWithDefaults.price,
       net_price: dataWithDefaults.price,
       name: dataWithDefaults.name,
@@ -36,21 +50,39 @@ export const createOrderService = async (orderData) => {
       user: {
         connect: { id: dataWithDefaults.user },
       },
+      statuses: {
+        create: {
+          type: "completed",
+          date: new Date(),
+          admin: {
+            connect: { id: dataWithDefaults.admin },
+          },
+        },
+      },
     },
   });
+
   return order;
 };
 
-export const getOrderService = async (id) => {
+export const getOrderService = async (adminId) => {
   const orders = await prisma.order.findMany({
     where: {
-      product: {
-        adminId: id,
+      statuses: {
+        some: {
+          type: "completed",
+        },
       },
-      status: "completed",
+      products: {
+        some: {
+          adminId: adminId,
+        },
+      },
     },
     include: {
-      product: true,
+      statuses: true,
+      products: true,
+      user: true,
     },
   });
   return orders;

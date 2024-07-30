@@ -5,7 +5,7 @@ export const createOrderController = async (orderData) => {
   return order;
 };
 
-export const getOrderController = async (id) => {
-  const order = await getOrderService(id);
+export const getOrderController = async (adminId) => {
+  const order = await getOrderService(adminId);
   return order;
 };

@@ -11,6 +11,7 @@ const BtnCheckout = ({
   user,
   deleteItem = null,
   itemId,
+  admin,
 }) => {
   const [loading, setLoading] = useState(false);
   const proceedCheckout = async (e) => {
@@ -34,7 +35,7 @@ const BtnCheckout = ({
         toast.error("Please complete your profile before checking out");
         return;
       }
-
+      const address = JSON.stringify(user.addresses);
       const checkoutSession = await axios.post(
         "/api/v1/admin/auth/order",
         {
@@ -45,7 +46,8 @@ const BtnCheckout = ({
           description: product.short_desc,
           images: [product.images[0].original_url],
           user: user.id,
-          address: user.address,
+          address: address,
+          admin: admin,
         },
 
         {

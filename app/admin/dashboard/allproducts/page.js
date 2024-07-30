@@ -1,6 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
-import ProductTable from "../components/productTable";
+import React, { useEffect, useState } from "react";
 import { getProducts } from "../utils";
 import Spinner from "@/common/spinner";
 import Table from "../components/table";
@@ -8,19 +7,14 @@ import Table from "../components/table";
 const AllProducts = () => {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
-  const [adminId, setAdminId] = useState(null);
 
   useEffect(() => {
     const adminToken = sessionStorage.getItem("adminAccessToken");
     if (adminToken) {
       const decodedToken = JSON.parse(atob(adminToken.split(".")[1]));
-      setAdminId(decodedToken.id);
+      getProducts(decodedToken.id, setProducts, setLoading);
     }
-    if (adminId) {
-      setLoading(true);
-      getProducts(adminId, setProducts, setLoading);
-    }
-  }, [adminId]);
+  }, []);
 
   return (
     <div className="section overflow-hidden">
@@ -30,7 +24,13 @@ const AllProducts = () => {
           {loading ? (
             <Spinner />
           ) : (
-            <Table products={products} setProducts={setProducts} />
+            <Table
+              data={products}
+              setData={setProducts}
+              columns={["id", "sku", "title", "price", "quantity"]}
+              showSearch={true}
+              uniqueKey="id"
+            />
           )}
         </div>
       </div>
