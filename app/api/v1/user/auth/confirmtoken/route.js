@@ -1,8 +1,11 @@
 import prisma from "@/_lib/prisma";
 import { internalRes } from "@/app/api/utils/globalResponse";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request) {
-  const { searchParams } = new URL(request.nextUrl.href);
+  const { searchParams } = new URL(request.url);
+
   const token = searchParams.get("token");
   console.log(token);
 

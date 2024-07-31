@@ -2,11 +2,10 @@ import { internalRes } from "@/app/api/utils/globalResponse";
 import { showProductAccordingToPriceController } from "../controller";
 
 export async function GET(request) {
+  const url = new URL(request.url);
+  const minPrice = url.searchParams.get("minPrice");
+  const maxPrice = url.searchParams.get("maxPrice");
   try {
-    const url = new URL(request.nextUrl.href);
-    const minPrice = url.searchParams.get("minPrice");
-    const maxPrice = url.searchParams.get("maxPrice");
-
     console.log(`minPrice: ${minPrice}, maxPrice: ${maxPrice}`);
 
     if (!minPrice && !maxPrice) {
