@@ -28,7 +28,7 @@ function Accordion({ icon, title, items, onItemClick }) {
       >
         <div className="flex items-center gap-2">
           {icon}
-          <p className="text-base md:text-lg font-bold">{title}</p>
+          <p className="text-base  font-bold">{title}</p>
         </div>
         <FaChevronUp
           className={`transition-transform ${
@@ -46,7 +46,7 @@ function Accordion({ icon, title, items, onItemClick }) {
       >
         <MenuItems
           anchor="bottom start"
-          className="w-[var(--button-width)] [--anchor-gap:4px] sm:[--anchor-gap:8px]"
+          className="w-[var(--button-width)] [--anchor-gap:4px] sm:[--anchor-gap:4px] text-sm"
           onClick={handleMenuItemClick}
         >
           {items.map((item, index) => (

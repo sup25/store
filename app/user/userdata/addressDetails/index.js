@@ -18,6 +18,15 @@ export const AddressDetails = () => {
 
   return (
     <div className="flex flex-col w-full items-start">
+      {showAddAddress && (
+        <InputAddressPopUp
+          userId={user.id}
+          updateUserAddress={updateUserAddress}
+          handler={() => {
+            setShowAddAddress(false);
+          }}
+        />
+      )}
       <div className="flex gap-1 items-center">
         <IoLocationOutline size={20} />
         <p className="text-base font-bold">User Address</p>
@@ -43,16 +52,6 @@ export const AddressDetails = () => {
         </div>
       ) : (
         <p>No address details found</p>
-      )}
-
-      {showAddAddress && (
-        <InputAddressPopUp
-          userId={user.id}
-          updateUserAddress={updateUserAddress}
-          handler={() => {
-            setShowAddAddress(false);
-          }}
-        />
       )}
     </div>
   );
