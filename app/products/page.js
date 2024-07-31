@@ -6,8 +6,8 @@ import Card from "@/common/card";
 import Spinner from "@/common/spinner";
 import { DEFAULT_PRICE_RANGE } from "@/constants";
 import { useDebounce } from "use-debounce";
-import GetProductsByTags from "../getProductsByTags/page";
-import GetProductsByPrice from "../getProductsByPrice/page";
+import GetProductsByTags from "../getProductsByTags";
+import GetProductsByPrice from "../getProductsByPrice";
 
 const Products = () => {
   const range = DEFAULT_PRICE_RANGE;
