@@ -65,14 +65,42 @@ export const createOrderService = async (orderData) => {
   return order;
 };
 
+export const updateOrderStatusService = async (orderDetails) => {
+  const { sessionId, status } = orderDetails;
+  await prisma.order.updateMany({
+    where: {
+      sessionId: sessionId,
+    },
+    data: {
+      statuses: {
+        create: {
+          type: status,
+          date: new Date(),
+        },
+      },
+    },
+  });
+};
+
 export const getOrderService = async (adminId) => {
   const orders = await prisma.order.findMany({
     where: {
-      statuses: {
-        some: {
-          type: "completed",
+      OR: [
+        {
+          statuses: {
+            some: {
+              type: "completed",
+            },
+          },
         },
-      },
+        {
+          statuses: {
+            some: {
+              type: "canceled",
+            },
+          },
+        },
+      ],
       products: {
         some: {
           adminId: adminId,

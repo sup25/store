@@ -34,3 +34,13 @@ export const getProductSales = async () => {
     throw error;
   }
 };
+export const getCompletedOrder = async (adminId) => {
+  try {
+    const response = getRequest(
+      `${appConfig.baseUrl}/api/v1/admin/auth/order/${adminId}`
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};

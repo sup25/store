@@ -1,7 +1,10 @@
 import Stripe from "stripe";
 import { NextRequest } from "next/server";
 import { headers } from "next/headers";
-import { createOrderController } from "../api/v1/admin/auth/order/controller";
+import {
+  createOrderController,
+  updateOrderStatusController,
+} from "../api/v1/admin/auth/order/controller";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2024-04-10",
@@ -52,6 +55,21 @@ export async function POST(request) {
         });
       }
 
+    case "checkout.session.expired":
+      const expiredSession = event.data.object;
+      const canceledOrderDetails = {
+        sessionId: expiredSession.id,
+        status: "canceled",
+      };
+      console.log("Handling canceled order:", canceledOrderDetails);
+      try {
+        await updateOrderStatusController(canceledOrderDetails);
+      } catch (error) {
+        console.error("Error updating order status:", error);
+        return new Response(`Error updating order status: ${error.message}`, {
+          status: 500,
+        });
+      }
       break;
     default:
       console.log(`Unhandled event type ${event.type}`);
