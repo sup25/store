@@ -3,7 +3,7 @@ import { showProductAccordingToPriceController } from "../controller";
 
 export async function GET(request) {
   try {
-    const url = new URL(request.url);
+    const url = new URL(request.nextUrl.href);
     const minPrice = url.searchParams.get("minPrice");
     const maxPrice = url.searchParams.get("maxPrice");
 

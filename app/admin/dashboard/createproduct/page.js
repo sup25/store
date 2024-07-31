@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import CreateProductForm from "@/app/admin/dashboard/components/createProductForm";
 import { handleChange } from "./handler";
@@ -22,44 +22,52 @@ const CreateProductAdmin = () => {
   const [adminId, setAdminId] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const searchParams = useSearchParams();
+  const Content = () => {
+    const searchParams = useSearchParams();
 
-  useEffect(() => {
-    const productData = searchParams.get("product");
-    if (productData) {
-      const decodedProductData = JSON.parse(decodeURIComponent(productData));
-      setFormData(decodedProductData);
-      setIsUpdating(true);
-    }
+    useEffect(() => {
+      const productData = searchParams.get("product");
+      if (productData) {
+        const decodedProductData = JSON.parse(decodeURIComponent(productData));
+        setFormData(decodedProductData);
+        setIsUpdating(true);
+      }
 
-    const adminToken = sessionStorage.getItem("adminAccessToken");
-    if (adminToken) {
-      const decodedToken = JSON.parse(atob(adminToken.split(".")[1]));
-      setAdminId(parseInt(decodedToken.id));
-    }
-  }, []);
+      const adminToken = sessionStorage.getItem("adminAccessToken");
+      if (adminToken) {
+        const decodedToken = JSON.parse(atob(adminToken.split(".")[1]));
+        setAdminId(parseInt(decodedToken.id));
+      }
+    }, [searchParams]);
 
-  const resetForm = () => {
-    setFormData({
-      ...initialFormData,
-      images: [],
-    });
+    const resetForm = () => {
+      setFormData({
+        ...initialFormData,
+        images: [],
+      });
+    };
+
+    const buttonText = isUpdating ? "Update Product" : "Create Product";
+    return (
+      <div className="section">
+        <div className="container">
+          <CreateProductForm
+            resetForm={resetForm}
+            formData={formData}
+            setFormData={setFormData}
+            onChange={(e) => handleChange(e, setFormData)}
+            buttonText={buttonText}
+            adminId={adminId}
+          />
+        </div>
+      </div>
+    );
   };
 
-  const buttonText = isUpdating ? "Update Product" : "Create Product";
   return (
-    <div className="section">
-      <div className="container">
-        <CreateProductForm
-          resetForm={resetForm}
-          formData={formData}
-          setFormData={setFormData}
-          onChange={(e) => handleChange(e, setFormData)}
-          buttonText={buttonText}
-          adminId={adminId}
-        />
-      </div>
-    </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Content />
+    </Suspense>
   );
 };
 

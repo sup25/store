@@ -2,7 +2,7 @@ import prisma from "@/_lib/prisma";
 import { internalRes } from "@/app/api/utils/globalResponse";
 
 export async function GET(request) {
-  const { searchParams } = new URL(request.url);
+  const { searchParams } = new URL(request.nextUrl.href);
   const token = searchParams.get("token");
   console.log(token);
 
