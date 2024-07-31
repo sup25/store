@@ -44,7 +44,7 @@ const CompletedOrders = () => {
   );
 
   return (
-    <div className="section">
+    <div className="section overflow-hidden">
       <div className="container mx-auto mt-8">
         <h2 className="text-2xl font-bold mb-4">Completed Orders</h2>
         {loading ? (
