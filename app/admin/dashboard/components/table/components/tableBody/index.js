@@ -40,12 +40,9 @@ const TableBody = ({
           {columns.map((key) => (
             <div
               key={key}
-              className="p-2 border cursor-pointer flex-grow flex-shrink-0"
+              className="p-2 border cursor-pointer flex-grow flex-shrink-0 min-w-[120px] overflow-hidden"
               style={{
                 flex: 1,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
                 background: "gray",
               }}
               onClick={() => handleSort(key)}
@@ -72,8 +69,8 @@ const TableBody = ({
           ))}
           {showActions && (
             <div
-              className="p-2 border flex-shrink-0 overflow-hidden"
-              style={{ background: "gray", minWidth: "100px" }}
+              className="p-2 border flex-shrink-0 min-w-[100px] overflow-hidden"
+              style={{ background: "gray" }}
             >
               Actions
             </div>
@@ -89,7 +86,7 @@ const TableBody = ({
           >
             {columns.map((key) => (
               <div
-                className="p-2 border text-black flex-grow flex-shrink-0"
+                className="p-2 border text-black flex-grow flex-shrink-0 min-w-[120px] overflow-hidden"
                 key={key}
                 style={{
                   background: "lightgray",
@@ -108,8 +105,8 @@ const TableBody = ({
             ))}
             {showActions && (
               <div
-                className="p-2 border flex-shrink-0 flex items-center overflow-hidden"
-                style={{ background: "lightgray", minWidth: "100px" }}
+                className="p-2 border flex-shrink-0 min-w-[100px] flex items-center overflow-hidden"
+                style={{ background: "lightgray" }}
               >
                 <CTA
                   item={item}
