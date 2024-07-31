@@ -26,7 +26,7 @@ export async function POST(request) {
 
 export async function GET(request) {
   try {
-    const url = new URL(request.url);
+    const url = new URL(request.nextUrl.href);
     const tags = url.searchParams.getAll("tags");
     console.log(tags);
     let products;

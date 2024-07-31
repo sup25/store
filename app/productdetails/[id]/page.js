@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-
 import BtnCheckout from "@/common/btnCheckout";
 import LoginPopUp from "@/common/loginPopup";
 import { useAuth } from "@/context/AuthContext";
@@ -12,23 +11,22 @@ import "swiper/swiper-bundle.css";
 import { Navigation } from "swiper/modules";
 import SelectProductQuantity from "@/app/admin/dashboard/components/selectProductQuantity";
 
-function ProductDetail() {
+const ProductDetailContent = () => {
   const searchParams = useSearchParams();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
 
   const { user } = useAuth();
-  console.log("productData", product);
+
   useEffect(() => {
     const productData = searchParams.get("product");
 
     if (productData) {
       const decodedProductData = JSON.parse(decodeURIComponent(productData));
       setProduct(decodedProductData);
-      console.log("data", decodedProductData);
     }
-  }, []);
+  }, [searchParams]);
 
   const handleCloseLoginPopup = () => {
     setShowLoginPopup(false);
@@ -60,7 +58,7 @@ function ProductDetail() {
                     <img
                       src={image.original_url}
                       alt={product.title}
-                      className="md:w-[500px] md:h-[400px] h-full w-full bg-cover  justify-center items-center flex"
+                      className="md:w-[500px] md:h-[400px] h-full w-full bg-cover justify-center items-center flex"
                     />
                   </SwiperSlide>
                 ))}
@@ -103,6 +101,14 @@ function ProductDetail() {
         )}
       </div>
     </div>
+  );
+};
+
+function ProductDetail() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ProductDetailContent />
+    </Suspense>
   );
 }
 
