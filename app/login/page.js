@@ -47,9 +47,19 @@ const Login = ({ isPopup, redirectToVerification }) => {
         router.push("/user/dashboard");
       }
     } catch (error) {
-      toast.error("Email or password is incorrect");
-      setErrors(error.response?.data?.returnedData?.errors || []);
-      console.log(error.response?.data?.returnedData?.errors);
+      console.error("Error details:", error);
+      if (error.response) {
+        console.error("Error response:", error.response.data);
+        setErrors(error.response?.data?.returnedData?.errors || []);
+        if (error.response?.data?.message) {
+          setErrors([error.response.data.message]);
+          toast.error(error.response.data.message);
+        } else {
+          toast.error("An error occurred during login");
+        }
+      } else {
+        toast.error("An error occurred during login");
+      }
       setIsLoading(false);
     } finally {
       setIsLoading(false);
