@@ -18,10 +18,6 @@ const Login = ({ isPopup, redirectToVerification }) => {
     password: "",
   });
 
-  useEffect(() => {
-    console.log("Axios Base URL:", axiosClient.defaults.baseURL);
-  }, []);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({

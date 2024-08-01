@@ -12,8 +12,6 @@ const axiosClient = axios.create({
   timeout: 50000,
 });
 
-console.log("Axios Base URL:", axiosClient.defaults.baseURL);
-
 const refreshToken = async () => {
   const res = await axiosClient.post(
     "/api/v1/user/auth/refreshToken",
