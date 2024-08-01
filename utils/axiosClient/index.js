@@ -2,12 +2,17 @@ import appConfig from "@/config";
 import axios from "axios";
 
 const axiosClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? process.env.NEXT_PUBLIC_BASE_URL
+      : appConfig.baseUrl,
   headers: {
     "Content-Type": "application/json",
   },
   timeout: 50000,
 });
+
+console.log("Axios Base URL:", axiosClient.defaults.baseURL);
 
 const refreshToken = async () => {
   const res = await axiosClient.post(
