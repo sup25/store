@@ -1,10 +1,5 @@
 const appConfig = {
-  local: {
-    baseUrl: "http://localhost:3000",
-  },
-  production: {
-    baseUrl: "https://store-ckmz.vercel.app",
-  },
+  baseUrl: "http://localhost:3000",
 };
 
 export default appConfig;
