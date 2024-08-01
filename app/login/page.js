@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,6 +17,10 @@ const Login = ({ isPopup, redirectToVerification }) => {
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    console.log("Axios Base URL:", axiosClient.defaults.baseURL);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
