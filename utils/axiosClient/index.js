@@ -1,6 +1,11 @@
+import appConfig from "@/config";
 import axios from "axios";
 
 const axiosClient = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? appConfig.production.baseUrl
+      : appConfig.local.baseUrl,
   headers: {
     "Content-Type": "application/json",
   },
