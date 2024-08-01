@@ -4,7 +4,7 @@ import axios from "axios";
 
 export const getAllProducts = async () => {
   const response = await axios.get(
-    `${appConfig.baseUrl}/api/v1/admin/auth/product`
+    `${appConfig.local.baseUrl}/api/v1/admin/auth/product`
   );
   return response.data.returnedData;
 };
@@ -21,7 +21,7 @@ export const fetchProductsByTag = async (tag) => {
 
 export const getPurchasedProducts = async ({ userId }) => {
   const response = await axios.get(
-    `${appConfig.baseUrl}/api/v1/user/products/order/${userId}`
+    `${appConfig.local.baseUrl}/api/v1/user/products/order/${userId}`
   );
   console.log("response: ", response);
   return response.data.returnedData;
