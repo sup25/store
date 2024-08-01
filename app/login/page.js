@@ -28,11 +28,10 @@ const Login = ({ isPopup, redirectToVerification }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    const apiUrl = "/api/v1/user/auth/login";
+    console.log("Hitting API URL:", apiUrl);
     try {
-      const response = await axiosClient.post(
-        "/api/v1/user/auth/login",
-        formData
-      );
+      const response = await axiosClient.post(apiUrl, formData);
       const { user, accessToken, refreshToken } = response.data.returnedData;
       setUserStore(user, accessToken, refreshToken);
       if (redirectToVerification) {
