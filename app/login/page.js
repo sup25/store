@@ -7,7 +7,6 @@ import { useAuth } from "@/context/AuthContext";
 import axiosClient from "@/utils/axiosClient";
 import Link from "next/link";
 import AuthForm from "@/common/authForm";
-import axios from "axios";
 
 const Login = ({ isPopup, redirectToVerification }) => {
   const { setUserStore } = useAuth();
@@ -29,10 +28,12 @@ const Login = ({ isPopup, redirectToVerification }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    const apiUrl = "/api/v1/user/auth/login";
-    console.log("Hitting API URL:", apiUrl);
+
     try {
-      const response = await axios.post(apiUrl, formData);
+      const response = await axiosClient.post(
+        "/api/v1/user/auth/login",
+        formData
+      );
       const { user, accessToken, refreshToken } = response.data.returnedData;
       setUserStore(user, accessToken, refreshToken);
       if (redirectToVerification) {
