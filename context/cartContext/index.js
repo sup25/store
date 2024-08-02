@@ -2,7 +2,6 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "../AuthContext";
-import appConfig from "@/config";
 import axios from "axios";
 
 const CartContext = createContext();
@@ -17,9 +16,7 @@ export const CartProvider = ({ children }) => {
     if (!user) return;
 
     try {
-      const response = await axios.get(
-        `${appConfig.baseUrl}/api/v1/user/products/${user.id}`
-      );
+      const response = await axios.get(`/api/v1/user/products/${user.id}`);
       const data = response.data.returnedData;
 
       setCartItems(data);

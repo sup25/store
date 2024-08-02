@@ -1,5 +1,5 @@
 "use client";
-import appConfig from "@/config";
+
 import axios from "axios";
 
 export const getAllProducts = async () => {
