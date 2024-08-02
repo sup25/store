@@ -14,7 +14,7 @@ const uploadImageInCloudinary = async (file, formData) => {
     const response = await generateSignature(paramsToSign);
     const { signature } = response.data.returnedData;
 
-    formData.append("api_key", process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY);
+    formData.append("api_key", process.env.CLOUDINARY_API_KEY);
     formData.append("timestamp", timestamp);
     formData.append("signature", signature);
 
