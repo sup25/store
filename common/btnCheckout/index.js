@@ -15,6 +15,8 @@ const BtnCheckout = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const proceedCheckout = async (e) => {
+    console.log("Product:", product);
+    console.log("User:", user);
     e.preventDefault();
     setLoading(true);
     const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;

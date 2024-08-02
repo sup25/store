@@ -1,10 +1,6 @@
 import Stripe from "stripe";
 import { NextResponse } from "next/server";
 
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
-
 export async function POST(request) {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
   const requestData = await request.json();
@@ -35,32 +31,6 @@ export async function POST(request) {
   }://${headers.get("host")}`;
 
   try {
-    // Check if address already exists
-    let existingAddress = await prisma.address.findFirst({
-      where: {
-        street: address.street,
-        city: address.city,
-        state: address.state,
-        country: address.country,
-        zipcode: address.zipcode,
-        userId: user.id,
-      },
-    });
-
-    // If address doesn't exist, create a new one
-    if (!existingAddress) {
-      existingAddress = await prisma.address.create({
-        data: {
-          street: address.street,
-          city: address.city,
-          state: address.state,
-          country: address.country,
-          zipcode: address.zipcode,
-          userId: user.id,
-        },
-      });
-    }
-
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
@@ -81,11 +51,11 @@ export async function POST(request) {
       success_url: `${baseUrl}/api/v1/order/ordersuccess`,
       cancel_url: `${baseUrl}/api/v1/order/ordercancel`,
       metadata: {
-        userId: user.id,
+        userId: user,
         name: name,
         product: product,
-        addressId: existingAddress.id,
-        adminId: admin.id,
+        address: address,
+        adminId: admin,
       },
     });
 

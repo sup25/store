@@ -1,7 +1,8 @@
 import prisma from "@/_lib/prisma";
 
 export const createOrderService = async (orderData) => {
-  const addressData = JSON.parse(orderData.address)[0];
+  const addressData = JSON.parse(orderData.address);
+
   const dataWithDefaults = {
     address: addressData,
     price: parseInt(orderData.price, 10) || 0,
@@ -19,20 +20,37 @@ export const createOrderService = async (orderData) => {
     throw new Error("Missing required order details");
   }
 
+  let existingAddress = await prisma.address.findFirst({
+    where: {
+      street: dataWithDefaults.address.street,
+      city: dataWithDefaults.address.city,
+      state: dataWithDefaults.address.state,
+      country: dataWithDefaults.address.country,
+      zipcode: dataWithDefaults.address.zipcode,
+      userId: dataWithDefaults.user,
+    },
+  });
+
+  if (!existingAddress) {
+    existingAddress = await prisma.address.create({
+      data: {
+        street: dataWithDefaults.address.street,
+        city: dataWithDefaults.address.city,
+        state: dataWithDefaults.address.state,
+        country: dataWithDefaults.address.country,
+        zipcode: dataWithDefaults.address.zipcode,
+        apt: dataWithDefaults.address.apt,
+        user: {
+          connect: { id: dataWithDefaults.user },
+        },
+      },
+    });
+  }
+
   const order = await prisma.order.create({
     data: {
       address: {
-        create: {
-          street: dataWithDefaults.address.street,
-          city: dataWithDefaults.address.city,
-          state: dataWithDefaults.address.state,
-          country: dataWithDefaults.address.country,
-          zipcode: dataWithDefaults.address.zipcode,
-          apt: dataWithDefaults.address.apt,
-          user: {
-            connect: { id: dataWithDefaults.user },
-          },
-        },
+        connect: { id: existingAddress.id },
       },
       total_price: dataWithDefaults.price,
       net_price: dataWithDefaults.price,
