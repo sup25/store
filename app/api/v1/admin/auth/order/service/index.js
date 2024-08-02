@@ -1,7 +1,8 @@
 import prisma from "@/_lib/prisma";
 
 export const createOrderService = async (orderData) => {
-  const addressData = JSON.parse(orderData.address);
+  const addressData = JSON.parse(orderData.address)[0];
+  console.log("addressdata", addressData);
 
   const dataWithDefaults = {
     address: addressData,
