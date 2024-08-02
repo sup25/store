@@ -8,9 +8,13 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 });
 
 export async function POST(request) {
+  const endpointSecret =
+    process.env.NODE_ENV === "production"
+      ? process.env.STRIPE_WEBHOOK_SECRET
+      : process.env.NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET;
+
   const nextRequest = new NextRequest(request);
   const body = await nextRequest.text();
-  const endpointSecret = process.env.NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET;
   const sig = headers(nextRequest).get("stripe-signature");
 
   let event;
