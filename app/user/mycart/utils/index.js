@@ -1,4 +1,3 @@
-import appConfig from "@/config";
 import axios from "axios";
 
 export const fetchItems = async (
@@ -15,9 +14,7 @@ export const fetchItems = async (
   setLoading(true);
   try {
     if (user.id) {
-      const response = await axios.get(
-        `${appConfig.baseUrl}/api/v1/user/products/${user.id}`
-      );
+      const response = await axios.get(`/api/v1/user/products/${user.id}`);
       const fetchedItems = response.data.returnedData;
       updateCartItems(fetchedItems);
       setItems(fetchedItems);

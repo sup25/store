@@ -23,6 +23,10 @@ export async function POST(request) {
       "User or product information is missing or incomplete."
     );
   }
+  const { headers } = request;
+  const baseUrl = `${
+    headers.get("x-forwarded-proto") || "http"
+  }://${headers.get("host")}`;
 
   try {
     const session = await stripe.checkout.sessions.create({
@@ -43,8 +47,8 @@ export async function POST(request) {
       ],
 
       mode: "payment",
-      success_url: `${appConfig.baseUrl}/ordersuccess`,
-      cancel_url: `${appConfig.baseUrl}/ordercancel`,
+      success_url: `${baseUrl}/api/v1/order/ordersuccess`,
+      cancel_url: `${baseUrl}/api/v1/order/ordercancel`,
       metadata: {
         userId: user,
         name: name,
