@@ -6,8 +6,8 @@ export async function POST(request) {
     const body = await request.json();
     const { paramsToSign, api_key } = body;
 
-    const expectedApiKey = process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY;
-    const apiSecret = process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET;
+    const expectedApiKey = process.env.CLOUDINARY_API_KEY;
+    const apiSecret = process.env.CLOUDINARY_API_SECRET;
 
     if (api_key !== expectedApiKey) {
       return internalRes("Invalid API Key", null, 401);

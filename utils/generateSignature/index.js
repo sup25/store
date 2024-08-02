@@ -4,7 +4,7 @@ export async function generateSignature(paramsToSign) {
   try {
     const response = await axios.post("http://localhost:3000/api/sign", {
       paramsToSign,
-      api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+      api_key: process.env.CLOUDINARY_API_KEY,
     });
 
     if (!response.data.returnedData.signature) {
