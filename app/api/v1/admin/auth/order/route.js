@@ -1,5 +1,6 @@
 import Stripe from "stripe";
 import { NextResponse } from "next/server";
+
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -22,8 +23,9 @@ export async function POST(request) {
 
   if (!user || !product) {
     console.error("User or product information is missing or incomplete.");
-    return NextResponse.error(
-      "User or product information is missing or incomplete."
+    return new NextResponse(
+      "User or product information is missing or incomplete.",
+      { status: 400 }
     );
   }
 
@@ -33,6 +35,7 @@ export async function POST(request) {
   }://${headers.get("host")}`;
 
   try {
+    // Check if address already exists
     let existingAddress = await prisma.address.findFirst({
       where: {
         street: address.street,
@@ -44,6 +47,7 @@ export async function POST(request) {
       },
     });
 
+    // If address doesn't exist, create a new one
     if (!existingAddress) {
       existingAddress = await prisma.address.create({
         data: {
@@ -88,6 +92,8 @@ export async function POST(request) {
     return NextResponse.json({ sessionId: session.id });
   } catch (error) {
     console.error("Error creating Checkout session:", error);
-    return NextResponse.error("Failed to create Checkout session.");
+    return new NextResponse("Failed to create Checkout session.", {
+      status: 500,
+    });
   }
 }
