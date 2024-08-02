@@ -1,6 +1,9 @@
 import Stripe from "stripe";
 import { NextResponse } from "next/server";
-import appConfig from "@/config";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
 export async function POST(request) {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
   const requestData = await request.json();
@@ -23,12 +26,37 @@ export async function POST(request) {
       "User or product information is missing or incomplete."
     );
   }
+
   const { headers } = request;
   const baseUrl = `${
     headers.get("x-forwarded-proto") || "http"
   }://${headers.get("host")}`;
 
   try {
+    let existingAddress = await prisma.address.findFirst({
+      where: {
+        street: address.street,
+        city: address.city,
+        state: address.state,
+        country: address.country,
+        zipcode: address.zipcode,
+        userId: user.id,
+      },
+    });
+
+    if (!existingAddress) {
+      existingAddress = await prisma.address.create({
+        data: {
+          street: address.street,
+          city: address.city,
+          state: address.state,
+          country: address.country,
+          zipcode: address.zipcode,
+          userId: user.id,
+        },
+      });
+    }
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
@@ -45,16 +73,15 @@ export async function POST(request) {
           quantity: quantity,
         },
       ],
-
       mode: "payment",
       success_url: `${baseUrl}/api/v1/order/ordersuccess`,
       cancel_url: `${baseUrl}/api/v1/order/ordercancel`,
       metadata: {
-        userId: user,
+        userId: user.id,
         name: name,
         product: product,
-        address: address,
-        adminId: admin,
+        addressId: existingAddress.id,
+        adminId: admin.id,
       },
     });
 
