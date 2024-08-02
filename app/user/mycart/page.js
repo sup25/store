@@ -21,7 +21,7 @@ const Cart = () => {
   useEffect(() => {
     fetchItems(user, setLoading, updateCartItems, setItems);
   }, [user.id]);
-
+  console.log("items", items);
   return (
     <div className="section">
       <div className="container">
@@ -94,6 +94,7 @@ const Cart = () => {
                 <BtnCheckout
                   product={item.product}
                   quantity={item.quantity}
+                  admin={item.product.adminId}
                   user={user}
                   deleteItem={(itemId) =>
                     handleDeleteItem(
