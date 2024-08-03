@@ -8,21 +8,17 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 });
 
 export async function POST(request) {
-  const nextRequest = new NextRequest(request);
-  const body = await nextRequest.text();
   const endpointSecret = process.env.NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET;
-  const sig = headers(nextRequest).get("stripe-signature");
-
-  console.log("Received body:", body);
-  console.log("Received signature:", sig);
+  const sig = headers(request).get("stripe-signature");
 
   let event;
   try {
-    event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
+    const rawBody = await request.text();
+    event = stripe.webhooks.constructEvent(rawBody, sig, endpointSecret);
     console.log("Constructed event:", event);
   } catch (err) {
     console.error(`Webhook Error: ${err.message}`);
-    return new Response(`Webhook Error: ${err.message}`, { status: 400 });
+    return new NextResponse(`Webhook Error: ${err.message}`, { status: 400 });
   }
 
   switch (event.type) {
@@ -41,7 +37,9 @@ export async function POST(request) {
 
       if (!orderDetails.name || !orderDetails.product || !orderDetails.user) {
         console.error("Missing required order details", orderDetails);
-        return new Response("Missing required order details", { status: 400 });
+        return new NextResponse("Missing required order details", {
+          status: 400,
+        });
       }
 
       try {
@@ -49,16 +47,19 @@ export async function POST(request) {
         console.log("Order created successfully");
       } catch (error) {
         console.error("Error saving order details:", error);
-        return new Response(`Error saving order details: ${error.message}`, {
-          status: 500,
-        });
+        return new NextResponse(
+          `Error saving order details: ${error.message}`,
+          {
+            status: 500,
+          }
+        );
       }
       break;
     default:
       console.log(`Unhandled event type ${event.type}`);
   }
 
-  return new Response("Webhook received and processed", { status: 200 });
+  return new NextResponse("Webhook received and processed", { status: 200 });
 }
 
 export async function GET() {
