@@ -13,20 +13,21 @@ export async function POST(request) {
   const endpointSecret = process.env.NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET;
   const sig = headers(nextRequest).get("stripe-signature");
 
+  console.log("Received body:", body);
+  console.log("Received signature:", sig);
+
   let event;
   try {
     event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
+    console.log("Constructed event:", event);
   } catch (err) {
-    console.log(`Webhook Error: ${err.message}`);
+    console.error(`Webhook Error: ${err.message}`);
     return new Response(`Webhook Error: ${err.message}`, { status: 400 });
   }
 
-  let checkoutSessionCompleted;
-
   switch (event.type) {
     case "checkout.session.completed":
-      checkoutSessionCompleted = event.data.object;
-
+      const checkoutSessionCompleted = event.data.object;
       const orderDetails = {
         price: checkoutSessionCompleted.amount_total,
         name: checkoutSessionCompleted.metadata.name,
@@ -45,13 +46,13 @@ export async function POST(request) {
 
       try {
         await createOrderController(orderDetails);
+        console.log("Order created successfully");
       } catch (error) {
         console.error("Error saving order details:", error);
         return new Response(`Error saving order details: ${error.message}`, {
           status: 500,
         });
       }
-
       break;
     default:
       console.log(`Unhandled event type ${event.type}`);
