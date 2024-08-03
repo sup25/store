@@ -6,6 +6,7 @@ import { IoIosClose } from "react-icons/io";
 import { UserBtn } from "../../common";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import appConfig from "@/config";
 
 const InputAddressPopUp = ({ userId, handler, updateUserAddress }) => {
   const [loading, setLoading] = useState(false);
@@ -38,7 +39,7 @@ const InputAddressPopUp = ({ userId, handler, updateUserAddress }) => {
     setLoading(true);
     try {
       const response = await axios.post(
-        `/api/v1/user/auth/address/${userId}`,
+        `/${appConfig.basePath}/user/auth/address/${userId}`,
         addressData
       );
       console.log(response.data);

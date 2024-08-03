@@ -4,6 +4,7 @@ import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import Login from "@/app/login/page";
+import appConfig from "@/config";
 
 const VerifyEmailContent = () => {
   const [message, setMessage] = useState("");
@@ -22,7 +23,7 @@ const VerifyEmailContent = () => {
 
     try {
       const response = await axios.get(
-        `/api/v1/user/auth/confirmtoken?token=${token}`
+        `/${appConfig.basePath}/user/auth/confirmtoken?token=${token}`
       );
       setMessage(response.data.message);
     } catch (error) {

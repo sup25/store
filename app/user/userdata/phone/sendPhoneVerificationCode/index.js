@@ -7,6 +7,7 @@ import { MdOutlineVerified } from "react-icons/md";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserBtn } from "../../common";
+import appConfig from "@/config";
 
 const SendPhoneVerificationCode = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -30,7 +31,7 @@ const SendPhoneVerificationCode = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "/api/v1/user/auth/phoneverification/sendVerificationCode",
+        `/${appConfig.basePath}/user/auth/phoneverification/sendVerificationCode`,
         { phoneNumber },
         {
           headers: { "Content-Type": "application/json" },

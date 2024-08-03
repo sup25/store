@@ -16,7 +16,7 @@ export const handleSubmit = async (
     const productId = parseInt(formData.id);
     if (isUpdating) {
       response = await axios.put(
-        `/api/v1/admin/auth/product/${productId}`,
+        `/${appConfig.basePath}/admin/auth/product/${productId}`,
         JSON.stringify(formData),
         {
           headers: {
@@ -26,7 +26,7 @@ export const handleSubmit = async (
       );
       console.log("updated data", response);
     } else {
-      response = await axios.post("/api/v1/admin/auth/product", {
+      response = await axios.post(`/${appConfig.basePath}/admin/auth/product`, {
         ...formData,
         adminId: adminId,
       });

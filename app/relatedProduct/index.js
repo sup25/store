@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
 import Card from "@/common/card";
 import Spinner from "@/common/spinner";
+import appConfig from "@/config";
 
 const RelatedProduct = () => {
   const [products, setProducts] = useState([]);
@@ -12,7 +13,9 @@ const RelatedProduct = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("/api/v1/admin/auth/product");
+        const response = await axios.get(
+          `/${appConfig.basePath}/admin/auth/product`
+        );
         setProducts(response.data.returnedData);
         setLoading(false);
       } catch (error) {

@@ -17,7 +17,7 @@ const CancelledOrders = () => {
         setLoading(true);
         try {
           const response = await axios.get(
-            `${appConfig.baseUrl}/api/v1/admin/auth/order/${decodedToken.id}`
+            `${appConfig.baseUrl}/${appConfig.basePath}/admin/auth/order/${decodedToken.id}`
           );
           if (response.status === 200) {
             setOrders(response.data.returnedData);

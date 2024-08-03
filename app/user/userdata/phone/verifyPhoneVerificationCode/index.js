@@ -6,6 +6,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserBtn } from "../../common";
+import appConfig from "@/config";
 
 const VerifyPhoneVerificationCode = ({ phoneNumber }) => {
   const { user, updateUserPhone } = useAuth();
@@ -15,7 +16,7 @@ const VerifyPhoneVerificationCode = ({ phoneNumber }) => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "/api/v1/user/auth/phoneverification",
+        `/${appConfig.basePath}/user/auth/phoneverification`,
         {
           phoneNumber,
           code,
