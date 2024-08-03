@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { createOrderController } from "../admin/auth/order/controller";
 
@@ -8,13 +8,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 });
 
 export async function POST(request) {
-  const endpointSecret =
-    process.env.NODE_ENV === "production"
-      ? process.env.STRIPE_WEBHOOK_SECRET
-      : process.env.NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET;
-
   const nextRequest = new NextRequest(request);
   const body = await nextRequest.text();
+  const endpointSecret = process.env.NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET;
   const sig = headers(nextRequest).get("stripe-signature");
 
   let event;
@@ -62,4 +58,8 @@ export async function POST(request) {
   }
 
   return new Response("Webhook received and processed", { status: 200 });
+}
+
+export async function GET() {
+  return new NextResponse("GET request received successfully", { status: 200 });
 }
