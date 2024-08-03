@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "@/context/AuthContext";
 import axiosAdmin from "@/utils/axiosAdmin";
 import AuthForm from "@/common/authForm";
+import appConfig from "@/config";
 
 const Login = () => {
   const { setUserStore } = useAuth();
@@ -29,9 +30,10 @@ const Login = () => {
     setIsLoading(true);
     try {
       const response = await axiosAdmin.post(
-        "/api/v1/admin/auth/login",
+        `/${appConfig.basePath}/admin/auth/login`,
         formData
       );
+
       const { admin, accessToken } = response.data.returnedData;
       setUserStore(admin, accessToken, null, true, true);
       router.push("/admin/dashboard");

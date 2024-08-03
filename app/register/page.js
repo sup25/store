@@ -6,6 +6,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import AuthForm from "@/common/authForm";
+import appConfig from "@/config";
 
 const Register = () => {
   const router = useRouter();
@@ -30,7 +31,10 @@ const Register = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("/api/v1/user/auth/register", formData);
+      const response = await axios.post(
+        `/${appConfig.basePath}/user/auth/register`,
+        formData
+      );
       if (response.status !== 201) {
         throw new Error("Failed to register user");
       }

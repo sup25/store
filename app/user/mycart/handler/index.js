@@ -27,7 +27,9 @@ export const handleDeleteItem = async (
 ) => {
   try {
     setLoading(true);
-    await axios.delete(`${appConfig.baseUrl}/api/v1/user/products/${itemId}`);
+    await axios.delete(
+      `${appConfig.baseUrl}/${appConfig.basePath}/user/products/${itemId}`
+    );
     if (showToast) {
       toast.success("Item removed successfully");
     }

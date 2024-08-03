@@ -1,5 +1,6 @@
 import Stripe from "stripe";
 import { NextResponse } from "next/server";
+import appConfig from "@/config";
 
 export async function POST(request) {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -48,8 +49,8 @@ export async function POST(request) {
         },
       ],
       mode: "payment",
-      success_url: `${baseUrl}/api/v1/order/ordersuccess`,
-      cancel_url: `${baseUrl}/api/v1/order/ordercancel`,
+      success_url: `${baseUrl}/${appConfig.basePath}/order/ordersuccess`,
+      cancel_url: `${baseUrl}/${appConfig.basePath}/order/ordercancel`,
       metadata: {
         userId: user,
         name: name,

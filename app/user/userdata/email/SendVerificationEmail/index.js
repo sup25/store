@@ -6,6 +6,7 @@ import { MdOutlineVerified } from "react-icons/md";
 import { UserBtn } from "../../common";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import appConfig from "@/config";
 
 const SendVerificationEmail = () => {
   const { user } = useAuth();
@@ -22,10 +23,13 @@ const SendVerificationEmail = () => {
     try {
       const token = generateToken();
 
-      const response = await axios.post("/api/v1/user/auth/emailverification", {
-        token,
-        user: user,
-      });
+      const response = await axios.post(
+        `/${appConfig.basePath}/user/auth/emailverification`,
+        {
+          token,
+          user: user,
+        }
+      );
 
       console.log(response);
 

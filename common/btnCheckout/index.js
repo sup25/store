@@ -4,6 +4,7 @@ import { useState } from "react";
 import Spinner from "../spinner";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import appConfig from "@/config";
 const BtnCheckout = ({
   product,
   quantity,
@@ -39,7 +40,7 @@ const BtnCheckout = ({
       }
       const address = JSON.stringify(user.addresses);
       const checkoutSession = await axios.post(
-        "/api/v1/admin/auth/order",
+        `/${appConfig.basePath}/admin/auth/order`,
         {
           product: product.id,
           price: priceInCents,

@@ -1,4 +1,5 @@
 "use client";
+import appConfig from "@/config";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
@@ -7,7 +8,7 @@ const OrderSuccess = () => {
 
   const fetchOrderDetails = async () => {
     try {
-      const response = await fetch("/api/v1/order/webhook");
+      const response = await fetch(`/${appConfig.basePath}/order/webhook`);
       if (response.ok) {
         const data = await response.json();
         setOrderDetails(data);

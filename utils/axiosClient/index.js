@@ -14,7 +14,7 @@ const axiosClient = axios.create({
 
 const refreshToken = async () => {
   const res = await axiosClient.post(
-    "/api/v1/user/auth/refreshToken",
+    `/${appConfig.basePath}/user/auth/refreshToken`,
     JSON.stringify({ refreshToken: sessionStorage.getItem("refreshToken") })
   );
 

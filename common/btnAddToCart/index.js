@@ -16,17 +16,20 @@ const BtnAddToCart = ({ product, showLoginPopup, user, quantity }) => {
     } else {
       try {
         setLoading(true);
-        const response = await axios.post("/api/v1/user/products", {
-          userId: user.id,
-          productId: product.id,
-          quantity,
-        });
+        const response = await axios.post(
+          `/${appConfig.basePath}/user/products`,
+          {
+            userId: user.id,
+            productId: product.id,
+            quantity,
+          }
+        );
 
         console.log("response", response.data);
         toast.success("Product added to cart");
 
         const updatedCartResponse = await axios.get(
-          `${appConfig.baseUrl}/api/v1/user/products/${user.id}`
+          `${appConfig.baseUrl}/${appConfig.basePath}/user/products/${user.id}`
         );
         const updatedCartItems = updatedCartResponse.data.returnedData;
         updateCartItems(updatedCartItems);

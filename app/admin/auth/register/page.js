@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import AuthForm from "@/common/authForm";
+import appConfig from "@/config";
 
 const Register = () => {
   const router = useRouter();
@@ -29,9 +30,10 @@ const Register = () => {
 
     try {
       const response = await axios.post(
-        "/api/v1/admin/auth/register",
+        `/${appConfig.basePath}/admin/auth/register`,
         formData
       );
+
       if (response.status !== 201) {
         throw new Error("Failed to register ");
       }
