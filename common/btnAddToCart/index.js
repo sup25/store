@@ -29,7 +29,7 @@ const BtnAddToCart = ({ product, showLoginPopup, user, quantity }) => {
         toast.success("Product added to cart");
 
         const updatedCartResponse = await axios.get(
-          `${appConfig.baseUrl}/${appConfig.basePath}/user/products/${user.id}`
+          `/${appConfig.basePath}/user/products/${user.id}`
         );
         const updatedCartItems = updatedCartResponse.data.returnedData;
         updateCartItems(updatedCartItems);
