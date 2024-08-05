@@ -12,11 +12,9 @@ const uploadImageInCloudinary = async (file, formData) => {
     };
 
     const response = await generateSignature(paramsToSign);
-    const { signature } = response.data.returnedData;
-
-    formData.append("api_key", process.env.CLOUDINARY_API_KEY);
+    formData.append("api_key", process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY);
     formData.append("timestamp", timestamp);
-    formData.append("signature", signature);
+    formData.append("signature", response);
 
     const cloudinaryResponse = await axios.post(
       `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUD_NAME}/image/upload`,
@@ -29,6 +27,7 @@ const uploadImageInCloudinary = async (file, formData) => {
     );
 
     console.log("Image uploaded successfully");
+    console.log(cloudinaryResponse.data);
     return cloudinaryResponse.data;
   } catch (error) {
     console.error("Error uploading image:", error);
