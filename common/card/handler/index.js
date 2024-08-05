@@ -17,7 +17,7 @@ export const handleAddToCart = async ({
     toast.success("product added successfully");
     setAddedToCart(true);
     const updatedCartItems = await axios.get(
-      `${appConfig.baseUrl}/${appConfig.basePath}/user/products/${userId}`
+      `/${appConfig.basePath}/user/products/${userId}`
     );
     updateCartItems(updatedCartItems.data.returnedData);
     if (data) {
