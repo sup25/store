@@ -45,7 +45,7 @@ const CreateProductForm = ({
       };
       setTimeout(() => {
         window.location.reload();
-      }, 1000);
+      }, 2000);
       await handleSubmit(
         updatedFormData,
         isUpdating,

@@ -1,8 +1,9 @@
 "use client";
-import React, { useState, useEffect, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import React, { Suspense } from "react";
 import CreateProductForm from "@/app/admin/dashboard/components/createProductForm";
+
 import { handleChange } from "./handler";
+import { useAdminData, useProductData } from "./hooks";
 
 const CreateProductAdmin = () => {
   const initialFormData = {
@@ -18,52 +19,33 @@ const CreateProductAdmin = () => {
     images: [],
   };
 
-  const [formData, setFormData] = useState(initialFormData);
-  const [adminId, setAdminId] = useState("");
-  const [isUpdating, setIsUpdating] = useState(false);
+  const adminId = useAdminData();
+  const { formData, setFormData, isUpdating } = useProductData(initialFormData);
 
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    const productData = searchParams.get("product");
-    if (productData) {
-      const decodedProductData = JSON.parse(decodeURIComponent(productData));
-      setFormData(decodedProductData);
-      setIsUpdating(true);
-    }
-
-    const adminToken = sessionStorage.getItem("adminAccessToken");
-    if (adminToken) {
-      const decodedToken = JSON.parse(atob(adminToken.split(".")[1]));
-      setAdminId(parseInt(decodedToken.id));
-    }
-  }, [searchParams]);
-
-  const resetForm = () => {
-    setFormData({
-      ...initialFormData,
-      images: [],
-    });
-  };
+  const resetForm = () => setFormData(initialFormData);
 
   const buttonText = isUpdating ? "Update Product" : "Create Product";
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <div className="section">
-        <div className="container">
-          <CreateProductForm
-            resetForm={resetForm}
-            formData={formData}
-            setFormData={setFormData}
-            onChange={(e) => handleChange(e, setFormData)}
-            buttonText={buttonText}
-            adminId={adminId}
-          />
-        </div>
+    <div className="section">
+      <div className="container">
+        <CreateProductForm
+          resetForm={resetForm}
+          formData={formData}
+          setFormData={setFormData}
+          onChange={(e) => handleChange(e, setFormData)}
+          buttonText={buttonText}
+          adminId={adminId}
+        />
       </div>
-    </Suspense>
+    </div>
   );
 };
 
-export default CreateProductAdmin;
+const CreateProductAdminWrapper = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <CreateProductAdmin />
+  </Suspense>
+);
+
+export default CreateProductAdminWrapper;
