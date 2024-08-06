@@ -22,33 +22,34 @@ const CreateProductAdmin = () => {
   const [adminId, setAdminId] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const Content = () => {
-    const searchParams = useSearchParams();
+  const searchParams = useSearchParams();
 
-    useEffect(() => {
-      const productData = searchParams.get("product");
-      if (productData) {
-        const decodedProductData = JSON.parse(decodeURIComponent(productData));
-        setFormData(decodedProductData);
-        setIsUpdating(true);
-      }
+  useEffect(() => {
+    const productData = searchParams.get("product");
+    if (productData) {
+      const decodedProductData = JSON.parse(decodeURIComponent(productData));
+      setFormData(decodedProductData);
+      setIsUpdating(true);
+    }
 
-      const adminToken = sessionStorage.getItem("adminAccessToken");
-      if (adminToken) {
-        const decodedToken = JSON.parse(atob(adminToken.split(".")[1]));
-        setAdminId(parseInt(decodedToken.id));
-      }
-    }, [searchParams]);
+    const adminToken = sessionStorage.getItem("adminAccessToken");
+    if (adminToken) {
+      const decodedToken = JSON.parse(atob(adminToken.split(".")[1]));
+      setAdminId(parseInt(decodedToken.id));
+    }
+  }, [searchParams]);
 
-    const resetForm = () => {
-      setFormData({
-        ...initialFormData,
-        images: [],
-      });
-    };
+  const resetForm = () => {
+    setFormData({
+      ...initialFormData,
+      images: [],
+    });
+  };
 
-    const buttonText = isUpdating ? "Update Product" : "Create Product";
-    return (
+  const buttonText = isUpdating ? "Update Product" : "Create Product";
+
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
       <div className="section">
         <div className="container">
           <CreateProductForm
@@ -61,12 +62,6 @@ const CreateProductAdmin = () => {
           />
         </div>
       </div>
-    );
-  };
-
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <Content />
     </Suspense>
   );
 };
