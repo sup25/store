@@ -1,3 +1,4 @@
+import appConfig from "@/config";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -33,6 +34,7 @@ export const handleSubmit = async (
     }
 
     if (response.status === 200) {
+      console.log("Response data:", response);
       isUpdating
         ? toast.success("Product updated successfully")
         : toast.success("Product created successfully");

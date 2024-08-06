@@ -43,7 +43,9 @@ const CreateProductForm = ({
         ...formData,
         images: uploadedImages,
       };
-
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
       await handleSubmit(
         updatedFormData,
         isUpdating,
@@ -52,9 +54,6 @@ const CreateProductForm = ({
         setErrors,
         resetForm
       );
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
     } catch (error) {
       console.error("Error uploading images:", error);
       setErrors([{ field: "images", message: "Failed to upload images" }]);
