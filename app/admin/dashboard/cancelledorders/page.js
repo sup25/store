@@ -2,8 +2,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Spinner from "@/common/spinner";
-import Table from "../components/table";
+
 import appConfig from "@/config";
+import Table from "@/common/table";
 
 const CancelledOrders = () => {
   const [orders, setOrders] = useState([]);
