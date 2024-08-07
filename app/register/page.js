@@ -77,7 +77,7 @@ const Register = () => {
             isLoading={isLoading}
           />
           <Link
-            href="/adminregister"
+            href="/admin/auth/register"
             className="hover:border-b border-primary transition duration-300 ease-in-out"
           >
             Businees Account

@@ -1,3 +1,3 @@
 export const EmptyState = () => (
-  <div className="font-medium text-white text-base">No product purchased</div>
+  <div className="font-medium text-primary text-base">No product purchased</div>
 );
