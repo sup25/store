@@ -89,6 +89,7 @@ export async function sendVerificationEmailService(user, token) {
       ? process.env.NEXT_PUBLIC_BASE_URL
       : appConfig.baseUrl;
 
+  console.log("Base URL:", baseUrl);
   console.log(user.email);
 
   const transporter = nodemailer.createTransport({
@@ -104,7 +105,7 @@ export async function sendVerificationEmailService(user, token) {
     to: user.email,
     subject: "Verify your email",
     text: `Please verify your email by clicking the following link: 
-    ${baseUrl}/${appConfig.basePath}/user/userdata/email/verifyEmail?token=${token}`,
+    ${baseUrl}/user/userdata/email/verifyEmail?token=${token}`,
   };
 
   await transporter.sendMail(mailOptions);
