@@ -1,10 +1,9 @@
 import { MdOutlineModeEdit, MdDeleteOutline } from "react-icons/md";
 import { useRouter } from "next/navigation";
-import { handleDeleteProduct } from "../../../../handler";
+
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useState } from "react";
-import Spinner from "@/common/spinner";
+import { handleDeleteProduct } from "@/app/admin/dashboard/components/handler";
 
 export const EditButton = ({ item }) => {
   const router = useRouter();

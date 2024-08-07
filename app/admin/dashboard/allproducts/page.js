@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { getProducts } from "../utils";
 import Spinner from "@/common/spinner";
-import Table from "../components/table";
+import Table from "@/common/table";
 
 const AllProducts = () => {
   const [loading, setLoading] = useState(true);

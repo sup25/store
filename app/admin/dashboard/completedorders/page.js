@@ -1,8 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Spinner from "@/common/spinner";
-import Table from "../components/table";
+
 import { getCompletedOrder } from "../API";
+import Table from "@/common/table";
 
 const CompletedOrders = () => {
   const [orders, setOrders] = useState([]);
