@@ -84,12 +84,13 @@ export const addAddressService = async (userId, addressData) => {
 };
 
 export async function sendVerificationEmailService(user, token) {
-  const { headers } = request;
-  const baseUrl = `${
-    headers.get("x-forwarded-proto") || "http"
-  }://${headers.get("host")}`;
+  const baseUrl =
+    process.env.NODE_ENV === "production"
+      ? process.env.NEXT_PUBLIC_BASE_URL
+      : appConfig.baseUrl;
 
   console.log(user.email);
+
   const transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -103,7 +104,7 @@ export async function sendVerificationEmailService(user, token) {
     to: user.email,
     subject: "Verify your email",
     text: `Please verify your email by clicking the following link: 
-   ${baseUrl}/${appConfig.basePath}/user/userdata/email/verifyEmail?token=${token}`,
+    ${baseUrl}/${appConfig.basePath}/user/userdata/email/verifyEmail?token=${token}`,
   };
 
   await transporter.sendMail(mailOptions);
