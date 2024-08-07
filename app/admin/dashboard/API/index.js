@@ -23,17 +23,18 @@ export const deleteProductById = async (productId) => {
   }
 };
 
-export const getProductSales = async () => {
+export const getProductSales = async (adminId) => {
   try {
     const response = await getRequest(
-      `/${appConfig.basePath}/admin/auth/product/sales`
+      `/${appConfig.basePath}/admin/auth/product/sales/${adminId}`
     );
-
+    console.log("sales", response);
     return response;
   } catch (error) {
     throw error;
   }
 };
+
 export const getCompletedOrder = async (adminId) => {
   try {
     const response = getRequest(
