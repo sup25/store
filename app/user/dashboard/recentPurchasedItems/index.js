@@ -3,8 +3,9 @@
 import { getPurchasedProducts } from "@/app/utils";
 import { useAuth } from "@/context/AuthContext";
 import React, { useEffect, useState } from "react";
-import { EmptyState } from "../components/emptyState";
+
 import List from "../list";
+import { EmptyState } from "../components/emptyState";
 
 const RecentPurchasedItem = () => {
   const { user } = useAuth();
