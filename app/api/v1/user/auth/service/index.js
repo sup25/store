@@ -1,5 +1,6 @@
 import prisma from "@/_lib/prisma";
 import { comparePassword } from "@/app/api/utils/comparePassword";
+import appConfig from "@/config";
 import nodemailer from "nodemailer";
 
 export const createUserService = async (body) => {
@@ -97,7 +98,7 @@ export async function sendVerificationEmailService(user, token) {
     to: user.email,
     subject: "Verify your email",
     text: `Please verify your email by clicking the following link: 
-    http://localhost:3000/user/userdata/email/verifyEmail?token=${token}`,
+    /${appConfig.basePath}/user/userdata/email/verifyEmail?token=${token}`,
   };
 
   await transporter.sendMail(mailOptions);
