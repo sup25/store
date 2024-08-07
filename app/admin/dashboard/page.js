@@ -5,18 +5,23 @@ import { getProductSales } from "./API";
 import { SoldProducts } from "./components/soldProducts";
 import { UnsoldProducts } from "./components/unSoldProducts";
 import Spinner from "@/common/spinner";
+import { useAdminData } from "./createproduct/hooks";
 
 const Dashboard = () => {
   const [soldItems, setSoldItems] = useState([]);
   const [unsoldItems, setUnsoldItems] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0);
   const [loading, setLoading] = useState(false);
+  const adminId = useAdminData();
 
   const getSales = async () => {
+    if (!adminId) {
+      console.error("Admin ID is not available");
+      return;
+    }
     try {
       setLoading(true);
-      const response = await getProductSales();
-
+      const response = await getProductSales(adminId);
       if (response && response.returnedData) {
         const sortedProducts = response.returnedData.sort(
           (a, b) => b.sold - a.sold
@@ -35,8 +40,10 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    getSales();
-  }, []);
+    if (adminId) {
+      getSales();
+    }
+  }, [adminId]);
 
   return (
     <div className="section bg-gray-100 py-8">

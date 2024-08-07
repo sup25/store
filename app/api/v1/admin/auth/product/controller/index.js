@@ -31,7 +31,7 @@ export async function deleteProductController(productId) {
   const deleteProduct = await deleteProductService(productId);
   return deleteProduct;
 }
-export async function getProductSalesDataController() {
-  const getProduct = await getProductSalesDataService();
+export async function getProductSalesDataController(adminId) {
+  const getProduct = await getProductSalesDataService(adminId);
   return getProduct;
 }

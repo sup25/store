@@ -109,8 +109,12 @@ export const deleteProductService = async (productId) => {
   return deletedProduct;
 };
 
-export const getProductSalesDataService = async () => {
+export const getProductSalesDataService = async (adminId) => {
+  const parsedAdminId = parseInt(adminId);
   const products = await prisma.product.findMany({
+    where: {
+      adminId: parsedAdminId,
+    },
     include: {
       sales: true,
       images: {
