@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -115,4 +115,10 @@ const Login = ({ isPopup, redirectToVerification }) => {
   );
 };
 
-export default Login;
+const LoginWrapper = (props) => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <Login {...props} />
+  </Suspense>
+);
+
+export default LoginWrapper;
