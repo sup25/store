@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { getProducts } from "../utils";
 import Spinner from "@/common/spinner";
 import Table from "@/common/table";
+import withAuthAdmin from "../../utils/adminHoc/page";
 
 const AllProducts = () => {
   const [loading, setLoading] = useState(true);
@@ -39,4 +40,4 @@ const AllProducts = () => {
   );
 };
 
-export default AllProducts;
+export default withAuthAdmin(AllProducts);
