@@ -2,8 +2,9 @@ import debounce from "lodash.debounce";
 const SearchBar = ({ searchTerm, setSearchTerm }) => {
   const handleInputChange = (event) => {
     const { value } = event.target;
-    setSearchTerm(value);
-    debouncedSearch(value);
+    const lowerCaseValue = value.toLowerCase();
+    setSearchTerm(lowerCaseValue);
+    debouncedSearch(lowerCaseValue);
   };
 
   const debouncedSearch = debounce((value) => {

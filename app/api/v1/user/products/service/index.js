@@ -63,10 +63,12 @@ export const deleteCartService = async (productId) => {
 };
 
 export const showProductAccordingToTagService = async (tags) => {
+  const lowerCaseTags = tags.map((tag) => tag.toLowerCase());
+
   const products = await prisma.product.findMany({
     where: {
       tags: {
-        hasSome: tags,
+        hasSome: lowerCaseTags,
       },
     },
     include: {
