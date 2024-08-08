@@ -4,6 +4,7 @@ import Spinner from "@/common/spinner";
 
 import { getCompletedOrder } from "../API";
 import Table from "@/common/table";
+import withAuthAdmin from "../../utils/adminHoc/page";
 
 const CompletedOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -73,4 +74,4 @@ const CompletedOrders = () => {
   );
 };
 
-export default CompletedOrders;
+export default withAuthAdmin(CompletedOrders);

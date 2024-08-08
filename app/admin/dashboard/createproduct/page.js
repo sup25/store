@@ -4,6 +4,7 @@ import CreateProductForm from "@/app/admin/dashboard/components/createProductFor
 
 import { handleChange } from "./handler";
 import { useAdminData, useProductData } from "./hooks";
+import withAuthAdmin from "../../utils/adminHoc/page";
 
 const CreateProductAdmin = () => {
   const initialFormData = {
@@ -48,4 +49,4 @@ const CreateProductAdminWrapper = () => (
   </Suspense>
 );
 
-export default CreateProductAdminWrapper;
+export default withAuthAdmin(CreateProductAdminWrapper);
