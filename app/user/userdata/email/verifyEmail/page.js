@@ -11,7 +11,7 @@ const VerifyEmailContent = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const [loading, setLoading] = useState(false);
-  const { user } = useAuth();
+  const { user, verifiedUserEmail } = useAuth();
 
   const verifyEmail = async () => {
     setLoading(true);
@@ -25,20 +25,31 @@ const VerifyEmailContent = () => {
       const response = await axios.get(
         `/${appConfig.basePath}/user/auth/confirmtoken?token=${token}`
       );
-      setMessage(response.data.message);
+
+      if (response.status === 200) {
+        setMessage(response.data.message);
+        verifiedUserEmail();
+      } else {
+        setMessage("Email verification failed. Please try again.");
+      }
     } catch (error) {
       setMessage("Email verification failed. Please try again.");
-      console.error("Error verifying email:", error);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (user) {
+    if (user && !user.verified_email) {
       verifyEmail();
     }
   }, [token, user]);
+
+  useEffect(() => {
+    if (user?.verified_email) {
+      setMessage("Your email has been verified!");
+    }
+  }, [user]);
 
   if (!user) {
     return (
@@ -51,7 +62,7 @@ const VerifyEmailContent = () => {
 
   return (
     <div className="section">
-      <div className="container items-center justify-center gap-2 ">
+      <div className="container items-center justify-center gap-2">
         <p className="text-lg font-medium text-center">Email Verification</p>
         <p className="text-base font-medium text-center">
           {loading ? "Loading..." : message}
