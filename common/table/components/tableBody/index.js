@@ -12,6 +12,7 @@ const TableBody = ({
   columns,
   uniqueKey,
   showActions,
+  excludeKeys = [],
 }) => {
   const [modalData, setModalData] = useState(null);
 
@@ -32,6 +33,7 @@ const TableBody = ({
           isOpen={modalData !== null}
           modalData={modalData}
           onClose={closeModal}
+          excludeKeys={excludeKeys}
         />
       )}
       <div className="w-full flex flex-col">

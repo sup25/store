@@ -14,6 +14,7 @@ const Table = ({
   showSearch = true,
   uniqueKey,
   showActions = true,
+  excludeKeys = [],
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState([]);
@@ -75,6 +76,7 @@ const Table = ({
                 columns={columns}
                 uniqueKey={uniqueKey}
                 showActions={showActions}
+                excludeKeys={excludeKeys}
               />
             )}
           </div>

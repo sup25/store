@@ -58,6 +58,14 @@ const CompletedOrders = () => {
             showSearch={false}
             uniqueKey="id"
             showActions={false}
+            excludeKeys={[
+              "addressId",
+              "user",
+              "notes",
+              "products",
+              "statuses",
+              "userId",
+            ]}
           />
         )}
       </div>
