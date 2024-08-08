@@ -30,6 +30,7 @@ const AllProducts = () => {
               columns={["id", "sku", "title", "price", "quantity"]}
               showSearch={true}
               uniqueKey="id"
+              excludeKeys={["images", "adminId", "orderId"]}
             />
           )}
         </div>

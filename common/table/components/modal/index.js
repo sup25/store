@@ -1,10 +1,38 @@
-const Modal = ({ isOpen, onClose, modalData }) => {
+const Modal = ({ isOpen, onClose, modalData, excludeKeys = [] }) => {
   if (!isOpen) return null;
 
   const closeModal = (e) => {
     if (e.target.id === "tableModal") {
       onClose();
     }
+  };
+
+  const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+
+  const renderContent = () => {
+    return Object.entries(modalData)
+      .filter(([key]) => !excludeKeys.includes(key))
+      .map(([key, value]) => {
+        let displayValue;
+
+        if (Array.isArray(value)) {
+          displayValue = value
+            .map((item) =>
+              typeof item === "object" ? JSON.stringify(item) : item
+            )
+            .join(", ");
+        } else if (typeof value === "object" && value !== null) {
+          displayValue = JSON.stringify(value, null, 2);
+        } else {
+          displayValue = value?.toString() || "N/A";
+        }
+
+        return (
+          <p key={key} className="mb-2 text-black">
+            <strong>{capitalize(key)}:</strong> {displayValue}
+          </p>
+        );
+      });
   };
 
   return (
@@ -24,19 +52,8 @@ const Modal = ({ isOpen, onClose, modalData }) => {
           Close
         </button>
         <div className="flex flex-col">
-          <h2 className="text-xl font-bold mb-2 text-black ">
-            {modalData.title}
-          </h2>
-          <p className="mb-4  text-black">{modalData.desc}</p>
-          <p>
-            <strong>Price:</strong> ${modalData.price}
-          </p>
-          <p>
-            <strong>SKU:</strong> {modalData.sku}
-          </p>
-          <p>
-            <strong>Quantity:</strong> {modalData.quantity}
-          </p>
+          <h2 className="text-xl font-bold mb-4 text-black">Details</h2>
+          {renderContent()}
         </div>
       </div>
     </div>
