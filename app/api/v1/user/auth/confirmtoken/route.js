@@ -5,9 +5,8 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
-
   const token = searchParams.get("token");
-  console.log(token);
+  console.log("Received token:", token);
 
   try {
     const foundToken = await prisma.token.findUnique({
@@ -15,8 +14,11 @@ export async function GET(request) {
       include: { user: true },
     });
 
-    if (!foundToken || foundToken.expire < new Date()) {
-      return internalRes("Invalid or expired token", {}, 400);
+    console.log("Found token:", foundToken);
+
+    if (!foundToken || foundToken.expire < new Date() || foundToken.used) {
+      console.error("Token not found, expired, or already used.");
+      return internalRes("Invalid, expired, or already used token", {}, 400);
     }
 
     await prisma.user.update({
@@ -24,7 +26,10 @@ export async function GET(request) {
       data: { verified_email: true },
     });
 
-    await prisma.token.delete({ where: { id: foundToken.id } });
+    await prisma.token.update({
+      where: { id: foundToken.id },
+      data: { used: true },
+    });
 
     return internalRes("Email verified successfully", {}, 200);
   } catch (error) {

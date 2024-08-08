@@ -11,6 +11,7 @@ import appConfig from "@/config";
 const SendVerificationEmail = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   const generateToken = () => {
     console.log(user);
@@ -35,6 +36,7 @@ const SendVerificationEmail = () => {
 
       if (response.status === 200) {
         toast.success("Verification email sent");
+        setEmailSent(true);
       } else {
         toast.error("Failed to send verification email");
       }
@@ -77,6 +79,7 @@ const SendVerificationEmail = () => {
         handler={handleSendVerificationEmail}
         text=" Verify Email"
         loading={loading}
+        disabled={loading || emailSent}
       />
     </div>
   );

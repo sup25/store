@@ -1,6 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "@/context/AuthContext";
@@ -13,6 +13,7 @@ const Login = ({ isPopup, redirectToVerification }) => {
   const { setUserStore } = useAuth();
   const [errors, setErrors] = useState([]);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -26,6 +27,7 @@ const Login = ({ isPopup, redirectToVerification }) => {
       [name]: value,
     });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -37,9 +39,15 @@ const Login = ({ isPopup, redirectToVerification }) => {
       );
       const { user, accessToken, refreshToken } = response.data.returnedData;
       setUserStore(user, accessToken, refreshToken);
+
       if (redirectToVerification) {
-        const redirectUrl = `/verify-email?token=${searchParams.get("token")}`;
-        router.push(redirectUrl);
+        const token = searchParams.get("token");
+        if (token) {
+          const redirectUrl = `/user/userdata/email/verifyEmail?token=${token}`;
+          router.push(redirectUrl);
+        } else {
+          toast.error("Token missing. Please try again.");
+        }
       } else {
         router.push("/user/dashboard");
       }
@@ -55,9 +63,8 @@ const Login = ({ isPopup, redirectToVerification }) => {
           toast.error("An error occurred during login");
         }
       } else {
-        toast.error("An error occurred during login");
+        toast.error("An unexpected error occurred");
       }
-      setIsLoading(false);
     } finally {
       setIsLoading(false);
     }
@@ -86,7 +93,7 @@ const Login = ({ isPopup, redirectToVerification }) => {
 
             <Link
               href="/admin/auth/login"
-              className="hover:text-secondary  transition duration-300 ease-in-out"
+              className="hover:text-secondary transition duration-300 ease-in-out"
             >
               Administrative Login
             </Link>

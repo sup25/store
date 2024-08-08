@@ -72,6 +72,12 @@ export const AuthProvider = ({ children }) => {
     sessionStorage.setItem("user", JSON.stringify(updatedUser));
   };
 
+  const verifiedUserEmail = () => {
+    const updatedUser = { ...user, verified_email: true };
+    setUser(updatedUser);
+    sessionStorage.setItem("user", JSON.stringify(updatedUser));
+  };
+
   const updateUserPhone = (phoneNumber) => {
     const updatedUser = { ...user, phone: phoneNumber, verified_phone: true };
     setUser(updatedUser);
@@ -87,6 +93,7 @@ export const AuthProvider = ({ children }) => {
         setUserStore,
         updateUserPhone,
         updateUserAddress,
+        verifiedUserEmail,
       }}
     >
       {children}
