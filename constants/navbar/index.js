@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import NavLinks from "@/common/navLinks";
+import Logo from "@/common/Logo";
 
 export default function Navbar() {
   const router = useRouter();
@@ -13,12 +14,9 @@ export default function Navbar() {
       <div className="section">
         <div className="container">
           <div className=" w-full py-2 px-2 flex justify-between items-center">
-            <h2
-              className="font-bold text-2xl uppercase text-secondary cursor-pointer"
-              onClick={redirectToHome}
-            >
-              store
-            </h2>
+            <div className=" cursor-pointer" onClick={redirectToHome}>
+              <Logo />
+            </div>
             <NavLinks />
           </div>
         </div>
