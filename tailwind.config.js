@@ -37,6 +37,7 @@ module.exports = {
       fontFamily: {
         poppins: "var(--poppins-font)",
         atf: "var(--font-atf)",
+        MG: "var(--font-MG)",
       },
       maxWidth: {
         container: "1280px",

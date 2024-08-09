@@ -6,13 +6,11 @@ import Footer from "@/constants/footer";
 import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "@/context/AuthContext";
 import { CartProvider } from "@/context/cartContext";
+import { generateMetadata } from "./metadata";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
-  title: "Store",
-  description: "A market place",
-};
+export { generateMetadata };
 
 const atf = localFont({
   src: [
@@ -25,9 +23,24 @@ const atf = localFont({
   variable: "--font-atf",
 });
 
+const MollieGlaston = localFont({
+  src: [
+    {
+      path: "../public/fonts/Mollie-Glaston.ttf",
+      weight: "bold",
+    },
+  ],
+  weight: "bold",
+  variable: "--font-MG",
+});
+
 export default function RootLayout({ children }) {
   return (
-    <html className={`${atf.variable}`} lang="en" style={{ height: "100%" }}>
+    <html
+      className={`${atf.variable} ${MollieGlaston.variable}`}
+      lang="en"
+      style={{ height: "100%" }}
+    >
       <body
         className={inter.className}
         style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
