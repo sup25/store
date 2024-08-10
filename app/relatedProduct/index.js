@@ -10,20 +10,30 @@ const RelatedProduct = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get(
-          `/${appConfig.basePath}/admin/auth/product`
-        );
-        setProducts(response.data.returnedData);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        setLoading(false);
-      }
-    };
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
 
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get(
+        `/${appConfig.basePath}/admin/auth/product`
+      );
+      const allProducts = response.data.returnedData;
+      const shuffledProducts = shuffleArray(allProducts);
+      const selectedProducts = shuffledProducts.slice(0, 6);
+      setProducts(selectedProducts);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
     fetchProducts();
   }, []);
 
@@ -31,7 +41,7 @@ const RelatedProduct = () => {
     <div className="section">
       <div className="container">
         <div className="flex flex-col">
-          <h2 className="md:text-5xl font-black text-base mb-10 font-MG ">
+          <h2 className="md:text-6xl font-black text-3xl my-10 font-MG ">
             Related Products
           </h2>
           <div>

@@ -87,10 +87,10 @@ const Products = () => {
     <div className="section">
       <div className="container">
         {loading && <Spinner />}
-        <h1 className="md:text-5xl font-black text-base  font-atf w-full pt-5 pb-8 ">
+        <h1 className="md:text-6xl font-black text-3xl mb-10 font-MG  ">
           Search for Product
         </h1>
-        <div className="flex flex-col w-full mb-10">
+        <div className="flex flex-col w-full my-10">
           <div className="flex items-end w-full gap-5 flex-wrap">
             <GetProductsByPrice
               setPriceRange={setPriceRange}
@@ -100,8 +100,8 @@ const Products = () => {
             <GetProductsByTags handleTagSubmit={handleTagSubmit} />
           </div>
         </div>
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-wrap ">
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-wrap my-4 ">
             {paginatedProducts().length > 0
               ? paginatedProducts().map((product) => (
                   <div key={product.id}>
