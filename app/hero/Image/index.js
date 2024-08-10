@@ -3,7 +3,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import Link from "next/link";
-
+import { Pagination } from "swiper/modules";
 const ClothImages = [
   { id: "1", src: "/images/c1.jpg", alt: "Cloth 1" },
   { id: "2", src: "/images/c2.jpg", alt: "Cloth 2" },
@@ -16,7 +16,13 @@ const HeroImages = () => {
   return (
     <div className="section">
       <div className="container flex flex-col ">
-        <Swiper loop={true} slidesPerView={1} className="w-full rounded">
+        <Swiper
+          pagination={true}
+          modules={[Pagination]}
+          loop={true}
+          slidesPerView={1}
+          className="w-full rounded"
+        >
           {ClothImages.map((clothes) => (
             <SwiperSlide key={clothes.id} className="flex justify-center">
               <Link href={"/products"}>

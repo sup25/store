@@ -87,7 +87,7 @@ const NavLinks = () => {
     links = [
       {
         href: "/login",
-        icon: <FaUserPlus size={20} />,
+        icon: <FaUser size={20} />,
         text: "Login",
         private: false,
       },

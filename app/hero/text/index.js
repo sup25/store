@@ -3,7 +3,7 @@ import React from "react";
 
 const HeroText = () => {
   return (
-    <div className=" flex flex-col gap-5 w-full">
+    <div className=" flex flex-col gap-6 w-full">
       <h2 className="font-MG text-5xl md:text-[78px]  w-full md:leading-[1.3] leading-[1.2] ">
         Feel Luxurious with{" "}
         <span className="bg-tertiary  text-white py-1 px-1 rounded-full w-full">

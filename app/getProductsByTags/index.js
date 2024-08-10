@@ -29,7 +29,10 @@ const GetProductsByTags = ({ handleTagSubmit }) => {
           onChange={(e) => setTag(e.target.value)}
           placeholder="Enter tag"
         />
-        <button className=" bg-tertiary p-2 text-white" onClick={handleSubmit}>
+        <button
+          className=" bg-tertiary hover:bg-primary transition duration-300 ease-in-out p-2 text-white"
+          onClick={handleSubmit}
+        >
           Search
         </button>
       </div>
