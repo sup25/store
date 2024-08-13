@@ -50,7 +50,7 @@ const Button = ({
       onClick={onClick}
       disabled={isLoading || disabled}
       type={type}
-      className={`py-2 px-4 w-full rounded-md bg-primary hover:bg-secondary transition duration-300 ease-in-out  text-white font-semibold flex items-center justify-center ${
+      className={`py-2 px-4 w-full rounded-md bg-primary min-h-10 hover:bg-secondary transition duration-300 ease-in-out  text-white font-semibold flex items-center justify-center ${
         isLoading || disabled ? "opacity-50 cursor-not-allowed" : ""
       } ${className}`}
     >
