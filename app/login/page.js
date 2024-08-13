@@ -31,6 +31,7 @@ const Login = ({ isPopup, redirectToVerification }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrors([]);
 
     try {
       const response = await axiosClient.post(
@@ -54,11 +55,13 @@ const Login = ({ isPopup, redirectToVerification }) => {
     } catch (error) {
       console.error("Error details:", error);
       if (error.response) {
-        console.error("Error response:", error.response.data);
-        setErrors(error.response?.data?.returnedData?.errors || []);
-        if (error.response?.data?.message) {
-          setErrors([error.response.data.message]);
-          toast.error(error.response.data.message);
+        const apiErrors = error.response?.data?.returnedData?.errors || [];
+        setErrors(apiErrors);
+
+        if (apiErrors.length > 0) {
+          apiErrors.forEach((err) => toast.error(err.message));
+        } else if (error.response?.data?.message) {
+          toast.error("Email or passwrod is incorrect");
         } else {
           toast.error("An error occurred during login");
         }
@@ -77,40 +80,27 @@ const Login = ({ isPopup, redirectToVerification }) => {
 
   return (
     <div className="section">
-      {!isPopup && (
-        <div className="container">
-          <div className="flex w-full flex-col justify-center items-center gap-10">
-            <h2 className="text-2xl uppercase font-bold">Login</h2>
-            <AuthForm
-              fields={loginFields}
-              onSubmit={handleSubmit}
-              formData={formData}
-              onChange={handleChange}
-              errors={errors}
-              buttonText="Login"
-              isLoading={isLoading}
-            />
+      <div className="container">
+        <div className="flex w-full flex-col justify-center items-center gap-10">
+          <h2 className="text-2xl uppercase font-bold">Login</h2>
+          <AuthForm
+            fields={loginFields}
+            onSubmit={handleSubmit}
+            formData={formData}
+            onChange={handleChange}
+            errors={errors}
+            buttonText="Continue"
+            isLoading={isLoading}
+          />
 
-            <Link
-              href="/admin/auth/login"
-              className="hover:text-secondary transition duration-300 ease-in-out"
-            >
-              Administrative Login
-            </Link>
-          </div>
+          <Link
+            href="/admin/auth/login"
+            className="hover:text-secondary transition duration-300 ease-in-out"
+          >
+            Administrative Login
+          </Link>
         </div>
-      )}
-      {isPopup && (
-        <AuthForm
-          fields={loginFields}
-          onSubmit={handleSubmit}
-          formData={formData}
-          onChange={handleChange}
-          errors={errors}
-          buttonText="Login"
-          isLoading={isLoading}
-        />
-      )}
+      </div>
     </div>
   );
 };

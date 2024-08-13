@@ -6,17 +6,18 @@ import { useAuth } from "@/context/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { handleAddToCart } from "./handler";
-import LoginPopUp from "../loginPopup";
 import { useCart } from "@/context/cartContext";
 import { CgSpinner } from "react-icons/cg";
+import { LoginModal } from "./component";
 
 const Card = ({ product }) => {
   const { user } = useAuth();
-  const [isLoginPopupVisible, setIsLoginPopupVisible] = useState(false);
+  const [isLoginModalVisible, setIsLoginModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { id, title, description, images, price } = product;
   const [addedToCart, setAddedToCart] = useState(false);
   const { updateCartItems } = useCart();
+
   const getImage = () => {
     if (images && images.length > 0 && images[0].thumbnail) {
       return images[0].thumbnail;
@@ -26,7 +27,7 @@ const Card = ({ product }) => {
 
   const handleCartClick = async () => {
     if (!user) {
-      setIsLoginPopupVisible(true);
+      setIsLoginModalVisible(true);
     } else {
       setIsLoading(true);
       try {
@@ -43,13 +44,13 @@ const Card = ({ product }) => {
     }
   };
 
-  const handleCloseLoginPopup = () => {
-    setIsLoginPopupVisible(false);
+  const handleClose = () => {
+    setIsLoginModalVisible(false);
   };
 
   return (
     <>
-      {isLoginPopupVisible && <LoginPopUp handler={handleCloseLoginPopup} />}
+      {isLoginModalVisible && <LoginModal handler={handleClose} />}
       <div className="relative mx-2 md:w-[300px] h-[400px] cursor-pointer flex flex-col items-center justify-center px-6 py-4 shadow-lg rounded-20 gap-4 transform transition ease-in hover:scale-105">
         <Link
           href={{
