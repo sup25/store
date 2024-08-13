@@ -86,6 +86,7 @@ model Product {
   cart       Cart[]
 }
 
+
 model ProductImage {
   id           Int     @id @default(autoincrement())
   original_url String  @db.VarChar(255)
@@ -94,6 +95,7 @@ model ProductImage {
   productId    Int
   product      Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
+
 
 
 model Sale {
@@ -137,15 +139,16 @@ model Review {
   id        Int     @id @default(autoincrement())
   score     Float
   message   String
-  product   Product @relation(fields: [productId], references: [id])
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int
 }
+
 
 model Cart {
   id       Int      @id @default(autoincrement())
   user     User     @relation(fields: [userId], references: [id])
   userId   Int
-  product  Product  @relation(fields: [productId], references: [id])
+  product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int
   quantity Int
   @@unique([userId, productId])

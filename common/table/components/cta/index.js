@@ -1,13 +1,13 @@
 import { EditButton, DeleteButton } from "./buttons";
 
-const CTA = ({ item, setIsLoading, setProducts, products }) => (
+const CTA = ({ item, setIsLoading, data, setData }) => (
   <div className=" flex w-full gap-5">
     <EditButton item={item} />
     <DeleteButton
       item={item}
       setIsLoading={setIsLoading}
-      setProducts={setProducts}
-      products={products}
+      setProducts={setData}
+      products={data}
     />
   </div>
 );
