@@ -6,6 +6,6 @@ export async function generateMetadata({ params }) {
       ? `Product ${productId} - Store`
       : "Store | Shope Conveniently",
     description:
-      "Welcome to our marketplace where you can explore a wide range of stylish and affordable clothing. From the latest fashion trends to timeless classics, our collection offers something for everyone. Enjoy a seamless shopping experience with secure payment options and fast delivery. Shop now to find the perfect outfits that suit your style and budget.",
+      "Discover a wide range of stylish and affordable clothing at our marketplace. Shop the latest trends and timeless classics with secure payment options and fast delivery. Find your perfect outfit today!",
   };
 }
