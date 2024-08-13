@@ -100,6 +100,37 @@ export const updateProductService = async (productId, updatedFields) => {
 
 export const deleteProductService = async (productId) => {
   const parsedProductId = parseInt(productId, 10);
+
+  const salesWithProduct = await prisma.sale.findMany({
+    where: {
+      products: {
+        some: {
+          id: parsedProductId,
+        },
+      },
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  await Promise.all(
+    salesWithProduct.map((sale) =>
+      prisma.sale.update({
+        where: {
+          id: sale.id,
+        },
+        data: {
+          products: {
+            disconnect: {
+              id: parsedProductId,
+            },
+          },
+        },
+      })
+    )
+  );
+
   const deletedProduct = await prisma.product.delete({
     where: {
       id: parsedProductId,
