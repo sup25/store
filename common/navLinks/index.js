@@ -1,15 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import {
-  FaUser,
-  FaHeart,
-  FaShoppingCart,
-  FaUserPlus,
-  FaSignOutAlt,
-  FaBars,
-  FaTimes,
-} from "react-icons/fa";
+import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
+import { GoSignIn, GoSignOut, GoPersonAdd, GoPerson } from "react-icons/go";
+
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -48,7 +42,7 @@ const NavLinks = () => {
   if (user) {
     links = [
       {
-        icon: <FaUser size={20} />,
+        icon: <GoPerson size={20} />,
         text: user.first_name,
         private: true,
         href: "/user/dashboard",
@@ -62,7 +56,7 @@ const NavLinks = () => {
         private: true,
       },
       {
-        icon: <FaSignOutAlt size={20} />,
+        icon: <GoSignOut size={25} />,
         text: "Logout",
         onClick: () => handleLogout(false),
         private: true,
@@ -71,13 +65,13 @@ const NavLinks = () => {
   } else if (admin) {
     links = [
       {
-        icon: <FaUser size={20} />,
+        icon: <GoPerson size={25} />,
         text: admin.name,
         private: true,
         href: "/admin/dashboard",
       },
       {
-        icon: <FaSignOutAlt size={20} />,
+        icon: <GoSignOut size={25} />,
         text: "Logout",
         onClick: () => handleLogout(true),
         private: true,
@@ -87,13 +81,13 @@ const NavLinks = () => {
     links = [
       {
         href: "/login",
-        icon: <FaUser size={20} />,
+        icon: <GoSignIn size={25} />,
         text: "Login",
         private: false,
       },
       {
         href: "/register",
-        icon: <FaUserPlus size={20} />,
+        icon: <GoPersonAdd size={25} />,
         text: "Register",
         private: false,
       },

@@ -9,7 +9,7 @@ import Link from "next/link";
 import AuthForm from "@/common/authForm";
 import appConfig from "@/config";
 
-const Login = ({ isPopup, redirectToVerification }) => {
+const Login = ({ redirectToVerification }) => {
   const { setUserStore } = useAuth();
   const [errors, setErrors] = useState([]);
   const router = useRouter();

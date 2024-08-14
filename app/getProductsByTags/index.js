@@ -8,12 +8,15 @@ const GetProductsByTags = ({ handleTagSubmit }) => {
   const [tag, setTag] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (tag.trim()) {
       setLoading(true);
-      handleTagSubmit(tag);
-      setLoading(false);
+      try {
+        await handleTagSubmit(tag);
+      } finally {
+        setLoading(false);
+      }
     } else {
       toast.error("Tag cannot be empty");
     }
@@ -30,7 +33,7 @@ const GetProductsByTags = ({ handleTagSubmit }) => {
           placeholder="Enter tag"
         />
         <button
-          className=" bg-tertiary hover:bg-primary transition duration-300 ease-in-out p-2 text-white"
+          className=" bg-secondary hover:bg-primary transition duration-300 ease-in-out p-2 text-white"
           onClick={handleSubmit}
         >
           Search
