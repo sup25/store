@@ -41,7 +41,7 @@ const RelatedProduct = () => {
     <div className="section">
       <div className="container">
         <div className="flex flex-col">
-          <h2 className="md:text-6xl font-black text-3xl my-10 font-MG ">
+          <h2 className="md:text-5xl font-black text-3xl my-10 font-MG ">
             Related Products
           </h2>
           <div>
