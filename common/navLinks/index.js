@@ -23,6 +23,7 @@ const NavLinks = () => {
       setUserStore(null, null, false, true, false);
       toast.success("User logged out successfully");
     }
+    setIsDrawerOpen(false);
   };
 
   const toggleDrawer = () => {
