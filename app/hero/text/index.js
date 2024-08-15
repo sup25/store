@@ -6,12 +6,12 @@ import Search from "../components/search";
 const HeroText = () => {
   return (
     <div className=" flex flex-col gap-6 w-full">
-      <h1 className="font-MG text-5xl md:text-[64px]  w-full md:leading-[1.3] leading-[1.2] ">
-        Feel Luxurious with{" "}
-        <span className="bg-secondary  text-white py-1 px-1 rounded-full w-full">
-          premium
+      <h1 className="font-MG text-5xl md:text-[64px]  w-full  leading-[1.3]  ">
+        Feel Luxurious With{" "}
+        <span className="bg-secondary  text-white py-1 px-2 rounded-full ">
+          Premium
         </span>{" "}
-        quality Outfits
+        Quality Outfits
       </h1>
       <Search />
       <p className="text-base  text-primary w-full max-w-[400px]">

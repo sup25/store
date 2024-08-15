@@ -106,7 +106,7 @@ const NavLinks = () => {
                   <Link
                     href={link.href}
                     onClick={handleLinkClick}
-                    className="flex items-center gap-2 py-2 text-white transition duration-250 ease-in-out hover:bg-slate-400 px-2"
+                    className="flex items-center gap-2 py-2 text-white transition duration-250 ease-in-out hover:bg-secondary px-2"
                   >
                     {link.icon}
                     <span className="text-sm">{link.text}</span>
@@ -114,7 +114,7 @@ const NavLinks = () => {
                 ) : (
                   <div
                     onClick={link.onClick}
-                    className="flex cursor-pointer items-center gap-2 text-white py-2 transition duration-250 ease-in-out hover:bg-slate-400 px-2"
+                    className="flex cursor-pointer items-center gap-2 text-white py-2 transition duration-250 ease-in-out hover:bg-secondary px-2"
                   >
                     {link.icon}
                     <span className="text-sm">{link.text}</span>
