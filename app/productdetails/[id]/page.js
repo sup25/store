@@ -10,6 +10,21 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
 import { Navigation } from "swiper/modules";
 import SelectProductQuantity from "@/app/admin/dashboard/components/selectProductQuantity";
+import {
+  TransformWrapper,
+  TransformComponent,
+  useControls,
+} from "react-zoom-pan-pinch";
+import { GrRotateLeft } from "react-icons/gr";
+const Controls = () => {
+  const { resetTransform } = useControls();
+
+  return (
+    <div className="tools flex w-full justify-center cursor-pointer gap-2 mt-1 mb-1">
+      <GrRotateLeft onClick={() => resetTransform()} />
+    </div>
+  );
+};
 
 const ProductDetailContent = () => {
   const searchParams = useSearchParams();
@@ -37,29 +52,46 @@ const ProductDetailContent = () => {
       {showLoginPopup && <LoginPopUp handler={handleCloseLoginPopup} />}
       <div className="container">
         {product && (
-          <div className="flex md:flex-row flex-col w-full gap-10">
-            <div className="md:w-2/3 w-full flex items-start justify-center">
+          <div className="flex md:flex-row flex-col justify-between w-full gap-10">
+            <div className=" w-2/5 flex items-start justify-center">
               <Swiper
                 modules={[Navigation]}
                 slidesPerView={1}
                 navigation={true}
-                style={{ border: "1px solid black", padding: "10px" }}
+                style={{
+                  border: "1px solid black",
+                  padding: "10px",
+                  width: "100%",
+                }}
               >
                 {product.images.map((image) => (
                   <SwiperSlide
+                    className="w-full"
                     key={image.id}
                     style={{
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      width: "100%",
                     }}
                   >
-                    <img
-                      src={image.original_url}
-                      alt={product.title}
-                      className="md:w-[500px] md:h-[400px] h-full w-full bg-cover justify-center items-center flex"
-                    />
+                    <TransformWrapper
+                      defaultScale={1}
+                      defaultPositionX={0}
+                      defaultPositionY={0}
+                      minScale={1}
+                      limitToBounds={true}
+                    >
+                      <div className="flex flex-col">
+                        <TransformComponent>
+                          <img
+                            src={image.original_url}
+                            alt={product.title}
+                            className="w-full md:w-[350px] h-full bg-cover"
+                          />
+                        </TransformComponent>
+                        <Controls />
+                      </div>
+                    </TransformWrapper>
                   </SwiperSlide>
                 ))}
               </Swiper>
@@ -75,7 +107,7 @@ const ProductDetailContent = () => {
               </p>
               <p className="text-base font-medium">{product.sku}</p>
               <p>{product.short_desc}</p>
-              <p>{product.quantity}</p>
+              {/*  <p>Remaining Quantity: {product.quantity}</p> */}
               <SelectProductQuantity
                 quantity={quantity}
                 setQuantity={setQuantity}

@@ -55,7 +55,7 @@ const Card = ({ product }) => {
         <Link
           href={{
             pathname: `/productdetails/${id}`,
-            query: { product: JSON.stringify(product) },
+            query: { product: encodeURIComponent(JSON.stringify(product)) },
           }}
         >
           <div className="flex flex-col items-center">

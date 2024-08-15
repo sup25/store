@@ -24,7 +24,6 @@ const Search = () => {
       const fetchSuggestions = async () => {
         try {
           const products = await fetchProductsByTag(debouncedSearchTerm);
-          console.log("Fetched products:", products);
           setSuggestions(products);
           setHasSearched(true);
         } catch (err) {
@@ -40,8 +39,7 @@ const Search = () => {
     }
   }, [debouncedSearchTerm]);
 
-  const handleSuggestionClick = (product) => {
-    console.log("Clicked product:", product);
+  const handleSuggestionClick = () => {
     const tagString = encodeURIComponent(searchTerm.trim());
     router.push(`/products?tag=${tagString}`);
   };
