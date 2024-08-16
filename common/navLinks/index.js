@@ -1,8 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
+import { FaBars, FaTimes } from "react-icons/fa";
 import { GoSignIn, GoSignOut, GoPersonAdd, GoPerson } from "react-icons/go";
+import { IoCartOutline } from "react-icons/io5";
 
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "react-toastify";
@@ -43,14 +44,14 @@ const NavLinks = () => {
   if (user) {
     links = [
       {
-        icon: <GoPerson size={20} />,
+        icon: <GoPerson size={25} />,
         text: user.first_name,
         private: true,
         href: "/user/dashboard",
       },
 
       {
-        icon: <FaShoppingCart size={20} />,
+        icon: <IoCartOutline size={25} />,
         text: `My Cart (${cartItems.length})`,
         href: "/user/mycart",
 

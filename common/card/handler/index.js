@@ -20,9 +20,9 @@ export const handleAddToCart = async ({
       `/${appConfig.basePath}/user/products/${userId}`
     );
     updateCartItems(updatedCartItems.data.returnedData);
-    if (data) {
+    /*  if (data) {
       updateCartItems(data);
-    }
+    } */
   } catch (error) {
     console.error("Error adding product to cart:", error);
   }

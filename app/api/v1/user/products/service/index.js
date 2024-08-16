@@ -52,10 +52,14 @@ export const getCartService = async (userId) => {
   return getCartItem;
 };
 
-export const deleteCartService = async (productId) => {
-  const deleteCart = await prisma.Cart.delete({
+export const deleteCartService = async (itemIds) => {
+  const parsedIds = itemIds.map((id) => parseInt(id));
+  console.log("ids", parsedIds);
+  const deleteCart = await prisma.Cart.deleteMany({
     where: {
-      id: productId,
+      id: {
+        in: parsedIds,
+      },
     },
   });
 

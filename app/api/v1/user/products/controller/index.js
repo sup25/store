@@ -15,8 +15,8 @@ export const getCartController = async (userId) => {
   const getCart = await getCartService(userId);
   return getCart;
 };
-export const deleteCartController = async (productId) => {
-  const deleteCart = await deleteCartService(productId);
+export const deleteCartController = async (itemIds) => {
+  const deleteCart = await deleteCartService(itemIds);
   return deleteCart;
 };
 

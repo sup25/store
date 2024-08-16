@@ -20,8 +20,36 @@ const Cart = () => {
 
   useEffect(() => {
     fetchItems(user, setLoading, updateCartItems, setItems);
-  }, [user.id]);
-  console.log("items", items);
+  }, []);
+
+  const handleCheckout = () => {
+    const checkoutData = items.map((item) => ({
+      product: item.product.id,
+      price: Math.round(item.product.price * 100),
+      quantity: item.quantity,
+      name: item.product.title,
+      description: item.product.short_desc,
+      images: [item.product.images[0].original_url],
+      admin: item.product.adminId,
+    }));
+
+    return checkoutData;
+  };
+
+  const handleDeleteAll = () => {
+    const itemIds = items.map((item) => item.id);
+    handleDeleteItem(
+      itemIds,
+      setLoading,
+      fetchItems,
+      toast,
+      user,
+      setItems,
+      updateCartItems,
+      false
+    );
+  };
+
   return (
     <div className="section">
       <div className="container">
@@ -29,7 +57,7 @@ const Cart = () => {
           Your Cart ({items.length}) {items.length === 1 ? "item" : "items"}
         </h2>
         {loading && <Spinner />}
-        <div className="flex  flex-col  w-full justify-between  gap-2  ">
+        <div className="flex flex-col w-full justify-between gap-2">
           {items.length > 0 ? (
             items.map((item) => (
               <div
@@ -44,7 +72,7 @@ const Cart = () => {
                       className="w-20 h-20 object-cover"
                     />
                   )}
-                  <div className="flex w-full text-lg  font-bold">
+                  <div className="flex w-full text-lg font-bold">
                     {item.product.title}
                   </div>
                   <div className="flex w-full text-base font-medium">
@@ -52,13 +80,13 @@ const Cart = () => {
                   </div>
                 </div>
 
-                <div className="flex  w-full  ">
+                <div className="flex w-full">
                   <p className="text-black text-lg font-bold">
                     Price ${item.product.price}
                   </p>
                 </div>
 
-                <div className="flex w-full items-end gap-2 ">
+                <div className="flex w-full items-end gap-2">
                   <SelectProductQuantity
                     quantity={item.quantity}
                     setQuantity={(newQuantity) =>
@@ -73,7 +101,7 @@ const Cart = () => {
                   />
                   <MdDeleteOutline
                     size={35}
-                    className=" cursor-pointer hover:text-red-400"
+                    className="cursor-pointer hover:text-red-400"
                     onClick={() =>
                       handleDeleteItem(
                         item.id,
@@ -87,7 +115,7 @@ const Cart = () => {
                     }
                   />
                 </div>
-                <div className="flex w-full text-[#BFA100] text-xl  font-bold ">
+                <div className="flex w-full text-[#BFA100] text-xl font-bold">
                   Total Price: ${item.product.price * item.quantity}
                 </div>
 
@@ -116,6 +144,20 @@ const Cart = () => {
             <p className="col-span-4 text-center">No items in your cart.</p>
           )}
         </div>
+        {items.length >= 2 && (
+          <div className="my-6 flex flex-col  w-full  items-end  ">
+            <div className="flex flex-col items-start w-fit">
+              <p className="text-base font-bold my-2">Checkout All</p>
+              <BtnCheckout
+                multipleItems={handleCheckout()}
+                user={user}
+                singleItem={false}
+                deleteItem={() => handleDeleteAll()}
+                false
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

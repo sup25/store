@@ -16,7 +16,7 @@ export const handleQuantityChange = (
 };
 
 export const handleDeleteItem = async (
-  itemId,
+  itemIds,
   setLoading,
   fetchItems,
   toast,
@@ -25,14 +25,21 @@ export const handleDeleteItem = async (
   updateCartItems,
   showToast = true
 ) => {
+  if (!Array.isArray(itemIds)) {
+    itemIds = [itemIds];
+  }
   try {
     setLoading(true);
-    await axios.delete(`/${appConfig.basePath}/user/products/${itemId}`);
+    await axios.delete(
+      `/${appConfig.basePath}/user/products/delete/${itemIds.join(",")}`
+    );
+
     if (showToast) {
       toast.success("Item removed successfully");
     }
     fetchItems(user, setLoading, updateCartItems, setItems);
   } catch (error) {
+    console.log(error);
     if (showToast) {
       toast.error("Error removing item");
     }

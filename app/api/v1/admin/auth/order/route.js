@@ -6,19 +6,10 @@ export async function POST(request) {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
   const requestData = await request.json();
   console.log(requestData);
-  const {
-    price,
-    name,
-    description,
-    images,
-    quantity,
-    user,
-    product,
-    address,
-    admin,
-  } = requestData;
 
-  if (!user || !product) {
+  const { items, user, address } = requestData;
+
+  if (!user || (!items && !requestData.product)) {
     console.error("User or product information is missing or incomplete.");
     return new NextResponse(
       "User or product information is missing or incomplete.",
@@ -32,38 +23,65 @@ export async function POST(request) {
   }://${headers.get("host")}`;
 
   try {
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      line_items: [
+    let lineItems = [];
+
+    if (items) {
+      lineItems = items.map((item) => ({
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: item.name,
+            description: item.description,
+            metadata: {
+              productId: item.product,
+              adminId: item.admin,
+              userId: user.id,
+              address: address,
+            },
+            images: item.images,
+          },
+          unit_amount: item.price,
+        },
+        quantity: item.quantity,
+      }));
+    } else {
+      lineItems = [
         {
           price_data: {
             currency: "usd",
-            unit_amount: price,
             product_data: {
-              images: images,
-              name: name,
-              description: description,
+              name: requestData.name,
+              description: requestData.description,
+              metadata: {
+                productId: requestData.product,
+                adminId: requestData.admin,
+                userId: user.id,
+                address: address,
+              },
+              images: requestData.images,
             },
+            unit_amount: requestData.price,
           },
-          quantity: quantity,
+          quantity: requestData.quantity,
         },
-      ],
+      ];
+    }
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: lineItems,
       mode: "payment",
-      success_url: `${baseUrl}/${appConfig.basePath}/order/ordersuccess`,
-      cancel_url: `${baseUrl}/${appConfig.basePath}/order/ordercancel`,
-      metadata: {
-        userId: user,
-        name: name,
-        product: product,
-        address: address,
-        adminId: admin,
-      },
+      success_url: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/cart`,
     });
 
-    return NextResponse.json({ sessionId: session.id });
+    return new NextResponse(
+      JSON.stringify({ sessionId: session.id, appConfig }),
+      { status: 200 }
+    );
   } catch (error) {
-    console.error("Error creating Checkout session:", error);
-    return new NextResponse("Failed to create Checkout session.", {
+    console.error("Error creating checkout session:", error);
+    return new NextResponse("Error creating checkout session", {
       status: 500,
     });
   }
