@@ -19,6 +19,6 @@ export const getPurchasedProducts = async ({ userId }) => {
   const response = await axios.get(
     `/${appConfig.basePath}/user/products/order/${userId}`
   );
-  console.log("response: ", response);
+
   return response.data.returnedData;
 };
