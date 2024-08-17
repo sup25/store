@@ -64,30 +64,31 @@ const Cart = () => {
                 key={item.id}
                 className="flex w-full md:flex-row flex-col justify-between items-end gap-2 border-b-2 py-2"
               >
-                <div className="flex flex-col w-full px-1 gap-1">
+                <div className="flex  w-full px-1 py-2 gap-2">
                   {item.product.images.length > 0 && (
                     <img
                       src={item.product.images[0].original_url}
                       alt={item.product.title}
-                      className="w-20 h-20 object-cover"
+                      className="w-24 h-24 object-cover"
                     />
                   )}
-                  <div className="flex w-full text-lg font-bold">
-                    {item.product.title}
-                  </div>
-                  <div className="flex w-full text-base font-medium">
-                    {item.product.short_desc}
+
+                  <div className="flex flex-col">
+                    <p className="flex w-full text-lg font-bold">
+                      {item.product.title}
+                    </p>
+                    <p className="flex w-full text-base font-medium">
+                      {item.product.short_desc}
+                    </p>
+                    <p className="text-black text-lg font-bold">
+                      Price ${item.product.price}
+                    </p>
                   </div>
                 </div>
 
-                <div className="flex w-full ">
-                  <p className="text-black text-lg font-bold">
-                    Price ${item.product.price}
-                  </p>
-                </div>
-
-                <div className="flex w-full items-end gap-2">
+                <div className="flex w-full items-center  gap-2">
                   <SelectProductQuantity
+                    title={false}
                     quantity={item.quantity}
                     setQuantity={(newQuantity) =>
                       handleQuantityChange(
@@ -100,7 +101,7 @@ const Cart = () => {
                     }
                   />
                   <MdDeleteOutline
-                    size={35}
+                    size={25}
                     className="cursor-pointer hover:text-red-400"
                     onClick={() =>
                       handleDeleteItem(

@@ -1,6 +1,6 @@
 import { FaMinus, FaPlus } from "react-icons/fa";
 
-const SelectProductQuantity = ({ quantity, setQuantity }) => {
+const SelectProductQuantity = ({ quantity, setQuantity, title = true }) => {
   const handleQuantityIncrease = () => {
     setQuantity(quantity + 1);
   };
@@ -13,7 +13,7 @@ const SelectProductQuantity = ({ quantity, setQuantity }) => {
 
   return (
     <div className="flex flex-col items-start  gap-2 w-full max-w-[150px]">
-      <p className="text-base">Quantity</p>
+      {title && <p className="text-base">Quantity</p>}
       <div className="flex gap-3 w-full border justify-between px-2 py-2">
         <button
           onClick={handleQuantityDecrease}
