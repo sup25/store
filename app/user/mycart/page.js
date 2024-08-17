@@ -80,7 +80,7 @@ const Cart = () => {
                   </div>
                 </div>
 
-                <div className="flex w-full">
+                <div className="flex w-full ">
                   <p className="text-black text-lg font-bold">
                     Price ${item.product.price}
                   </p>
@@ -115,39 +115,19 @@ const Cart = () => {
                     }
                   />
                 </div>
-                <div className="flex w-full text-[#BFA100] text-xl font-bold">
+                <div className="flex w-full text-[#BFA100] text-xl font-bold justify-end">
                   Total Price: ${item.product.price * item.quantity}
                 </div>
-
-                <BtnCheckout
-                  product={item.product}
-                  quantity={item.quantity}
-                  admin={item.product.adminId}
-                  user={user}
-                  deleteItem={(itemId) =>
-                    handleDeleteItem(
-                      itemId,
-                      setLoading,
-                      fetchItems,
-                      toast,
-                      user,
-                      setItems,
-                      updateCartItems,
-                      false
-                    )
-                  }
-                  itemId={item.id}
-                />
               </div>
             ))
           ) : (
             <p className="col-span-4 text-center">No items in your cart.</p>
           )}
         </div>
-        {items.length >= 2 && (
-          <div className="my-6 flex flex-col  w-full  items-end  ">
-            <div className="flex flex-col items-start w-fit">
-              <p className="text-base font-bold my-2">Checkout All</p>
+
+        <div className="my-6 flex flex-col  w-full  items-end  ">
+          <div className="flex flex-col items-start w-fit">
+            {items.length >= 1 && (
               <BtnCheckout
                 multipleItems={handleCheckout()}
                 user={user}
@@ -155,9 +135,9 @@ const Cart = () => {
                 deleteItem={() => handleDeleteAll()}
                 false
               />
-            </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
