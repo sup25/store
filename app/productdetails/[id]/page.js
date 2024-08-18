@@ -121,11 +121,15 @@ const ProductDetailContent = () => {
                   quantity={quantity}
                 />
                 <BtnCheckout
-                  product={product}
-                  quantity={quantity}
+                  items={[
+                    {
+                      product: product,
+                      quantity: quantity,
+                      admin: product.adminId,
+                    },
+                  ]}
                   showLoginPopup={() => setShowLoginPopup(true)}
                   user={user}
-                  admin={product.adminId}
                 />
               </div>
             </div>

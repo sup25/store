@@ -10,6 +10,8 @@ import Accordion from "@/common/accordion";
 const SideBar = () => {
   const router = useRouter();
   const [activeItem, setActiveItem] = useState("");
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [autoCollapseTimeout, setAutoCollapseTimeout] = useState(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -21,9 +23,22 @@ const SideBar = () => {
   }, []);
 
   const handleItemClick = (itemName, path) => {
+    console.log(path);
     setActiveItem(itemName);
     sessionStorage.setItem("activeItem", itemName);
     router.push(path);
+  };
+
+  const handleExpand = () => {
+    setIsExpanded(true);
+    clearTimeout(autoCollapseTimeout);
+  };
+
+  const handleCollapse = () => {
+    const timeout = setTimeout(() => {
+      setIsExpanded(false);
+    }, 500);
+    setAutoCollapseTimeout(timeout);
   };
 
   const items = [
@@ -48,18 +63,31 @@ const SideBar = () => {
   ];
 
   return (
-    <div className="flex flex-col gap-2 ">
+    <div
+      onMouseEnter={handleExpand}
+      onMouseLeave={handleCollapse}
+      onTouchStart={handleExpand}
+      onTouchEnd={handleCollapse}
+      className={`flex shadow-md h-fit px-1 py-1 flex-col gap-2 transition-all duration-300 ${
+        isExpanded ? "w-64" : "w-20"
+      }`}
+    >
+      <div className="flex items-center justify-between px-2 py-2 cursor-pointer">
+        <span className="text-lg font-bold">Menu</span>
+      </div>
       {items.map((item, index) => (
         <div key={index}>
           {!item.subItems ? (
             <div
-              className={`flex cursor-pointer px-2 gap-2 py-2 items-center hover:bg-slate-300  rounded transition ease-in duration-300 ${
+              className={`flex cursor-pointer px-2 gap-2 py-2 items-center hover:bg-secondary rounded transition ease-in duration-300 ${
                 activeItem === item.name ? "bg-tertiary" : ""
               }`}
               onClick={() => handleItemClick(item.name, item.path)}
             >
               {item.icon}
-              <span className=" text-base  font-bold">{item.name}</span>
+              {isExpanded && (
+                <div className="text-base md:none font-bold">{item.name}</div>
+              )}
             </div>
           ) : (
             <Accordion
@@ -69,6 +97,7 @@ const SideBar = () => {
               onItemClick={(subItem) =>
                 handleItemClick(subItem.text, subItem.path)
               }
+              isExpanded={isExpanded}
             />
           )}
         </div>

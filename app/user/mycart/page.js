@@ -22,20 +22,6 @@ const Cart = () => {
     fetchItems(user, setLoading, updateCartItems, setItems);
   }, []);
 
-  const handleCheckout = () => {
-    const checkoutData = items.map((item) => ({
-      product: item.product.id,
-      price: Math.round(item.product.price * 100),
-      quantity: item.quantity,
-      name: item.product.title,
-      description: item.product.short_desc,
-      images: [item.product.images[0].original_url],
-      admin: item.product.adminId,
-    }));
-
-    return checkoutData;
-  };
-
   const handleDeleteAll = () => {
     const itemIds = items.map((item) => item.id);
     handleDeleteItem(
@@ -49,7 +35,10 @@ const Cart = () => {
       false
     );
   };
-
+  const totalPrice = items.reduce(
+    (acc, item) => acc + item.product.price * item.quantity,
+    0
+  );
   return (
     <div className="section">
       <div className="container">
@@ -129,13 +118,16 @@ const Cart = () => {
         <div className="my-6 flex flex-col  w-full  items-end  ">
           <div className="flex flex-col items-start w-fit">
             {items.length >= 1 && (
-              <BtnCheckout
-                multipleItems={handleCheckout()}
-                user={user}
-                singleItem={false}
-                deleteItem={() => handleDeleteAll()}
-                false
-              />
+              <div className="flex flex-col gap-2">
+                <p className="text-lg font-bold">
+                  Grand Total: ${totalPrice.toFixed(2)}
+                </p>
+                <BtnCheckout
+                  deleteItem={handleDeleteAll}
+                  items={items}
+                  user={user}
+                />
+              </div>
             )}
           </div>
         </div>
