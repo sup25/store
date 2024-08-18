@@ -34,7 +34,7 @@ model Address {
   zipcode String  @db.VarChar(255)
   apt     String? @db.VarChar(255)
   user    User    @relation(fields: [userId], references: [id])
-  userId  Int    
+  userId  Int
   orders  Order[] @relation("OrderToAddress")
 }
 
@@ -53,14 +53,15 @@ model Token {
 }
 
 model Admin {
-  id       Int       @id @default(autoincrement())
-  name     String    @db.VarChar(255)
-  email    String    @unique @db.VarChar(255)
-  password String    @db.VarChar(255)
-  role     String?   @default("admin") @db.VarChar(255)
-  tokens   Token[]
-  products Product[]
-  Status   Status[]
+  id         Int          @id @default(autoincrement())
+  name       String       @db.VarChar(255)
+  email      String       @unique @db.VarChar(255)
+  password   String       @db.VarChar(255)
+  role       String?      @default("admin") @db.VarChar(255)
+  tokens     Token[]
+  products   Product[]
+  Status     Status[]
+  OrderAdmin OrderAdmin[]
 
   @@map("admin")
 }
@@ -86,7 +87,6 @@ model Product {
   cart       Cart[]
 }
 
-
 model ProductImage {
   id           Int     @id @default(autoincrement())
   original_url String  @db.VarChar(255)
@@ -96,44 +96,53 @@ model ProductImage {
   product      Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
-
-
 model Sale {
-  id         Int      @id @default(autoincrement())
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @default(now()) @updatedAt 
-  products   Product[] 
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  products  Product[]
   orders    Order[]
 }
 
-
-
 model Order {
-  id          Int       @id @default(autoincrement())
-  address     Address   @relation(fields: [addressId], references: [id], name: "OrderToAddress")
+  id          Int          @id @default(autoincrement())
+  address     Address      @relation(fields: [addressId], references: [id], name: "OrderToAddress")
   addressId   Int
   total_price Int
   net_price   Int
-  sale        Sale      @relation(fields: [saleId], references: [id])
+  sale        Sale         @relation(fields: [saleId], references: [id])
   saleId      Int
   statuses    Status[]
   notes       String?
   products    Product[]
-  user        User      @relation(fields: [userId], references: [id])
+  user        User         @relation(fields: [userId], references: [id])
   userId      Int
-  name        String 
+  name        String
+  admins      OrderAdmin[]
+}
+
+model OrderAdmin {
+  id       Int     @id @default(autoincrement())
+  order    Order   @relation(fields: [orderId], references: [id])
+  orderId  Int
+  admin    Admin   @relation(fields: [adminId], references: [id])
+  adminId  Int
+  Status   Status? @relation(fields: [statusId], references: [id])
+  statusId Int?
+
+  @@unique([orderId, adminId])
 }
 
 model Status {
-  id      Int      @id @default(autoincrement())
+  id      Int          @id @default(autoincrement())
   type    String
-  date    DateTime @default(now())
-  admin   Admin    @relation(fields: [adminId], references: [id])
-  adminId Int
-  order   Order    @relation(fields: [orderId], references: [id])
+  date    DateTime     @default(now())
+  admins  OrderAdmin[]
+  order   Order        @relation(fields: [orderId], references: [id])
   orderId Int
+  Admin   Admin?       @relation(fields: [adminId], references: [id])
+  adminId Int?
 }
-
 
 model Review {
   id        Int     @id @default(autoincrement())
@@ -143,13 +152,13 @@ model Review {
   productId Int
 }
 
-
 model Cart {
-  id       Int      @id @default(autoincrement())
-  user     User     @relation(fields: [userId], references: [id])
-  userId   Int
-  product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  id        Int     @id @default(autoincrement())
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int
-  quantity Int
+  quantity  Int
+
   @@unique([userId, productId])
 }

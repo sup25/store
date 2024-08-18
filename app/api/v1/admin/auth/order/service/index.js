@@ -2,20 +2,21 @@ import prisma from "@/_lib/prisma";
 
 export const createOrderService = async (orderData) => {
   const addressData = JSON.parse(orderData.address)[0];
-  console.log("addressdata", addressData);
 
   const dataWithDefaults = {
     address: addressData,
     price: parseInt(orderData.price, 10) || 0,
     name: orderData.name,
-    product: parseInt(orderData.product, 10),
+    products: orderData.products.map((product) =>
+      parseInt(product.productId || product, 10)
+    ),
     user: parseInt(orderData.user, 10),
-    admin: parseInt(orderData.admin, 10),
+    admin: orderData.admin.split(",").map((adminId) => parseInt(adminId, 10)),
   };
 
   if (
     !dataWithDefaults.name ||
-    !dataWithDefaults.product ||
+    !dataWithDefaults.products.length ||
     !dataWithDefaults.user
   ) {
     throw new Error("Missing required order details");
@@ -59,27 +60,47 @@ export const createOrderService = async (orderData) => {
       sale: {
         create: {
           products: {
-            connect: [{ id: dataWithDefaults.product }],
+            connect: dataWithDefaults.products.map((productId) => ({
+              id: productId,
+            })),
           },
         },
       },
       products: {
-        connect: { id: dataWithDefaults.product },
+        connect: dataWithDefaults.products.map((productId) => ({
+          id: productId,
+        })),
       },
       user: {
         connect: { id: dataWithDefaults.user },
       },
-      statuses: {
-        create: {
-          type: "completed",
-          date: new Date(),
-          admin: {
-            connect: { id: dataWithDefaults.admin },
-          },
-        },
-      },
     },
   });
+
+  await Promise.all(
+    orderData.products.map(async (product) => {
+      const adminId = product.admin;
+
+      if (adminId) {
+        await prisma.status.create({
+          data: {
+            type: "completed",
+            date: new Date(),
+            order: {
+              connect: { id: order.id },
+            },
+            Admin: {
+              connect: { id: adminId },
+            },
+          },
+        });
+      } else {
+        console.error(
+          `Admin ID is undefined for product with ID: ${product.productId}`
+        );
+      }
+    })
+  );
 
   return order;
 };

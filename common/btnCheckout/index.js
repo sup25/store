@@ -1,3 +1,5 @@
+"use client";
+
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import { useState } from "react";
@@ -6,17 +8,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import appConfig from "@/config";
 
-const BtnCheckout = ({
-  product,
-  quantity,
-  showLoginPopup,
-  user,
-  deleteItem = null,
-  itemId,
-  admin,
-  multipleItems = null,
-  singleItem = true,
-}) => {
+const BtnCheckout = ({ items, showLoginPopup, user, deleteItem = null }) => {
   const [loading, setLoading] = useState(false);
 
   const proceedCheckout = async (e) => {
@@ -26,61 +18,33 @@ const BtnCheckout = ({
     const stripe = await loadStripe(publishableKey);
 
     try {
-      if (singleItem && (!product || quantity === 0)) {
-        toast.error("No items in the cart to checkout.");
-        setLoading(false);
-        return;
-      }
-
-      if (!singleItem && (!multipleItems || multipleItems.length === 0)) {
-        toast.error("No items in the cart to checkout.");
-        setLoading(false);
-        return;
-      }
-
-      if (deleteItem) {
-        if (singleItem && itemId) {
-          await deleteItem([itemId]);
-        } else if (multipleItems) {
-          const itemIds = multipleItems.map((item) => item.id);
-          await deleteItem(multipleItems);
-        }
-      }
-
       if (
         !user.addresses ||
         user.addresses.length === 0 ||
         !user.verified_email ||
         !user.verified_phone
       ) {
-        toast.error("Please complete your profile before checking out");
+        toast.error("Please complete your profile before checking out.");
         setLoading(false);
         return;
+      } else if (deleteItem) {
+        const itemIds = items.map((item) => item.id);
+        await deleteItem(itemIds);
       }
 
-      let checkoutSessionData;
-      if (singleItem) {
-        const priceInCents = Math.round(product.price * 100);
-        const address = JSON.stringify(user.addresses);
-        checkoutSessionData = {
-          product: product.id,
-          price: priceInCents,
-          quantity: quantity,
-          name: product.title,
-          description: product.short_desc,
-          images: [product.images[0].original_url],
-          user: user.id,
-          address: address,
-          admin: admin,
-        };
-      } else {
-        const address = JSON.stringify(user.addresses);
-        checkoutSessionData = {
-          items: multipleItems,
-          user: user.id,
-          address: address,
-        };
-      }
+      const checkoutSessionData = {
+        items: items.map((item) => ({
+          product: item.product.id,
+          price: Math.round(item.product.price * 100),
+          quantity: item.quantity,
+          name: item.product.title,
+          description: item.product.short_desc,
+          images: [item.product.images[0].original_url],
+          admin: item.product.adminId,
+        })),
+        user: user.id,
+        address: JSON.stringify(user.addresses),
+      };
 
       const checkoutSession = await axios.post(
         `/${appConfig.basePath}/admin/auth/order`,
@@ -103,7 +67,7 @@ const BtnCheckout = ({
       }
     } catch (error) {
       console.error("Error during checkout:", error.message);
-      alert("Error during checkout. Please try again later.");
+      toast.error("Error during checkout. Please try again later.");
     } finally {
       setLoading(false);
     }

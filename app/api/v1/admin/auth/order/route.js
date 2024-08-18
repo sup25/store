@@ -1,18 +1,22 @@
 import Stripe from "stripe";
 import { NextResponse } from "next/server";
-import appConfig from "@/config";
 
 export async function POST(request) {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
   const requestData = await request.json();
-  console.log(requestData);
+
+  console.log("requestedData", requestData);
 
   const { items, user, address } = requestData;
 
-  if (!user || (!items && !requestData.product)) {
-    console.error("User or product information is missing or incomplete.");
+  const validItems = items.filter(
+    (item) => item.product && item.price && item.quantity
+  );
+
+  if (!user || !items || items.length === 0) {
+    console.error("User or items information is missing or incomplete.");
     return new NextResponse(
-      "User or product information is missing or incomplete.",
+      "User or items information is missing or incomplete.",
       { status: 400 }
     );
   }
@@ -23,49 +27,28 @@ export async function POST(request) {
   }://${headers.get("host")}`;
 
   try {
-    let lineItems = [];
+    const lineItems = validItems.map((item) => ({
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name: item.name,
+          description: item.description,
+          images: item.images,
+        },
+        unit_amount: item.price,
+      },
+      quantity: item.quantity,
+    }));
+    const adminIds = validItems.map((item) => item.admin).join(",");
+    const products = validItems.map((item) => ({
+      productId: item.product,
+      name: item.name,
+      price: item.price,
+      quantity: item.quantity,
+      admin: item.admin,
+    }));
 
-    if (items) {
-      lineItems = items.map((item) => ({
-        price_data: {
-          currency: "usd",
-          product_data: {
-            name: item.name,
-            description: item.description,
-            metadata: {
-              productId: item.product,
-              adminId: item.admin,
-              userId: user.id,
-              address: address,
-            },
-            images: item.images,
-          },
-          unit_amount: item.price,
-        },
-        quantity: item.quantity,
-      }));
-    } else {
-      lineItems = [
-        {
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: requestData.name,
-              description: requestData.description,
-              metadata: {
-                productId: requestData.product,
-                adminId: requestData.admin,
-                userId: user.id,
-                address: address,
-              },
-              images: requestData.images,
-            },
-            unit_amount: requestData.price,
-          },
-          quantity: requestData.quantity,
-        },
-      ];
-    }
+    const names = validItems.map((item) => item.name).join(",");
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -73,12 +56,18 @@ export async function POST(request) {
       mode: "payment",
       success_url: `${baseUrl}/ordersuccess`,
       cancel_url: `${baseUrl}/ordererror`,
+      metadata: {
+        name: names,
+        userId: user,
+        address: address,
+        adminId: adminIds,
+        product: JSON.stringify(products),
+      },
     });
 
-    return new NextResponse(
-      JSON.stringify({ sessionId: session.id, appConfig }),
-      { status: 200 }
-    );
+    return new NextResponse(JSON.stringify({ sessionId: session.id }), {
+      status: 200,
+    });
   } catch (error) {
     console.error("Error creating checkout session:", error);
     return new NextResponse("Error creating checkout session", {

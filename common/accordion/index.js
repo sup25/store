@@ -5,30 +5,30 @@ import {
   MenuItems,
   Transition,
 } from "@headlessui/react";
-
 import { useState } from "react";
 import { FaChevronUp } from "react-icons/fa";
 
-function Accordion({ icon, title, items, onItemClick }) {
+const Accordion = ({ icon, title, items, onItemClick, isExpanded }) => {
   const [active, setActive] = useState(false);
 
   const handleMenuClick = () => {
     setActive(!active);
   };
 
-  const handleMenuItemClick = () => {
+  const handleMenuItemClick = (item) => {
     setActive(false);
+    onItemClick(item);
   };
 
   return (
     <Menu>
       <MenuButton
-        className="flex items-center px-2 gap-2 justify-between w-full"
+        className="flex items-center px-2 gap-2 justify-between w-full py-2 rounded hover:bg-secondary transtion duration-300 ease-in"
         onClick={handleMenuClick}
       >
         <div className="flex items-center gap-2">
           {icon}
-          <p className="text-base  font-bold">{title}</p>
+          {isExpanded && <p className="text-base font-bold">{title}</p>}
         </div>
         <FaChevronUp
           className={`transition-transform ${
@@ -44,25 +44,21 @@ function Accordion({ icon, title, items, onItemClick }) {
         leaveFrom="opacity-100 translate-y-0 scale-y-100"
         leaveTo="opacity-0 translate-y-1 scale-y-0"
       >
-        <MenuItems
-          anchor="bottom start"
-          className="w-[var(--button-width)] [--anchor-gap:4px] sm:[--anchor-gap:4px] text-sm"
-          onClick={handleMenuItemClick}
-        >
+        <MenuItems className="w-[var(--button-width)] [--anchor-gap:4px] sm:[--anchor-gap:4px] text-sm">
           {items.map((item, index) => (
-            <MenuItem key={index}>
-              <div
-                onClick={() => onItemClick(item)}
-                className="block data-[focus]:bg-blue-100 px-2 py-2 bg-white hover:bg-slate-200 transition duration-300 cursor-pointer"
-              >
-                {item.text}
-              </div>
+            <MenuItem
+              key={index}
+              as="div"
+              onClick={() => handleMenuItemClick(item)}
+              className="block data-[focus]:bg-blue-100 px-2 py-2 bg-white hover:bg-slate-200 transition duration-300 cursor-pointer"
+            >
+              {isExpanded && <span>{item.text}</span>}
             </MenuItem>
           ))}
         </MenuItems>
       </Transition>
     </Menu>
   );
-}
+};
 
 export default Accordion;
