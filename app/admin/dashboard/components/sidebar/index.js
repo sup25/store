@@ -10,7 +10,7 @@ import Accordion from "@/common/accordion";
 const SideBar = () => {
   const router = useRouter();
   const [activeItem, setActiveItem] = useState("");
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   const [autoCollapseTimeout, setAutoCollapseTimeout] = useState(null);
 
   useEffect(() => {
@@ -19,6 +19,21 @@ const SideBar = () => {
       if (storedActiveItem) {
         setActiveItem(storedActiveItem);
       }
+
+      const handleResize = () => {
+        if (window.innerWidth <= 768) {
+          setIsExpanded(false);
+        } else {
+          setIsExpanded(true);
+        }
+      };
+
+      handleResize();
+      window.addEventListener("resize", handleResize);
+
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
     }
   }, []);
 
@@ -30,15 +45,19 @@ const SideBar = () => {
   };
 
   const handleExpand = () => {
-    setIsExpanded(true);
-    clearTimeout(autoCollapseTimeout);
+    if (window.innerWidth <= 768) {
+      setIsExpanded(true);
+      clearTimeout(autoCollapseTimeout);
+    }
   };
 
   const handleCollapse = () => {
-    const timeout = setTimeout(() => {
-      setIsExpanded(false);
-    }, 500);
-    setAutoCollapseTimeout(timeout);
+    if (window.innerWidth <= 768) {
+      const timeout = setTimeout(() => {
+        setIsExpanded(false);
+      }, 500);
+      setAutoCollapseTimeout(timeout);
+    }
   };
 
   const items = [

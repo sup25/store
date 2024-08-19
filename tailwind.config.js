@@ -59,6 +59,15 @@ module.exports = {
         ".container": {
           maxWidth: theme("maxWidth.container"),
         },
+        ".admin-dash-card": {
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          width: "100%",
+          display: "flex",
+          padding: "16px 6px 16px 6px",
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+        },
         ".table-container": {
           "@media (max-width: 1200px)": {
             overflowX: "scroll",

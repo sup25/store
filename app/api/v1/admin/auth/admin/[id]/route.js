@@ -14,6 +14,9 @@ export async function GET(request, { params }) {
       where: {
         id: id,
       },
+      select: {
+        createdAt: true,
+      },
     });
 
     if (!admin) {
