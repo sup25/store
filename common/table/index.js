@@ -11,6 +11,7 @@ const Table = ({
   data,
   setData,
   columns,
+  columnLabels,
   showSearch = true,
   uniqueKey,
   showActions = true,
@@ -55,38 +56,35 @@ const Table = ({
   };
 
   return (
-    <div className="section">
-      <div className="container">
-        <div className="text-white flex flex-col gap-5 w-full overflow-hidden">
-          {showSearch && (
-            <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-          )}
-          <div className="overflow-x-scroll min-h-80">
-            {loading ? (
-              <LoadingMessage />
-            ) : filteredData.length === 0 ? (
-              <NoItemsFoundMessage />
-            ) : (
-              <TableBody
-                data={sortedPaginatedData}
-                setIsLoading={setLoading}
-                handleSort={handleSort}
-                sortConfig={sortConfig}
-                setData={setData}
-                columns={columns}
-                uniqueKey={uniqueKey}
-                showActions={showActions}
-                excludeKeys={excludeKeys}
-              />
-            )}
-          </div>
-          <Pagination
-            currentPage={currentPage}
-            handlePageChange={setCurrentPage}
-            totalPages={totalPages}
+    <div className="text-white flex flex-col gap-5 w-full overflow-hidden">
+      {showSearch && (
+        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      )}
+      <div className="overflow-x-scroll min-h-80">
+        {loading ? (
+          <LoadingMessage />
+        ) : filteredData.length === 0 ? (
+          <NoItemsFoundMessage />
+        ) : (
+          <TableBody
+            data={sortedPaginatedData}
+            setIsLoading={setLoading}
+            handleSort={handleSort}
+            sortConfig={sortConfig}
+            setData={setData}
+            columns={columns}
+            uniqueKey={uniqueKey}
+            showActions={showActions}
+            excludeKeys={excludeKeys}
+            columnLabels={columnLabels}
           />
-        </div>
+        )}
       </div>
+      <Pagination
+        currentPage={currentPage}
+        handlePageChange={setCurrentPage}
+        totalPages={totalPages}
+      />
     </div>
   );
 };

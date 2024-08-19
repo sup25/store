@@ -13,6 +13,7 @@ const TableBody = ({
   uniqueKey,
   showActions,
   excludeKeys = [],
+  columnLabels = {},
 }) => {
   const [modalData, setModalData] = useState(null);
 
@@ -42,10 +43,9 @@ const TableBody = ({
           {columns.map((key) => (
             <div
               key={key}
-              className="p-2 border cursor-pointer flex-grow flex-shrink-0 min-w-[120px] overflow-hidden"
+              className="p-2 border bg-primary text-white cursor-pointer flex-grow flex-shrink-0 min-w-[120px] overflow-hidden"
               style={{
                 flex: 1,
-                background: "gray",
               }}
               onClick={() => handleSort(key)}
             >
@@ -65,15 +65,12 @@ const TableBody = ({
                     }}
                   />
                 )}
-                {key}
+                {columnLabels[key] || key}
               </div>
             </div>
           ))}
           {showActions && (
-            <div
-              className="p-2 border flex-shrink-0 min-w-[100px] overflow-hidden"
-              style={{ background: "gray" }}
-            >
+            <div className="p-2 border bg-primary text-white flex-shrink-0 min-w-[100px] overflow-hidden">
               Actions
             </div>
           )}
