@@ -5,7 +5,7 @@ const ProductListItems = ({ item, sold }) => {
     <div>
       <li
         key={item.id}
-        className={`flex justify-between items-center p-3 rounded-lg ${
+        className={`flex md:flex-row justify-between gap-4 flex-col items-center p-3 rounded-lg ${
           sold ? "bg-green-100" : "bg-red-100"
         }`}
       >
@@ -14,8 +14,12 @@ const ProductListItems = ({ item, sold }) => {
           src={item.image[0]}
           alt={item.title}
         />
-        <span className="font-medium">{item.title}</span>
-        <span className={`font-bold text-${sold ? "green" : "red"}-700`}>
+        <span className="font-bold md:text-2xl text-xl">{item.title}</span>
+        <span
+          className={`font-bold md:text-2xl text-xl text-${
+            sold ? "green" : "red"
+          }-700`}
+        >
           {sold ? `${item.sold} sold` : "0 sold"}
         </span>
       </li>

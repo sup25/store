@@ -6,6 +6,8 @@ import { SoldProducts } from "./components/soldProducts";
 import { UnsoldProducts } from "./components/unSoldProducts";
 import Spinner from "@/common/spinner";
 import { useAdminData } from "./createproduct/hooks";
+import { TotalSales } from "./components/totalSales";
+import { MemberDate } from "./components/memberDate";
 
 const Dashboard = () => {
   const [soldItems, setSoldItems] = useState([]);
@@ -22,6 +24,7 @@ const Dashboard = () => {
     try {
       setLoading(true);
       const response = await getProductSales(adminId);
+
       if (response && response.returnedData) {
         const sortedProducts = response.returnedData.sort(
           (a, b) => b.sold - a.sold
@@ -46,16 +49,23 @@ const Dashboard = () => {
   }, [adminId]);
 
   return (
-    <div className="section bg-gray-100 py-8">
-      <div className="container mx-auto px-4">
-        <h2 className="text-2xl font-bold text-center mb-6">
-          Total Products ({totalProducts})
-        </h2>
-        {loading && <Spinner />}
-        <SoldProducts soldItems={soldItems} />
-        <UnsoldProducts unsoldItems={unsoldItems} />
+    <>
+      {loading && <Spinner />}
+      <div className="section  py-8">
+        <div className="container ">
+          <div className="flex flex-col flex-wrap gap-16">
+            <div className="flex flex-wrap w-full gap-10 ">
+              <MemberDate totalProducts={totalProducts} />
+              <TotalSales soldItems={soldItems} />
+            </div>
+            <div className="flex flex-wrap w-full justify-between">
+              <SoldProducts soldItems={soldItems} />
+              <UnsoldProducts unsoldItems={unsoldItems} />
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -154,6 +154,11 @@ export const getProductSalesDataService = async (adminId) => {
           thumbnail: true,
         },
       },
+      Order: {
+        select: {
+          total_price: true,
+        },
+      },
     },
   });
 
@@ -161,7 +166,9 @@ export const getProductSalesDataService = async (adminId) => {
     title: product.title,
     sold: product.sales.length,
     image: product.images.map((image) => image.original_url),
+    total_price: product.Order?.total_price || 0,
   }));
+
   productSalesData.sort((a, b) => b.sold - a.sold);
   return productSalesData;
 };
