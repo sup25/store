@@ -2,11 +2,19 @@
 import { useRouter } from "next/navigation";
 import NavLinks from "@/common/navLinks";
 import Logo from "@/common/Logo";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Navbar() {
+  const { user, admin } = useAuth();
   const router = useRouter();
   const redirectToHome = () => {
-    router.push("/");
+    if (user) {
+      router.push("/");
+    } else if (admin) {
+      router.push("/admin/dashboard");
+    } else {
+      router.push("/");
+    }
   };
 
   return (

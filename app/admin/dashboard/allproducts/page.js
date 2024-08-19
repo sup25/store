@@ -9,6 +9,14 @@ const AllProducts = () => {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
 
+  const columnLabels = {
+    id: "ID",
+    sku: "SKU",
+    title: "Title",
+    price: "Price",
+    quantity: "Quantity",
+  };
+
   useEffect(() => {
     const adminToken = sessionStorage.getItem("adminAccessToken");
     if (adminToken) {
@@ -20,7 +28,7 @@ const AllProducts = () => {
   return (
     <div className="section overflow-hidden">
       <div className="container ">
-        <h1 className="text-2xl font-bold mb-4 w-fit pl-6">Product List</h1>
+        <h1 className="text-2xl font-bold mb-4 w-fit ">Product List</h1>
         <div className="overflow-hidden">
           {loading ? (
             <Spinner />
@@ -32,6 +40,7 @@ const AllProducts = () => {
               showSearch={true}
               uniqueKey="id"
               excludeKeys={["images", "adminId", "orderId"]}
+              columnLabels={columnLabels}
             />
           )}
         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { FiPackage, FiShoppingBag } from "react-icons/fi";
 import { MdDashboard } from "react-icons/md";
 
@@ -9,56 +9,10 @@ import Accordion from "@/common/accordion";
 
 const SideBar = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const [activeItem, setActiveItem] = useState("");
   const [isExpanded, setIsExpanded] = useState(true);
   const [autoCollapseTimeout, setAutoCollapseTimeout] = useState(null);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedActiveItem = sessionStorage.getItem("activeItem");
-      if (storedActiveItem) {
-        setActiveItem(storedActiveItem);
-      }
-
-      const handleResize = () => {
-        if (window.innerWidth <= 768) {
-          setIsExpanded(false);
-        } else {
-          setIsExpanded(true);
-        }
-      };
-
-      handleResize();
-      window.addEventListener("resize", handleResize);
-
-      return () => {
-        window.removeEventListener("resize", handleResize);
-      };
-    }
-  }, []);
-
-  const handleItemClick = (itemName, path) => {
-    console.log(path);
-    setActiveItem(itemName);
-    sessionStorage.setItem("activeItem", itemName);
-    router.push(path);
-  };
-
-  const handleExpand = () => {
-    if (window.innerWidth <= 768) {
-      setIsExpanded(true);
-      clearTimeout(autoCollapseTimeout);
-    }
-  };
-
-  const handleCollapse = () => {
-    if (window.innerWidth <= 768) {
-      const timeout = setTimeout(() => {
-        setIsExpanded(false);
-      }, 500);
-      setAutoCollapseTimeout(timeout);
-    }
-  };
 
   const items = [
     {
@@ -80,6 +34,61 @@ const SideBar = () => {
       path: "/admin/dashboard/completedorders",
     },
   ];
+
+  useEffect(() => {
+    const matchedItem = items.find((item) => item.path === pathname);
+    if (matchedItem) {
+      setActiveItem(matchedItem.name);
+      sessionStorage.setItem("activeItem", matchedItem.name);
+    } else {
+      items.forEach((item) => {
+        if (
+          item.subItems &&
+          item.subItems.some((subItem) => subItem.path === pathname)
+        ) {
+          setActiveItem(item.name);
+          sessionStorage.setItem("activeItem", item.name);
+        }
+      });
+    }
+
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setIsExpanded(false);
+      } else {
+        setIsExpanded(true);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [pathname]);
+
+  const handleItemClick = (itemName, path) => {
+    setActiveItem(itemName);
+    sessionStorage.setItem("activeItem", itemName);
+    router.push(path);
+  };
+
+  const handleExpand = () => {
+    if (window.innerWidth <= 768) {
+      setIsExpanded(true);
+      clearTimeout(autoCollapseTimeout);
+    }
+  };
+
+  const handleCollapse = () => {
+    if (window.innerWidth <= 768) {
+      const timeout = setTimeout(() => {
+        setIsExpanded(false);
+      }, 500);
+      setAutoCollapseTimeout(timeout);
+    }
+  };
 
   return (
     <div
