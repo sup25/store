@@ -27,8 +27,11 @@ const Table = ({
     setLoading(true);
     const lowercasedFilter = searchTerm.toLowerCase();
     const filtered = data.filter((item) => {
-      return columns.some((column) =>
-        item[column].toString().toLowerCase().includes(lowercasedFilter)
+      return (
+        (columns.includes("sku") &&
+          item.sku.toString().toLowerCase().includes(lowercasedFilter)) ||
+        (columns.includes("name") &&
+          item.name.toString().toLowerCase().includes(lowercasedFilter))
       );
     });
     setFilteredData(filtered);

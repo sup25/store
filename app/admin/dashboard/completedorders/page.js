@@ -17,6 +17,7 @@ const CompletedOrders = () => {
     user_name: "User Name",
     user_email: "User Email",
     address: "Address",
+    sku: "Sku",
   };
 
   useEffect(() => {
@@ -29,6 +30,7 @@ const CompletedOrders = () => {
           try {
             const response = await getCompletedOrder(decodedToken.id);
             if (response.returnedData) {
+              console.log(response.returnedData);
               setOrders(response.returnedData || []);
             } else {
               console.error(
@@ -56,10 +58,14 @@ const CompletedOrders = () => {
     .map((order) => ({
       id: order.id,
       name: order.name,
-      total_price: order.total_price,
+      total_price: `$${(order.total_price / 100).toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
       user_name: `${order.user.first_name} ${order.user.last_name}`,
       user_email: order.user.email,
       address: `${order.address.street}, ${order.address.city}, ${order.address.state}, ${order.address.zipcode}, ${order.address.country}`,
+      sku: order.OrderProduct.map((product) => product.product.sku).join(", "),
     }));
 
   return (
@@ -79,9 +85,10 @@ const CompletedOrders = () => {
               "user_name",
               "user_email",
               "address",
+              "sku",
             ]}
             columnLabels={columnLabels}
-            showSearch={false}
+            showSearch={true}
             uniqueKey="id"
             showActions={false}
             excludeKeys={[
