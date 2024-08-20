@@ -26,7 +26,7 @@ const SearchBar = ({ searchTerm, setSearchTerm }) => {
         placeholder="Search by SKU or Name..."
         value={searchTerm}
         onChange={handleInputChange}
-        className="p-2 text-black border border-primary w-full"
+        className="p-2 text-black border font-others border-primary w-full"
       />
     </div>
   );

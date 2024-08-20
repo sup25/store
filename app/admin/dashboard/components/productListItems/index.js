@@ -14,9 +14,11 @@ const ProductListItems = ({ item, sold }) => {
           src={item.image[0]}
           alt={item.title}
         />
-        <span className="font-bold md:text-2xl text-xl">{item.title}</span>
+        <span className="md:text-2xl font-others text-center w-fit  text-xl font-semibold">
+          {item.title}
+        </span>
         <span
-          className={`font-bold md:text-2xl text-xl text-${
+          className={`font-semibold md:text-2xl font-others text-center w-fit text-xl text-${
             sold ? "green" : "red"
           }-700`}
         >

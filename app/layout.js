@@ -1,4 +1,4 @@
-import { Inter } from "next/font/google";
+import { Inter, Poppins, Raleway } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/constants/navbar";
@@ -9,6 +9,18 @@ import { CartProvider } from "@/context/cartContext";
 import { generateMetadata } from "./metadata";
 
 const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-poppins",
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
+const raleway = Raleway({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-raleway",
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
 
 export { generateMetadata };
 
@@ -37,7 +49,7 @@ const MollieGlaston = localFont({
 export default function RootLayout({ children }) {
   return (
     <html
-      className={`${atf.variable} ${MollieGlaston.variable}`}
+      className={`${atf.variable} ${MollieGlaston.variable} ${poppins.variable} ${raleway.variable}`}
       lang="en"
       style={{ height: "100%" }}
     >

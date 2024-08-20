@@ -35,7 +35,8 @@ module.exports = {
         contact: "0px 69px 114px rgba(0, 0, 0, 0.08)",
       },
       fontFamily: {
-        poppins: "var(--poppins-font)",
+        poppins: "var(--font-poppins)",
+        raleway: "var(--font-raleway)",
         atf: "var(--font-atf)",
         MG: "var(--font-MG)",
       },
@@ -59,6 +60,20 @@ module.exports = {
         ".container": {
           maxWidth: theme("maxWidth.container"),
         },
+        ".font-heading": {
+          fontFamily: "var(--font-raleway)",
+          fontWeight: "600",
+          fontSize: "48px",
+          lineHeight: "1.3",
+          width: "100%",
+        },
+        ".font-others": {
+          fontFamily: "var(--font-poppins)",
+          fontWeight: "400",
+          fontSize: "16px",
+          lineHeight: "24px",
+          width: "100%",
+        },
         ".admin-dash-card": {
           display: "flex",
           flexDirection: "column",
@@ -68,6 +83,20 @@ module.exports = {
           padding: "16px 6px 16px 6px",
           boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
         },
+        ".list": {
+          marginBottom: "24px",
+          flexDirection: "column",
+          justifyContent: "center",
+          width: "100%",
+          maxWidth: "500px",
+          height: "100%",
+          maxHeight: "384px",
+          borderRadius: "0.375rem",
+          display: "flex",
+          padding: "16px 8px 16px 8px",
+          boxShadow: "0 10px 15px rgba(0, 0, 0, 0.2)",
+        },
+
         ".table-container": {
           "@media (max-width: 1200px)": {
             overflowX: "scroll",
@@ -76,6 +105,9 @@ module.exports = {
         "@media screen and (max-width: 768px)": {
           ".none": {
             display: "none !important",
+          },
+          ".font-heading": {
+            fontSize: "40px",
           },
         },
       });

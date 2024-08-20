@@ -14,8 +14,8 @@ export const ImageManipulator = ({ formData, setFormData }) => {
         htmlFor="imageInput"
         className={
           uploading || selectedFiles.length === 6
-            ? "bg-gray-500 text-sm text-white py-2 px-4 rounded-md transition duration-300 cursor-not-allowed w-[150px] flex items-center justify-center"
-            : "cursor-pointer text-sm bg-blue-500 text-white py-2 px-4 rounded-md transition duration-300 hover:bg-blue-600 w-[150px] flex items-center justify-center"
+            ? "bg-gray-500 text-sm text-white font-others py-2 px-4 rounded-md transition duration-300 cursor-not-allowed w-[150px] flex items-center justify-center"
+            : "cursor-pointer font-others text-sm bg-blue-500 text-white py-2 px-4 rounded-md transition duration-300 hover:bg-blue-600 w-[150px] flex items-center justify-center"
         }
       >
         {uploading ? <Spinner /> : "Upload Image"}
@@ -59,7 +59,7 @@ export const ImageManipulator = ({ formData, setFormData }) => {
                       setRemoving
                     )
                   }
-                  className="text-white cursor-pointer border py-1 px-1 hover:border-blue-500 transition ease-in-out duration-300 flex items-center justify-center w-[100px]"
+                  className="text-white  font-others cursor-pointer border py-1 px-1 hover:border-blue-500 transition ease-in-out duration-300 flex items-center justify-center w-[100px]"
                   disabled={removing}
                 >
                   {removing ? <Spinner /> : "Remove"}

@@ -66,7 +66,7 @@ const Register = () => {
     <div className="section">
       <div className="container">
         <div className="flex w-full flex-col justify-center items-center gap-10 pb-20 ">
-          <h2 className="text-2xl uppercase font-bold">Register</h2>
+          <h2 className="font-heading  text-center">Register</h2>
           <AuthForm
             fields={registerFields}
             onSubmit={handleSubmit}
@@ -76,9 +76,10 @@ const Register = () => {
             buttonText="Register"
             isLoading={isLoading}
           />
+
           <Link
             href="/admin/auth/register"
-            className="hover:border-b border-primary transition duration-300 ease-in-out"
+            className="hover:text-secondary text-center font-others transition duration-300 ease-in-out"
           >
             Businees Account
           </Link>

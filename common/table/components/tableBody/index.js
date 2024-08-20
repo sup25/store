@@ -50,7 +50,10 @@ const TableBody = ({
               }}
               onClick={() => handleSort(key)}
             >
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div
+                className="font-others font-semibold w-fit"
+                style={{ display: "flex", alignItems: "center" }}
+              >
                 {sortConfig.key === key ? (
                   sortConfig.direction === "ascending" ? (
                     <FaSortUp style={{ marginRight: "5px", color: "green" }} />
@@ -71,7 +74,7 @@ const TableBody = ({
             </div>
           ))}
           {showActions && (
-            <div className="p-2 border bg-primary text-white flex-shrink-0 min-w-[100px] overflow-hidden">
+            <div className="p-2 border font-others w-fit font-semibold bg-primary text-white flex-shrink-0 min-w-[100px] overflow-hidden">
               Actions
             </div>
           )}
@@ -86,7 +89,7 @@ const TableBody = ({
           >
             {columns.map((key) => (
               <div
-                className="p-2 border text-black flex-grow flex-shrink-0 min-w-[120px] overflow-hidden"
+                className="p-2 border text-black font-others w-fit flex-grow flex-shrink-0 min-w-[120px] overflow-hidden"
                 key={key}
                 style={{
                   background: "lightgray",

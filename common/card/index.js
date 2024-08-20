@@ -58,15 +58,21 @@ const Card = ({ product }) => {
             query: { product: encodeURIComponent(JSON.stringify(product)) },
           }}
         >
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col  items-center">
             <img
-              className="w-60 h-60 object-cover"
+              className="w-60 h-60 object-cover rounded"
               src={getImage()}
               alt={title}
             />
-            <div className="font-bold text-center text-lg">{title}</div>
-            <p className="text-gray-700 text-sm text-center">{description}</p>
-            <p className="text-[#BFA100] text-xl font-bold">${price}</p>
+            <p className="font-bold font-heading text-center text-lg mt-2">
+              {title}
+            </p>
+            <p className="text-gray-700  font-others text-sm text-center">
+              {description}
+            </p>
+            <p className="text-[#BFA100] font-others text-center text-2xl font-bold">
+              ${price}
+            </p>
           </div>
         </Link>
         <div className="relative group">
@@ -81,7 +87,7 @@ const Card = ({ product }) => {
                 stroke={addedToCart ? "red" : "black"}
                 className="cursor-pointer"
               />
-              <span className="absolute right-[-100px] top-0 bg-primary text-white text-xs py-1 px-2 rounded transition-transform transform translate-x-[100%] opacity-0 group-hover:translate-x-0 group-hover:opacity-100">
+              <span className="absolute right-[-100px] top-0 bg-primary text-white text-xs  px-2 rounded transition-transform transform translate-x-[100%] opacity-0 group-hover:translate-x-0 group-hover:opacity-100">
                 Add to cart
               </span>
             </>
