@@ -110,9 +110,7 @@ const Products = () => {
     <div className="section">
       <div className="container">
         {loading && <Spinner />}
-        <h1 className="md:text-5xl font-black text-3xl mb-10 font-MG">
-          Search for Product
-        </h1>
+        <h1 className="font-heading mb-10  text-center">Search for Product</h1>
         <div className="flex flex-col w-full my-10">
           <div className="flex items-end w-full gap-5 flex-wrap">
             <GetProductsByPrice
@@ -123,8 +121,8 @@ const Products = () => {
             <GetProductsByTags handleTagSubmit={handleTagSubmit} />
           </div>
         </div>
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-wrap my-4">
+        <div className="flex flex-col gap-6  items-center">
+          <div className="flex flex-wrap gap-20 justify-between my-10">
             {paginatedProducts().length > 0
               ? paginatedProducts().map((product) => (
                   <div key={product.id}>

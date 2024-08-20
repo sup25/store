@@ -101,7 +101,7 @@ const SideBar = () => {
       }`}
     >
       <div className="flex items-center justify-between px-2 py-2 cursor-pointer">
-        <span className="text-lg font-bold">Menu</span>
+        <span className="font-others text-lg font-bold">Menu</span>
       </div>
       {items.map((item, index) => (
         <div key={index}>
@@ -114,7 +114,9 @@ const SideBar = () => {
             >
               {item.icon}
               {isExpanded && (
-                <div className="text-base md:none font-bold">{item.name}</div>
+                <div className="font-others text-base md:none font-bold">
+                  {item.name}
+                </div>
               )}
             </div>
           ) : (

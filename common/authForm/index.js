@@ -35,7 +35,10 @@ const AuthForm = ({
     >
       {fields.map((field) => (
         <div key={field.name} className="flex flex-col gap-2">
-          <label htmlFor={field.name} className="text-lg font-semibold">
+          <label
+            htmlFor={field.name}
+            className="font-others text-lg font-semibold"
+          >
             {field.label}:
           </label>
           <div className="relative">
@@ -48,7 +51,7 @@ const AuthForm = ({
               value={formData[field.name]}
               onChange={onChange}
               required={field.required}
-              className="py-2 px-2 w-full"
+              className="py-2 px-2 w-full font-others"
             />
             {field.type === "password" && (
               <button
@@ -72,7 +75,7 @@ const AuthForm = ({
       <Button
         type="submit"
         isLoading={isLoading}
-        className="bg-primary text-white font-bold flex items-center justify-center w-fit py-2 px-2"
+        className="bg-primary font-others text-white font-bold flex items-center justify-center w-fit py-2 px-2"
       >
         {buttonText}
       </Button>

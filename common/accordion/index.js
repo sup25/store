@@ -28,7 +28,9 @@ const Accordion = ({ icon, title, items, onItemClick, isExpanded }) => {
       >
         <div className="flex items-center gap-2">
           {icon}
-          {isExpanded && <p className="text-base font-bold">{title}</p>}
+          {isExpanded && (
+            <p className="font-others text-base font-bold">{title}</p>
+          )}
         </div>
         <FaChevronUp
           className={`transition-transform ${
@@ -52,7 +54,9 @@ const Accordion = ({ icon, title, items, onItemClick, isExpanded }) => {
               onClick={() => handleMenuItemClick(item)}
               className="block data-[focus]:bg-blue-100 px-2 py-2 bg-white hover:bg-slate-200 transition duration-300 cursor-pointer"
             >
-              {isExpanded && <span>{item.text}</span>}
+              {isExpanded && (
+                <span className="font-others text-base">{item.text}</span>
+              )}
             </MenuItem>
           ))}
         </MenuItems>

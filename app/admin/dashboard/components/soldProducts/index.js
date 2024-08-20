@@ -3,19 +3,21 @@ import ProductList from "../productList";
 
 export const SoldProducts = ({ soldItems }) => {
   return (
-    <div className="mb-6 shadow-lg w-full md:max-w-[500px] h-full max-h-96 rounded-md px-2 py-4 ">
-      <h3 className="md:text-2xl text-xl font-bold mb-4">
+    <div className="list">
+      <h3 className="md:text-2xl font-heading py-2 text-xl font-bold ">
         Sold Items({soldItems.length})
       </h3>
-      {soldItems.length === 0 ? (
-        <EmptyMessage />
-      ) : (
-        <div className=" overflow-y-auto">
-          {soldItems.map((item) => (
-            <ProductList key={item.id} soldData={item} />
-          ))}
-        </div>
-      )}
+      <div className="h-full overflow-y-scroll">
+        {soldItems.length === 0 ? (
+          <EmptyMessage />
+        ) : (
+          <div className="">
+            {soldItems.map((item) => (
+              <ProductList key={item.id} soldData={item} />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

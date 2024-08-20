@@ -36,11 +36,11 @@ export const MemberDate = ({ totalProducts }) => {
         color: "#333",
       }}
     >
-      <p className="md:text-2xl text-xl font-bold">
+      <p className="md:text-2xl font-heading  text-xl font-bold">
         Joined:{" "}
         {admin?.createdAt ? formatDate(admin.createdAt) : "Date not available"}
       </p>
-      <h2 className="md:text-2xl text-xl font-bold">
+      <h2 className="md:text-2xl text-xl font-heading  font-bold">
         Total Products ({totalProducts})
       </h2>
     </div>

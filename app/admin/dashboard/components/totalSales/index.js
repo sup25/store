@@ -28,8 +28,10 @@ export const TotalSales = ({ soldItems }) => {
         backgroundSize: "cover",
       }}
     >
-      <h2 className="md:text-2xl text-xl font-bold">Earning Report</h2>
-      <h3 className="md:text-2xl text-xl font-bold flex items-center w-full gap-3">
+      <h2 className="md:text-2xl font-heading text-xl font-bold">
+        Earning Report
+      </h2>
+      <h3 className="md:text-2xl font-heading  text-xl font-bold flex items-center w-full gap-3">
         Total:{" "}
         <span className="md:text-5xl text:2xl font-bold text-[#BFA100]">
           ${totalSales.toFixed(2)}

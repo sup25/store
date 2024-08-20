@@ -41,9 +41,7 @@ const RelatedProduct = () => {
     <div className="section">
       <div className="container">
         <div className="flex flex-col">
-          <h2 className="md:text-5xl font-black text-3xl my-10 font-MG ">
-            Related Products
-          </h2>
+          <h2 className="font-heading my-10">Related Products</h2>
           <div>
             <Swiper
               slidesPerView={1}

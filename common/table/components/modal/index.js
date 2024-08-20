@@ -13,8 +13,6 @@ const Modal = ({
     }
   };
 
-  const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
-
   const renderContent = () => {
     return Object.entries(modalData)
       .filter(([key]) => !excludeKeys.includes(key))
@@ -34,7 +32,10 @@ const Modal = ({
         }
 
         return (
-          <p key={key} className="mb-2 text-black">
+          <p
+            key={key}
+            className="mb-2 text-black font-others w-fit font-medium"
+          >
             <strong>{columnLabels[key] || key}:</strong> {displayValue}
           </p>
         );
@@ -44,21 +45,21 @@ const Modal = ({
   return (
     <div
       id="tableModal"
-      className="fixed inset-0  bg-black bg-opacity-50 flex items-center justify-center z-[99999999]"
+      className="fixed inset-0 px-2 bg-black bg-opacity-50 flex items-center justify-center z-[99999999]"
       onClick={closeModal}
     >
       <div
-        className="bg-white mx-1 p-5 rounded-lg shadow-lg max-w-lg w-full relative"
+        className="bg-white  p-5 rounded-lg shadow-lg max-w-lg w-full relative"
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+          className="absolute top-2 right-2 font-others w-fit text-gray-500 hover:text-gray-800"
           onClick={onClose}
         >
           Close
         </button>
         <div className="flex flex-col">
-          <h2 className="text-xl font-bold mb-4 text-black">Details</h2>
+          <h2 className="text-2xl font-heading  mb-4 text-black">Details</h2>
           {renderContent()}
         </div>
       </div>

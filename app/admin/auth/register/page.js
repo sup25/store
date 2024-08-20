@@ -63,9 +63,7 @@ const Register = () => {
     <div className="section">
       <div className="container">
         <div className="flex w-full flex-col justify-center items-center gap-10 pb-20 ">
-          <h2 className="text-2xl uppercase font-bold">
-            Register Business Account
-          </h2>
+          <h2 className="font-heading  text-center">Business Account</h2>
           <AuthForm
             fields={registerFields}
             onSubmit={handleSubmit}

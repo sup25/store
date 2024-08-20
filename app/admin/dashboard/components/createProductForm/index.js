@@ -69,7 +69,10 @@ const CreateProductForm = ({
     >
       {fields.map((field) => (
         <div key={field.name} className="flex flex-col gap-2">
-          <label htmlFor={field.name} className="text-lg font-semibold">
+          <label
+            htmlFor={field.name}
+            className="text-lg font-others font-semibold"
+          >
             {field.label}:
           </label>
           <div className="relative">
@@ -82,7 +85,7 @@ const CreateProductForm = ({
                 value={formData[field.name] || ""}
                 onChange={onChange}
                 required={field.required}
-                className={`py-2 px-2 w-full ${
+                className={`py-2 px-2 w-full font-others ${
                   errors.some((error) => error.field === field.name)
                     ? "border-red-500"
                     : ""
@@ -97,7 +100,7 @@ const CreateProductForm = ({
                 value={formData[field.name]}
                 onChange={onChange}
                 required={field.required}
-                className="py-2 px-2 w-full"
+                className="py-2 px-2 font-others w-full"
                 rows="4"
               />
             )}
