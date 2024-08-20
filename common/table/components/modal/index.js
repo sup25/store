@@ -1,4 +1,10 @@
-const Modal = ({ isOpen, onClose, modalData, excludeKeys = [] }) => {
+const Modal = ({
+  isOpen,
+  onClose,
+  modalData,
+  excludeKeys = [],
+  columnLabels = {},
+}) => {
   if (!isOpen) return null;
 
   const closeModal = (e) => {
@@ -29,7 +35,7 @@ const Modal = ({ isOpen, onClose, modalData, excludeKeys = [] }) => {
 
         return (
           <p key={key} className="mb-2 text-black">
-            <strong>{capitalize(key)}:</strong> {displayValue}
+            <strong>{columnLabels[key] || key}:</strong> {displayValue}
           </p>
         );
       });
@@ -38,11 +44,11 @@ const Modal = ({ isOpen, onClose, modalData, excludeKeys = [] }) => {
   return (
     <div
       id="tableModal"
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[99999999]"
+      className="fixed inset-0  bg-black bg-opacity-50 flex items-center justify-center z-[99999999]"
       onClick={closeModal}
     >
       <div
-        className="bg-white p-5 rounded-lg shadow-lg max-w-lg w-full relative"
+        className="bg-white mx-1 p-5 rounded-lg shadow-lg max-w-lg w-full relative"
         onClick={(e) => e.stopPropagation()}
       >
         <button

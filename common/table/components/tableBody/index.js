@@ -35,6 +35,7 @@ const TableBody = ({
           modalData={modalData}
           onClose={closeModal}
           excludeKeys={excludeKeys}
+          columnLabels={columnLabels}
         />
       )}
       <div className="w-full flex flex-col">
