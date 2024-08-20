@@ -1,11 +1,13 @@
 import { internalRes } from "@/app/api/utils/globalResponse";
-import { getOrderController } from "../controller";
+import { getCompletedOrderController } from "../controller";
 
 export async function GET(request, { params }) {
   const { id } = params;
   try {
-    const getSuccessfulOrder = await getOrderController(parseInt(id, 10));
-    console.log(getSuccessfulOrder);
+    const getSuccessfulOrder = await getCompletedOrderController(
+      parseInt(id, 10)
+    );
+
     return internalRes(
       "completed order successfully recived ",
       getSuccessfulOrder,

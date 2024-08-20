@@ -16,6 +16,7 @@ const CompletedOrders = () => {
     total_price: "Total Price",
     user_name: "User Name",
     user_email: "User Email",
+    address: "Address",
   };
 
   useEffect(() => {
@@ -53,9 +54,12 @@ const CompletedOrders = () => {
       order.statuses.some((status) => status.type === "completed")
     )
     .map((order) => ({
-      ...order,
+      id: order.id,
+      name: order.name,
+      total_price: order.total_price,
       user_name: `${order.user.first_name} ${order.user.last_name}`,
       user_email: order.user.email,
+      address: `${order.address.street}, ${order.address.city}, ${order.address.state}, ${order.address.zipcode}, ${order.address.country}`,
     }));
 
   return (
@@ -68,7 +72,14 @@ const CompletedOrders = () => {
           <Table
             data={completedOrders}
             setData={setOrders}
-            columns={["id", "name", "total_price", "user_name", "user_email"]}
+            columns={[
+              "id",
+              "name",
+              "total_price",
+              "user_name",
+              "user_email",
+              "address",
+            ]}
             columnLabels={columnLabels}
             showSearch={false}
             uniqueKey="id"

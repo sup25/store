@@ -66,22 +66,26 @@ export const createOrderService = async (orderData) => {
           },
         },
       },
-      products: {
-        connect: dataWithDefaults.products.map((productId) => ({
-          id: productId,
-        })),
-      },
       user: {
         connect: { id: dataWithDefaults.user },
+      },
+      OrderProduct: {
+        create: dataWithDefaults.products.map((productId) => ({
+          product: {
+            connect: { id: productId },
+          },
+        })),
       },
     },
   });
 
   await Promise.all(
-    orderData.products.map(async (product) => {
-      const adminId = product.admin;
+    dataWithDefaults.products.map(async (productId) => {
+      const product = await prisma.product.findUnique({
+        where: { id: productId },
+      });
 
-      if (adminId) {
+      if (product && product.adminId) {
         await prisma.status.create({
           data: {
             type: "completed",
@@ -90,13 +94,13 @@ export const createOrderService = async (orderData) => {
               connect: { id: order.id },
             },
             Admin: {
-              connect: { id: adminId },
+              connect: { id: product.adminId },
             },
           },
         });
       } else {
         console.error(
-          `Admin ID is undefined for product with ID: ${product.productId}`
+          `Admin ID is undefined for product with ID: ${productId}`
         );
       }
     })
@@ -122,35 +126,33 @@ export const updateOrderStatusService = async (orderDetails) => {
   });
 };
 
-export const getOrderService = async (adminId) => {
+export const getCompletedOrderService = async (adminId) => {
   const orders = await prisma.order.findMany({
     where: {
-      OR: [
-        {
-          statuses: {
-            some: {
-              type: "completed",
-            },
-          },
-        },
-        {
-          statuses: {
-            some: {
-              type: "canceled",
-            },
-          },
-        },
-      ],
-      products: {
+      OrderProduct: {
         some: {
-          adminId: adminId,
+          product: {
+            adminId: adminId,
+          },
+        },
+      },
+      statuses: {
+        some: {
+          type: {
+            in: ["completed", "canceled"],
+          },
         },
       },
     },
     include: {
+      OrderProduct: {
+        include: {
+          product: true,
+        },
+      },
       statuses: true,
-      products: true,
       user: true,
+      address: true,
     },
   });
   return orders;

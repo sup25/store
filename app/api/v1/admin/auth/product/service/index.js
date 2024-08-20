@@ -142,6 +142,7 @@ export const deleteProductService = async (productId) => {
 
 export const getProductSalesDataService = async (adminId) => {
   const parsedAdminId = parseInt(adminId);
+
   const products = await prisma.product.findMany({
     where: {
       adminId: parsedAdminId,
@@ -154,20 +155,32 @@ export const getProductSalesDataService = async (adminId) => {
           thumbnail: true,
         },
       },
-      Order: {
-        select: {
-          total_price: true,
+      OrderProduct: {
+        include: {
+          order: {
+            select: {
+              total_price: true,
+            },
+          },
         },
       },
     },
   });
 
-  const productSalesData = products.map((product) => ({
-    title: product.title,
-    sold: product.sales.length,
-    image: product.images.map((image) => image.original_url),
-    total_price: product.Order?.total_price || 0,
-  }));
+  const productSalesData = products.map((product) => {
+    const totalSold = product.sales.length;
+    const totalPrice = product.OrderProduct.reduce(
+      (acc, orderProduct) => acc + (orderProduct.order.total_price || 0),
+      0
+    );
+
+    return {
+      title: product.title,
+      sold: totalSold,
+      image: product.images.map((image) => image.original_url),
+      total_price: totalPrice,
+    };
+  });
 
   productSalesData.sort((a, b) => b.sold - a.sold);
   return productSalesData;
