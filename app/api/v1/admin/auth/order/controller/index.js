@@ -1,6 +1,6 @@
 import {
   createOrderService,
-  getOrderService,
+  getCompletedOrderService,
   updateOrderStatusService,
 } from "../service";
 
@@ -14,7 +14,7 @@ export const updateOrderStatusController = async (orderDetails) => {
   return order;
 };
 
-export const getOrderController = async (adminId) => {
-  const order = await getOrderService(adminId);
+export const getCompletedOrderController = async (adminId) => {
+  const order = await getCompletedOrderService(adminId);
   return order;
 };
