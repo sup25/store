@@ -28,7 +28,7 @@ const AllProducts = () => {
   return (
     <div className="section overflow-hidden">
       <div className="container ">
-        <h1 className="text-2xl font-bold mb-4 w-fit ">Product List</h1>
+        <h1 className="font-heading ">Product List</h1>
         <div className="overflow-hidden">
           {loading ? (
             <Spinner />

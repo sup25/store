@@ -185,3 +185,123 @@ export const getProductSalesDataService = async (adminId) => {
   productSalesData.sort((a, b) => b.sold - a.sold);
   return productSalesData;
 };
+
+export const createReviewService = async (body) => {
+  console.log("service", body);
+  const { productId, userId, score, message } = body;
+
+  if (!productId || !userId) {
+    throw new Error("Product ID and User ID are required.");
+  }
+
+  const hasPurchased = await prisma.order.findMany({
+    where: {
+      userId: Number(userId),
+      OrderProduct: {
+        some: {
+          productId: Number(productId),
+        },
+      },
+    },
+  });
+
+  if (hasPurchased.length === 0) {
+    throw new Error("User must purchase the product before leaving a review.");
+  }
+
+  const review = await prisma.review.create({
+    data: {
+      score,
+      message,
+      product: {
+        connect: { id: productId },
+      },
+      user: {
+        connect: { id: userId },
+      },
+    },
+  });
+
+  return review;
+};
+
+export const getReviewsByProductIdService = async (productId) => {
+  const reviews = await prisma.review.findMany({
+    where: {
+      productId: Number(productId),
+    },
+    include: {
+      product: {
+        select: {
+          title: true,
+        },
+      },
+      user: {
+        select: {
+          id: true,
+          first_name: true,
+          last_name: true,
+          email: true,
+        },
+      },
+    },
+  });
+
+  if (!reviews || reviews.length === 0) {
+    throw new Error("No reviews found for this product.");
+  }
+
+  return reviews;
+};
+
+export const editReviewService = async (body) => {
+  const { reviewId, updatedFields, userId } = body;
+  const review = await prisma.review.findUnique({
+    where: {
+      id: Number(reviewId),
+    },
+  });
+
+  if (!review) {
+    throw new Error("Review not found.");
+  }
+
+  if (review.userId !== userId) {
+    throw new Error("You are not authorized to edit this review.");
+  }
+
+  const updatedReview = await prisma.review.update({
+    where: {
+      id: Number(reviewId),
+    },
+    data: updatedFields,
+  });
+
+  return updatedReview;
+};
+
+export const deleteReviewService = async (body) => {
+  const { reviewId, userId } = body;
+
+  const review = await prisma.review.findUnique({
+    where: {
+      id: Number(reviewId),
+    },
+  });
+
+  if (!review) {
+    throw new Error("Review not found.");
+  }
+
+  if (review.userId !== userId) {
+    throw new Error("You are not authorized to delete this review.");
+  }
+
+  const deletedReview = await prisma.review.delete({
+    where: {
+      id: Number(reviewId),
+    },
+  });
+
+  return deletedReview;
+};

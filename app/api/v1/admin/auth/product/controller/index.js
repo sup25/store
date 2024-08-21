@@ -5,6 +5,10 @@ import {
   getProductsService,
   updateProductService,
   getProductSalesDataService,
+  createReviewService,
+  getReviewsByProductIdService,
+  editReviewService,
+  deleteReviewService,
 } from "../service";
 
 export async function createProductController(body) {
@@ -34,4 +38,23 @@ export async function deleteProductController(productId) {
 export async function getProductSalesDataController(adminId) {
   const getProduct = await getProductSalesDataService(adminId);
   return getProduct;
+}
+
+export async function createReviewController(body) {
+  const createReview = await createReviewService(body);
+  return createReview;
+}
+
+export async function getReviewsByProductIdController(adminId) {
+  const getReview = await getReviewsByProductIdService(adminId);
+  return getReview;
+}
+
+export async function editReviewController(body) {
+  const editReview = await editReviewService(body);
+  return editReview;
+}
+export async function deleteReviewController(body) {
+  const deleteReview = await deleteReviewService(body);
+  return deleteReview;
 }

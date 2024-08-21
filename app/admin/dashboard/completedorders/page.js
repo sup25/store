@@ -71,9 +71,7 @@ const CompletedOrders = () => {
   return (
     <div className="section overflow-hidden">
       <div className="container mx-auto mt-8">
-        <h2 className=" md:text-2xl font-heading  text-xl font-bold  mb-4">
-          Completed Orders
-        </h2>
+        <h2 className="font-heading  mb-4">Completed Orders</h2>
         {loading ? (
           <Spinner />
         ) : (
