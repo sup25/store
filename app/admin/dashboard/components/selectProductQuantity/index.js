@@ -13,12 +13,14 @@ const SelectProductQuantity = ({ quantity, setQuantity, title = true }) => {
 
   return (
     <div className="flex flex-col items-start  gap-2 w-full max-w-[150px]">
-      {title && <p className="text-base">Quantity</p>}
+      {title && <p className="font-others">Quantity</p>}
       <div className="flex gap-3 w-full border justify-between px-2 py-2">
         <button
           onClick={handleQuantityDecrease}
           disabled={quantity === 1}
-          className={quantity === 1 ? "cursor-not-allowed text-gray-300" : ""}
+          className={
+            quantity === 1 ? "cursor-not-allowed font-others text-gray-300" : ""
+          }
         >
           <FaMinus size={15} />
         </button>

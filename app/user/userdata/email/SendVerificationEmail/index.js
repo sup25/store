@@ -64,16 +64,15 @@ const SendVerificationEmail = () => {
   }
 
   return (
-    <div className="flex flex-col gap-1">
-      <div className="flex items-center gap-1">
+    <div className="flex flex-col gap-2 w-full">
+      <div className="flex items-center gap-1 w-full">
         <div className="text-gray-700">
           <MdOutlineVerified />
         </div>
-        <h1 className="text-base font-medium">Email Is Not Verified</h1>
+        <h1 className="text-base font-others font-bold">
+          Email Is Not Verified
+        </h1>
       </div>
-      <p className="text-sm font-medium">
-        Click the button below to send a verification email:
-      </p>
 
       <UserBtn
         handler={handleSendVerificationEmail}

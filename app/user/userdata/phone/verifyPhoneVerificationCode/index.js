@@ -48,7 +48,7 @@ const VerifyPhoneVerificationCode = ({ phoneNumber }) => {
         placeholder="Verification Code"
         value={code}
         onChange={(e) => setCode(e.target.value)}
-        className="py-1 px-1"
+        className="py-1 px-1 font-others"
       />
 
       <UserBtn handler={verifyCode} text="verify Code" loading={loading} />

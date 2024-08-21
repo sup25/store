@@ -43,7 +43,7 @@ const BtnAddToCart = ({ product, showLoginPopup, user, quantity }) => {
 
   return (
     <div
-      className="w-full cursor-pointer flex items-center justify-center px-2 py-2 bg-btn hover:bg-primary text-white font-bold text-lg transition duration-150 ease-out hover:ease-in"
+      className="w-full font-others cursor-pointer flex items-center justify-center px-2 py-2 bg-secondary hover:bg-tertiary text-white font-bold text-lg transition duration-150 ease-out hover:ease-in"
       onClick={handleClick}
     >
       {loading ? <Spinner /> : "Add to cart"}

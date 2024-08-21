@@ -60,11 +60,11 @@ export default function RootLayout({ children }) {
         <ToastContainer />
         <AuthProvider>
           <CartProvider>
-            <div className="w-full mb-10 ">
+            <div className="w-full md:mb-16 mb-14 ">
               <Navbar />
             </div>
             <div style={{ flex: 1 }}>{children}</div>
-            <div className="w-full md:mt-24 mt-20">
+            <div className="w-full md:mt-16 mt-14">
               <Footer />
             </div>
           </CartProvider>

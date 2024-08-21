@@ -83,7 +83,7 @@ const BtnCheckout = ({ items, showLoginPopup, user, deleteItem = null }) => {
 
   return (
     <div
-      className="w-full min-h-[50px] min-w-64 cursor-pointer flex items-center justify-center px-2 py-2 bg-primary hover:bg-secondary text-white font-bold text-lg transition duration-150 ease-out hover:ease-in"
+      className="w-full min-h-[50px] font-others min-w-64 cursor-pointer flex items-center justify-center px-2 py-2 bg-primary hover:bg-tertiary text-white font-bold text-lg transition duration-150 ease-out hover:ease-in"
       onClick={loading ? null : handleClick}
     >
       {loading ? <Spinner /> : "Checkout Now"}

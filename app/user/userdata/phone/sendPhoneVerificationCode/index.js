@@ -63,12 +63,12 @@ const SendPhoneVerificationCode = () => {
 
   return (
     <div className="flex flex-col w-full mt-1">
-      <h2 className="my-1">Phone Verification</h2>
+      <h2 className="my-1 font-others font-bold">Phone Verification</h2>
       <div className="flex flex-col gap-2 w-full">
         <input
           type="text"
           placeholder="+977 "
-          className="py-1 px-1"
+          className="py-1 px-1 font-others"
           value={phoneNumber}
           onChange={handleInputChange}
         />

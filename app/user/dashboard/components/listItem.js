@@ -7,9 +7,11 @@ const ListItem = ({ item }) => {
           src={item.images[0].original_url}
           alt={item.title}
         ></img>
-        <h2 className="text-lg font-semibold">{item.title}</h2>
+        <h2 className="font-others font-semibold">{item.title}</h2>
 
-        <p className="text-[#BFA100] text-xl font-bold">${item.price}</p>
+        <p className="text-[#BFA100] font-others text-xl font-bold">
+          ${item.price}
+        </p>
       </div>
     </div>
   );

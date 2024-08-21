@@ -134,15 +134,21 @@ export const getPurchasedProductsService = async (userId) => {
       userId: Number(userId),
     },
     include: {
-      products: {
+      OrderProduct: {
         include: {
-          images: true,
+          product: {
+            include: {
+              images: true,
+            },
+          },
         },
       },
     },
   });
 
-  const products = orders.flatMap((order) => order.products);
+  const products = orders.flatMap((order) =>
+    order.OrderProduct.map((orderProduct) => orderProduct.product)
+  );
 
   return products;
 };

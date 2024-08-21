@@ -58,7 +58,7 @@ const NavLinks = () => {
         private: true,
       },
       {
-        icon: <GoSignOut size={20} />,
+        icon: <GoSignOut size={25} />,
         text: "Logout",
         onClick: () => handleLogout(false),
         private: true,
@@ -67,7 +67,7 @@ const NavLinks = () => {
   } else if (admin) {
     links = [
       {
-        icon: <GoPerson size={35} />,
+        icon: <GoPerson size={25} />,
         text: admin.name,
         private: true,
         href: "/admin/dashboard",
@@ -83,13 +83,13 @@ const NavLinks = () => {
     links = [
       {
         href: "/login",
-        icon: <GoSignIn size={35} />,
+        icon: <GoSignIn size={25} />,
         text: "Login",
         private: false,
       },
       {
         href: "/register",
-        icon: <GoPersonAdd size={35} />,
+        icon: <GoPersonAdd size={25} />,
         text: "Register",
         private: false,
       },
@@ -111,7 +111,7 @@ const NavLinks = () => {
                     className="flex items-center gap-2 py-2 text-white transition duration-250 ease-in-out hover:bg-secondary px-2"
                   >
                     {link.icon}
-                    <span className="text-sm font-others capitalize">
+                    <span className=" text-white font-others capitalize">
                       {link.text}
                     </span>
                   </Link>
@@ -121,7 +121,9 @@ const NavLinks = () => {
                     className="flex cursor-pointer items-center gap-2 text-white py-2 transition duration-250 ease-in-out hover:bg-secondary px-2"
                   >
                     {link.icon}
-                    <span className="text-others">{link.text}</span>
+                    <span className="font-others text-white capitalize ">
+                      {link.text}
+                    </span>
                   </div>
                 )}
               </div>
@@ -153,36 +155,42 @@ const NavLinks = () => {
             isDrawerOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          {links.map((link, index) => {
-            const shouldDisplay = link.private
-              ? user || admin
-              : !user && !admin;
-            if (shouldDisplay) {
-              return (
-                <div key={index}>
-                  {link.href ? (
-                    <Link
-                      href={link.href}
-                      onClick={handleLinkClick}
-                      className="flex items-center gap-2 py-2 text-gray-900 hover:bg-gray-100 px-4"
-                    >
-                      {link.icon}
-                      <span className="text-sm font-others">{link.text}</span>
-                    </Link>
-                  ) : (
-                    <div
-                      onClick={link.onClick}
-                      className="flex cursor-pointer items-center gap-2 text-gray-900 hover:bg-gray-100 px-4"
-                    >
-                      {link.icon}
-                      <span className="text-sm font-others">{link.text}</span>
-                    </div>
-                  )}
-                </div>
-              );
-            }
-            return null;
-          })}
+          <div className="flex flex-col w-full items-start gap-4 mt-4">
+            {links.map((link, index) => {
+              const shouldDisplay = link.private
+                ? user || admin
+                : !user && !admin;
+              if (shouldDisplay) {
+                return (
+                  <div key={index}>
+                    {link.href ? (
+                      <Link
+                        href={link.href}
+                        onClick={handleLinkClick}
+                        className="flex items-center gap-2 py-2 text-gray-900 hover:bg-gray-100 px-4"
+                      >
+                        {link.icon}
+                        <span className=" font-others font-medium ">
+                          {link.text}
+                        </span>
+                      </Link>
+                    ) : (
+                      <div
+                        onClick={link.onClick}
+                        className="flex cursor-pointer items-center gap-2 text-gray-900 hover:bg-gray-100 px-4"
+                      >
+                        {link.icon}
+                        <span className="  font-others font-medium">
+                          {link.text}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+              return null;
+            })}
+          </div>
         </div>
       </div>
     </>
