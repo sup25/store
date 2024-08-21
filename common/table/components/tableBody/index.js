@@ -40,7 +40,7 @@ const TableBody = ({
       )}
       <div className="w-full flex flex-col">
         {/* Table Headers */}
-        <div className="flex text-black font-bold">
+        <div className="flex text-white font-bold">
           {columns.map((key) => (
             <div
               key={key}
@@ -51,7 +51,7 @@ const TableBody = ({
               onClick={() => handleSort(key)}
             >
               <div
-                className="font-others font-semibold w-fit"
+                className="font-others text-white font-semibold "
                 style={{ display: "flex", alignItems: "center" }}
               >
                 {sortConfig.key === key ? (
@@ -64,7 +64,7 @@ const TableBody = ({
                   <FaSortUp
                     style={{
                       marginRight: "5px",
-                      color: "black",
+                      color: "white",
                       transform: "rotate(90deg)",
                     }}
                   />
@@ -74,7 +74,7 @@ const TableBody = ({
             </div>
           ))}
           {showActions && (
-            <div className="p-2 border font-others w-fit font-semibold bg-primary text-white flex-shrink-0 min-w-[100px] overflow-hidden">
+            <div className="p-2 border font-others  font-semibold bg-primary text-white flex-shrink-0 min-w-[100px] overflow-hidden">
               Actions
             </div>
           )}
@@ -89,7 +89,7 @@ const TableBody = ({
           >
             {columns.map((key) => (
               <div
-                className="p-2 border text-black font-others w-fit flex-grow flex-shrink-0 min-w-[120px] overflow-hidden"
+                className="p-2 border text-black font-others  flex-grow flex-shrink-0 min-w-[120px] overflow-hidden"
                 key={key}
                 style={{
                   background: "lightgray",

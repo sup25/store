@@ -22,3 +22,32 @@ export const getPurchasedProducts = async ({ userId }) => {
 
   return response.data.returnedData;
 };
+
+export const getAllReviews = async ({ productId }) => {
+  const response = await axios.get(
+    `/${appConfig.basePath}/admin/auth/product/review/${productId}`
+  );
+  return response.data.returnedData;
+};
+
+export const addProductReviews = async (reviewData) => {
+  const response = await axios.post(
+    `/${appConfig.basePath}/admin/auth/product/review`,
+    reviewData
+  );
+  return response.data.returnedData;
+};
+export const editProductReviews = async (reviewData) => {
+  const response = await axios.put(
+    `/${appConfig.basePath}/admin/auth/product/review`,
+    reviewData
+  );
+  return response.data.returnedData;
+};
+export const deleteProductReviews = async (reviewData) => {
+  const response = await axios.delete(
+    `/${appConfig.basePath}/admin/auth/product/review`,
+    { data: reviewData }
+  );
+  return response.data.returnedData;
+};

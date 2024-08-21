@@ -75,7 +75,7 @@ const AuthForm = ({
       <Button
         type="submit"
         isLoading={isLoading}
-        className="bg-primary font-others text-white font-bold flex items-center justify-center w-fit py-2 px-2"
+        className="bg-primary font-others w-full  text-white font-bold flex items-center justify-center  py-2 px-2"
       >
         {buttonText}
       </Button>

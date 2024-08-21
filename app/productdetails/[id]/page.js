@@ -10,12 +10,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
 import { Navigation } from "swiper/modules";
 import SelectProductQuantity from "@/app/admin/dashboard/components/selectProductQuantity";
+import GetProductReviews from "@/app/getproductReviews";
+import AddProductReviews from "@/app/addProductReviews";
 
 const ProductDetailContent = () => {
   const searchParams = useSearchParams();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const [refreshReview, setRefreshReview] = useState(false);
 
   const { user } = useAuth();
 
@@ -30,6 +33,10 @@ const ProductDetailContent = () => {
 
   const handleCloseLoginPopup = () => {
     setShowLoginPopup(false);
+  };
+
+  const handleReviewAdded = () => {
+    setRefreshReview((prev) => !prev);
   };
 
   return (
@@ -81,12 +88,19 @@ const ProductDetailContent = () => {
               </p>
               <p className="font-others font-medium">{product.sku}</p>
               <p className="font-others">{product.short_desc}</p>
-              {/*  <p>Remaining Quantity: {product.quantity}</p> */}
               <SelectProductQuantity
                 quantity={quantity}
                 setQuantity={setQuantity}
               />
               <p className="font-others">{product.desc}</p>
+              <AddProductReviews
+                productId={product.id}
+                onReviewAdded={handleReviewAdded}
+              />
+              <GetProductReviews
+                productId={product.id}
+                refreshReview={refreshReview}
+              />
               <div className="w-full flex flex-col md:flex-row justify-between gap-5">
                 <BtnAddToCart
                   product={product}

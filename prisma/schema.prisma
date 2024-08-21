@@ -23,6 +23,7 @@ model User {
   tokens         Token[]
   Order          Order[]
   cart           Cart[]
+  Review         Review[]
 }
 
 model Address {
@@ -68,23 +69,23 @@ model Admin {
 }
 
 model Product {
-  id         Int              @id @default(autoincrement())
-  title      String           @db.VarChar(255)
-  handle     String           @unique @db.VarChar(255)
-  desc       String?
-  short_desc String?
-  price      Int
-  quantity   Int
-  sku        String?          @db.VarChar(255)
-  tags       String[]
-  type       String
-  images     ProductImage[]
-  sales      Sale[]
-  reviews    Review[]
-  Admin      Admin?           @relation(fields: [adminId], references: [id])
-  adminId    Int?
+  id           Int            @id @default(autoincrement())
+  title        String         @db.VarChar(255)
+  handle       String         @unique @db.VarChar(255)
+  desc         String?
+  short_desc   String?
+  price        Int
+  quantity     Int
+  sku          String?        @db.VarChar(255)
+  tags         String[]
+  type         String
+  images       ProductImage[]
+  sales        Sale[]
+  reviews      Review[]
+  Admin        Admin?         @relation(fields: [adminId], references: [id])
+  adminId      Int?
   OrderProduct OrderProduct[]
-  cart       Cart[]
+  cart         Cart[]
 }
 
 model ProductImage {
@@ -105,20 +106,20 @@ model Sale {
 }
 
 model Order {
-  id          Int            @id @default(autoincrement())
-  address     Address        @relation(fields: [addressId], references: [id], name: "OrderToAddress")
-  addressId   Int
-  total_price Int
-  net_price   Int
-  sale        Sale           @relation(fields: [saleId], references: [id])
-  saleId      Int
-  statuses    Status[]
-  notes       String?
+  id           Int            @id @default(autoincrement())
+  address      Address        @relation(fields: [addressId], references: [id], name: "OrderToAddress")
+  addressId    Int
+  total_price  Int
+  net_price    Int
+  sale         Sale           @relation(fields: [saleId], references: [id])
+  saleId       Int
+  statuses     Status[]
+  notes        String?
   OrderProduct OrderProduct[]
-  user        User           @relation(fields: [userId], references: [id])
-  userId      Int
-  name        String
-  admins      OrderAdmin[]
+  user         User           @relation(fields: [userId], references: [id])
+  userId       Int
+  name         String
+  admins       OrderAdmin[]
 }
 
 model OrderProduct {
@@ -160,6 +161,8 @@ model Review {
   message   String
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int
 }
 
 model Cart {

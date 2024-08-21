@@ -42,8 +42,8 @@ const Button = ({
   isLoading,
   disabled,
   children,
-  type,
-  className,
+  type = "button",
+  className = "",
 }) => {
   return (
     <button
