@@ -10,21 +10,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
 import { Navigation } from "swiper/modules";
 import SelectProductQuantity from "@/app/admin/dashboard/components/selectProductQuantity";
-import {
-  TransformWrapper,
-  TransformComponent,
-  useControls,
-} from "react-zoom-pan-pinch";
-import { GrRotateLeft } from "react-icons/gr";
-const Controls = () => {
-  const { resetTransform } = useControls();
-
-  return (
-    <div className="tools flex w-full justify-center cursor-pointer gap-2 mt-1 mb-1">
-      <GrRotateLeft onClick={() => resetTransform()} />
-    </div>
-  );
-};
 
 const ProductDetailContent = () => {
   const searchParams = useSearchParams();
@@ -53,7 +38,7 @@ const ProductDetailContent = () => {
       <div className="container">
         {product && (
           <div className="flex md:flex-row flex-col justify-between w-full gap-10">
-            <div className=" w-2/5 flex items-start justify-center">
+            <div className=" md:w-2/5 w-full flex items-start justify-center">
               <Swiper
                 modules={[Navigation]}
                 slidesPerView={1}
@@ -66,7 +51,7 @@ const ProductDetailContent = () => {
               >
                 {product.images.map((image) => (
                   <SwiperSlide
-                    className="w-full"
+                    className="w-full "
                     key={image.id}
                     style={{
                       display: "flex",
@@ -74,45 +59,34 @@ const ProductDetailContent = () => {
                       justifyContent: "center",
                     }}
                   >
-                    <TransformWrapper
-                      defaultScale={1}
-                      defaultPositionX={0}
-                      defaultPositionY={0}
-                      minScale={1}
-                      limitToBounds={true}
-                    >
-                      <div className="flex flex-col">
-                        <TransformComponent>
-                          <img
-                            src={image.original_url}
-                            alt={product.title}
-                            className="w-full md:w-[350px] h-full bg-cover"
-                          />
-                        </TransformComponent>
-                        <Controls />
-                      </div>
-                    </TransformWrapper>
+                    <div className="flex flex-col">
+                      <img
+                        src={image.original_url}
+                        alt={product.title}
+                        className="w-full md:h-[400px]  h-auto bg-cover"
+                      />
+                    </div>
                   </SwiperSlide>
                 ))}
               </Swiper>
             </div>
 
             <div className="md:w-2/5 w-full flex flex-col gap-10">
-              <h1 className="text-4xl font-bold">{product.title}</h1>
-              <p className="text-[#BFA100] text-2xl font-bold">
+              <h1 className="font-heading capitalize">{product.title}</h1>
+              <p className="text-[#BFA100] font-others text-2xl font-bold">
                 {product.price.toLocaleString("en-US", {
                   style: "currency",
                   currency: "USD",
                 })}
               </p>
-              <p className="text-base font-medium">{product.sku}</p>
-              <p>{product.short_desc}</p>
+              <p className="font-others font-medium">{product.sku}</p>
+              <p className="font-others">{product.short_desc}</p>
               {/*  <p>Remaining Quantity: {product.quantity}</p> */}
               <SelectProductQuantity
                 quantity={quantity}
                 setQuantity={setQuantity}
               />
-              <p>{product.desc}</p>
+              <p className="font-others">{product.desc}</p>
               <div className="w-full flex flex-col md:flex-row justify-between gap-5">
                 <BtnAddToCart
                   product={product}

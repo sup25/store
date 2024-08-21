@@ -54,7 +54,9 @@ const VerifyEmailContent = () => {
   if (!user) {
     return (
       <div className="flex flex-col items-center justify-center gap-2">
-        <p>You need to be logged in to verify your email.</p>
+        <p className="font-heading">
+          You need to be logged in to verify your email.
+        </p>
         <Login isPopup={true} redirectToVerification={true} />
       </div>
     );
@@ -63,8 +65,8 @@ const VerifyEmailContent = () => {
   return (
     <div className="section">
       <div className="container items-center justify-center gap-2">
-        <p className="text-lg font-medium text-center">Email Verification</p>
-        <p className="text-base font-medium text-center">
+        <p className="text-lg font-heading text-center">Email Verification</p>
+        <p className="text-base font-others font-medium text-center">
           {loading ? "Loading..." : message}
         </p>
       </div>

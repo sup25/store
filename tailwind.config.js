@@ -63,16 +63,16 @@ module.exports = {
         ".font-heading": {
           fontFamily: "var(--font-raleway)",
           fontWeight: "600",
-          fontSize: "48px",
+          fontSize: "40px",
           lineHeight: "1.3",
-          width: "100%",
+          color: "#4A4A4A",
         },
         ".font-others": {
           fontFamily: "var(--font-poppins)",
           fontWeight: "400",
           fontSize: "16px",
           lineHeight: "24px",
-          width: "100%",
+          color: "#333333",
         },
         ".admin-dash-card": {
           display: "flex",
@@ -107,7 +107,10 @@ module.exports = {
             display: "none !important",
           },
           ".font-heading": {
-            fontSize: "40px",
+            fontSize: "36px",
+          },
+          ".font-others": {
+            fontSize: "14px",
           },
         },
       });
