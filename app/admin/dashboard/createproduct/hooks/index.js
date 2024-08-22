@@ -28,5 +28,5 @@ export const useProductData = (initialFormData) => {
     }
   }, [searchParams]);
 
-  return { formData, setFormData, isUpdating };
+  return { formData, setFormData, isUpdating, setIsUpdating };
 };

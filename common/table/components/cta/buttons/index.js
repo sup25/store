@@ -10,8 +10,7 @@ export const EditButton = ({ item }) => {
 
   const handleEditProduct = (e, item) => {
     e.stopPropagation();
-    const productQuery = encodeURIComponent(JSON.stringify(item));
-    router.push(`/admin/dashboard/createproduct?product=${productQuery}`);
+    router.push(`/admin/dashboard/createproduct?handle=${item.handle}`);
   };
   return (
     <MdOutlineModeEdit

@@ -2,13 +2,15 @@ import appConfig from "@/config";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 export const handleSubmit = async (
   formData,
   isUpdating,
   adminId,
   setIsLoading,
   setErrors,
-  resetForm
+  resetForm,
+  router
 ) => {
   setIsLoading(true);
 
@@ -38,11 +40,15 @@ export const handleSubmit = async (
       isUpdating
         ? toast.success("Product updated successfully")
         : toast.success("Product created successfully");
-
+      setTimeout(() => {
+        router.push("/admin/dashboard/allproducts");
+      }, 2000);
       resetForm();
     } else {
       console.error(
-        isUpdating ? "Failed to update product" : "Failed to create product"
+        isUpdating
+          ? toast.error("Failed to update product")
+          : toast.error("Failed to create product")
       );
     }
   } catch (error) {

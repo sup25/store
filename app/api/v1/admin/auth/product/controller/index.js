@@ -9,6 +9,7 @@ import {
   getReviewsByProductIdService,
   editReviewService,
   deleteReviewService,
+  getPublicProductsService,
 } from "../service";
 
 export async function createProductController(body) {
@@ -23,6 +24,10 @@ export async function getAllProductsController() {
 
 export async function getProductsController(adminId) {
   const productList = await getProductsService(adminId);
+  return productList;
+}
+export async function getPublicProductsController(productHandle) {
+  const productList = await getPublicProductsService(productHandle);
   return productList;
 }
 
