@@ -49,7 +49,13 @@ const Products = () => {
   };
 
   useEffect(() => {
-    fetchProducts(setProducts, setFilteredProducts, setLoading, searchParams);
+    fetchProducts(
+      setProducts,
+      setFilteredProducts,
+      setLoading,
+      searchParams,
+      setTag
+    );
   }, []);
 
   const handleTagSubmit = (tag) => {

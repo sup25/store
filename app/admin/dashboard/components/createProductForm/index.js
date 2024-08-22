@@ -1,9 +1,11 @@
+"use client";
 import { useState } from "react";
 import Button from "@/common/button";
 import { fields } from "./productFields";
 import { handleSubmit } from "../../createproduct/handler";
 import { ImageUploader } from "./ImageUploader";
 import uploadImageInCloudinary from "./ImageUploader/uploadImageInCloudinary";
+import { useRouter } from "next/navigation";
 
 const CreateProductForm = ({
   resetForm,
@@ -16,6 +18,8 @@ const CreateProductForm = ({
 }) => {
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const router = useRouter();
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -47,17 +51,16 @@ const CreateProductForm = ({
         ...formData,
         images: uploadedImages,
       };
+
       await handleSubmit(
         updatedFormData,
         isUpdating,
         adminId,
         setIsLoading,
         setErrors,
-        resetForm
+        resetForm,
+        router
       );
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
     } catch (error) {
       console.error("Error uploading images:", error);
       setErrors([{ field: "images", message: "Failed to upload images" }]);
@@ -97,11 +100,7 @@ const CreateProductForm = ({
                 value={formData[field.name] || ""}
                 onChange={onChange}
                 required={field.required}
-                className={`py-2 px-2 w-full font-others ${
-                  errors.some((error) => error.field === field.name)
-                    ? "border-red-500"
-                    : ""
-                }`}
+                className="py-2 px-2 font-others w-full"
               />
             )}
             {field.type === "textarea" && (
@@ -121,7 +120,10 @@ const CreateProductForm = ({
           {errors.map(
             (error) =>
               error.field === field.name && (
-                <div key={error.message} className="text-red-500">
+                <div
+                  key={error.message}
+                  className="text-red-700 font-others font-bold "
+                >
                   {error.message}
                 </div>
               )

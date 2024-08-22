@@ -1,11 +1,12 @@
-import { fetchProductsByTag, getAllProducts } from "@/app/utils";
+import { geProductsByTag, getAllProducts } from "@/app/utils";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 export const fetchProducts = async (
   setProducts,
   setFilteredProducts,
   setLoading,
-  searchParams
+  searchParams,
+  setTag
 ) => {
   setLoading(true);
   try {
@@ -16,7 +17,7 @@ export const fetchProducts = async (
       const tagsArray = urlTags.split(",");
       setTag(tagsArray);
       const responses = await Promise.all(
-        tagsArray.map((tag) => fetchProductsByTag(tag))
+        tagsArray.map((tag) => geProductsByTag(tag))
       );
       const allFilteredProducts = responses.flat();
       const uniqueProducts = Array.from(
@@ -42,7 +43,7 @@ export const showProductsByTag = async (
 ) => {
   setLoading(true);
   try {
-    const response = await fetchProductsByTag(tag);
+    const response = await geProductsByTag(tag);
     console.log("res", response);
     setFilteredProducts(response);
   } catch (err) {

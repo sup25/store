@@ -55,6 +55,20 @@ export const getProductsService = async (adminId) => {
 
   return products;
 };
+
+export const getPublicProductsService = async (handle) => {
+  const products = await prisma.product.findMany({
+    where: {
+      handle: handle,
+    },
+    include: {
+      images: true,
+    },
+  });
+
+  return products;
+};
+
 export const getAllProductsService = async () => {
   const products = await prisma.product.findMany({
     include: {
@@ -65,31 +79,42 @@ export const getAllProductsService = async () => {
 };
 
 export const updateProductService = async (productId, updatedFields) => {
-  const { images, ...rest } = updatedFields;
+  const parsedProductId = parseInt(productId, 10);
+  const { images, handle: newHandle, price, quantity, ...rest } = updatedFields;
+  const parsedPrice = price !== undefined ? parseInt(price, 10) : undefined;
+  const parsedQuantity =
+    quantity !== undefined ? parseInt(quantity, 10) : undefined;
 
   const product = await prisma.product.update({
     where: {
-      id: Number(productId),
+      id: parsedProductId,
     },
     data: {
       ...rest,
+      handle: newHandle,
+      price: parsedPrice,
+      quantity: parsedQuantity,
     },
   });
 
   if (images && images.length > 0) {
     await prisma.productImage.deleteMany({
       where: {
-        productId: Number(productId),
+        productId: parsedProductId,
       },
     });
 
     for (const image of images) {
+      if (image.index === undefined || isNaN(parseInt(image.index, 10))) {
+        throw new Error(`Invalid index for image: ${JSON.stringify(image)}`);
+      }
+
       await prisma.productImage.create({
         data: {
           original_url: image.original_url,
           thumbnail: image.thumbnail,
-          index: parseInt(image.index),
-          product: { connect: { id: Number(productId) } },
+          index: parseInt(image.index, 10),
+          product: { connect: { id: parsedProductId } },
         },
       });
     }
@@ -100,6 +125,12 @@ export const updateProductService = async (productId, updatedFields) => {
 
 export const deleteProductService = async (productId) => {
   const parsedProductId = parseInt(productId, 10);
+
+  await prisma.orderProduct.deleteMany({
+    where: {
+      productId: parsedProductId,
+    },
+  });
 
   const salesWithProduct = await prisma.sale.findMany({
     where: {

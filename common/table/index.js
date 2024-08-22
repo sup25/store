@@ -2,10 +2,11 @@
 import React, { useState, useEffect } from "react";
 import constants from "./constants";
 import SearchBar from "./components/searchBar";
-import { LoadingMessage, NoItemsFoundMessage } from "./components/tableMessage";
+import { NoItemsFoundMessage } from "./components/tableMessage";
 import TableBody from "./components/tableBody";
 import Pagination from "./components/pagination";
 import { useSortedData } from "./hooks";
+import Spinner from "../spinner";
 
 const Table = ({
   data,
@@ -65,7 +66,7 @@ const Table = ({
       )}
       <div className="overflow-x-scroll min-h-80">
         {loading ? (
-          <LoadingMessage />
+          <Spinner />
         ) : filteredData.length === 0 ? (
           <NoItemsFoundMessage />
         ) : (

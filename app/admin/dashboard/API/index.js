@@ -1,10 +1,20 @@
 import appConfig from "@/config";
-import { getRequest, deleteRequest } from "../utils/httpClient";
+import { getRequest, deleteRequest, putRequest } from "../utils/httpClient";
 
 export const getProductsById = async (adminId) => {
   try {
     const res = await getRequest(
       `/${appConfig.basePath}/admin/auth/product/${adminId}`
+    );
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
+export const editProduct = async (handle) => {
+  try {
+    const res = await putRequest(
+      `/${appConfig.basePath}/admin/auth/product/admin/${handle}`
     );
     return res;
   } catch (error) {

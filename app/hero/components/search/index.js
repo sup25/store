@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { fetchProductsByTag } from "@/app/utils";
+import { geProductsByTag } from "@/app/utils";
 import { emptyState } from "../emptyState";
 import { useDebounce } from "use-debounce";
 import { CgSpinner } from "react-icons/cg";
@@ -23,7 +23,7 @@ const Search = () => {
       setLoading(true);
       const fetchSuggestions = async () => {
         try {
-          const products = await fetchProductsByTag(debouncedSearchTerm);
+          const products = await geProductsByTag(debouncedSearchTerm);
           setSuggestions(products);
           setHasSearched(true);
         } catch (err) {

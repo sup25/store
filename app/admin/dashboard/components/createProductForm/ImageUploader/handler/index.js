@@ -7,7 +7,12 @@ export const handleImageUpload = async (
   const files = Array.from(event.target.files);
   const newSelectedFiles = [];
 
-  for (let file of files.slice(0, 6 - selectedFiles.length)) {
+  const currentIndex = selectedFiles.length
+    ? Math.max(...selectedFiles.map((img) => img.index)) + 1
+    : 1;
+
+  for (let i = 0; i < files.slice(0, 6 - selectedFiles.length).length; i++) {
+    const file = files[i];
     const fileReader = new FileReader();
     fileReader.onload = () => {
       newSelectedFiles.push({
@@ -15,6 +20,7 @@ export const handleImageUpload = async (
         id: Date.now() + Math.random(),
         original_url: fileReader.result,
         thumbnail: fileReader.result,
+        index: currentIndex + i,
       });
 
       const updatedSelectedFiles = [...selectedFiles, ...newSelectedFiles];

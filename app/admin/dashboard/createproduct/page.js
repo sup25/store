@@ -1,12 +1,17 @@
 "use client";
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import CreateProductForm from "@/app/admin/dashboard/components/createProductForm";
 
 import { handleChange } from "./handler";
 import { useAdminData, useProductData } from "./hooks";
 import withAuthAdmin from "../../utils/adminHoc/page";
+import { getProductByHandle } from "../utils";
+import { useSearchParams } from "next/navigation";
 
 const CreateProductAdmin = () => {
+  const searchParams = useSearchParams();
+  const productHandle = searchParams.get("handle");
+
   const initialFormData = {
     title: "",
     handle: "",
@@ -21,7 +26,14 @@ const CreateProductAdmin = () => {
   };
 
   const adminId = useAdminData();
-  const { formData, setFormData, isUpdating } = useProductData(initialFormData);
+  const { formData, setFormData, isUpdating, setIsUpdating } =
+    useProductData(initialFormData);
+
+  useEffect(() => {
+    if (productHandle) {
+      getProductByHandle(productHandle, setFormData, setIsUpdating);
+    }
+  }, [productHandle]);
 
   const resetForm = () => setFormData(initialFormData);
 

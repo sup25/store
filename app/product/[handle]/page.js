@@ -1,7 +1,5 @@
 "use client";
-
-import React, { useEffect, useState, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import BtnCheckout from "@/common/btnCheckout";
 import LoginPopUp from "@/common/loginPopup";
 import { useAuth } from "@/context/AuthContext";
@@ -10,27 +8,37 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
 import { Navigation } from "swiper/modules";
 import SelectProductQuantity from "@/app/admin/dashboard/components/selectProductQuantity";
-
+import { useParams } from "next/navigation";
 import AddProductReviews from "@/app/user/product/addProductReviews";
 import GetProductReviews from "@/app/products/getproductReviews";
+import { getSinlgeProduct } from "@/app/utils";
+import Spinner from "@/common/spinner";
 
-const ProductDetailContent = () => {
-  const searchParams = useSearchParams();
+const ProductDetail = () => {
+  const { handle } = useParams();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [refreshReview, setRefreshReview] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { user } = useAuth();
 
-  useEffect(() => {
-    const productData = searchParams.get("product");
-
-    if (productData) {
-      const decodedProductData = JSON.parse(decodeURIComponent(productData));
-      setProduct(decodedProductData);
+  const getProductDetails = async () => {
+    try {
+      const response = await getSinlgeProduct({ handle });
+      console.log(response);
+      setProduct(response);
+    } catch (error) {
+      console.error("Error fetching product data:", error);
+    } finally {
+      setIsLoading(false);
     }
-  }, [searchParams]);
+  };
+
+  useEffect(() => {
+    getProductDetails();
+  }, []);
 
   const handleCloseLoginPopup = () => {
     setShowLoginPopup(false);
@@ -39,6 +47,10 @@ const ProductDetailContent = () => {
   const handleReviewAdded = () => {
     setRefreshReview((prev) => !prev);
   };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="section">
@@ -128,13 +140,5 @@ const ProductDetailContent = () => {
     </div>
   );
 };
-
-function ProductDetail() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <ProductDetailContent />
-    </Suspense>
-  );
-}
 
 export default ProductDetail;
