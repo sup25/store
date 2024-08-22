@@ -1,15 +1,15 @@
 "use client";
 import React, { useEffect, useState, Suspense } from "react";
-import { toast } from "react-toastify";
-import { fetchProductsByTag, getAllProducts } from "../utils";
+
 import Card from "@/common/card";
 import Spinner from "@/common/spinner";
 import { DEFAULT_PRICE_RANGE } from "@/constants";
 import { useDebounce } from "use-debounce";
-import GetProductsByTags from "../getProductsByTags";
-import GetProductsByPrice from "../getProductsByPrice";
+import GetProductsByTags from "./getProductsByTags";
+import GetProductsByPrice from "./getProductsByPrice";
 import Pagination from "@/common/table/components/pagination";
 import { useSearchParams } from "next/navigation";
+import { fetchProducts, showProductsByTag } from "./utils";
 
 const Products = () => {
   const range = DEFAULT_PRICE_RANGE;
@@ -23,49 +23,6 @@ const Products = () => {
   const productsPerPage = 12;
 
   const searchParams = useSearchParams();
-
-  const fetchProducts = async () => {
-    setLoading(true);
-    try {
-      const productsData = await getAllProducts();
-      setProducts(productsData);
-      const urlTags = searchParams.get("tag");
-      if (urlTags) {
-        const tagsArray = urlTags.split(",");
-        setTag(tagsArray);
-        const responses = await Promise.all(
-          tagsArray.map((tag) => fetchProductsByTag(tag))
-        );
-        const allFilteredProducts = responses.flat();
-        const uniqueProducts = Array.from(
-          new Map(
-            allFilteredProducts.map((product) => [product.id, product])
-          ).values()
-        );
-
-        setFilteredProducts(uniqueProducts);
-      }
-    } catch (error) {
-      console.error("Error fetching all products:", error);
-      toast.error("Error fetching products");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const showProductsByTag = async (tag) => {
-    setLoading(true);
-    try {
-      const response = await fetchProductsByTag(tag);
-      console.log("res", response);
-      setFilteredProducts(response);
-    } catch (err) {
-      console.error("Error getting products:", err);
-      toast.error("Error getting products");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const combinedFilter = () => {
     const filteredByPrice = products.filter((product) => {
@@ -92,12 +49,12 @@ const Products = () => {
   };
 
   useEffect(() => {
-    fetchProducts();
+    fetchProducts(setProducts, setFilteredProducts, setLoading, searchParams);
   }, []);
 
   const handleTagSubmit = (tag) => {
     setTag(tag);
-    showProductsByTag(tag);
+    showProductsByTag(tag, setLoading, setFilteredProducts);
   };
 
   const paginatedProducts = () => {

@@ -6,7 +6,7 @@ import Button from "@/common/button";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { addProductReviews } from "../utils";
+import { addProductReviews } from "@/app/utils";
 
 const AddProductReviews = ({ productId, onReviewAdded }) => {
   const { user } = useAuth();

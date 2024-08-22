@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { getAllReviews } from "../utils";
+
 import { EmptyReviews } from "./components";
 import { CgSpinner } from "react-icons/cg";
 import { useAuth } from "@/context/AuthContext";
@@ -8,6 +8,7 @@ import { calculateAverageScore } from "./utils";
 import ReviewActions from "./components/reviewActions";
 import ReviewEditor from "./components/reviewEditor";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { getAllReviews } from "@/app/utils";
 
 const GetProductReviews = ({ productId, refreshReview }) => {
   const [loading, setLoading] = useState(false);

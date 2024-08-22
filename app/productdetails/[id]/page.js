@@ -10,8 +10,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
 import { Navigation } from "swiper/modules";
 import SelectProductQuantity from "@/app/admin/dashboard/components/selectProductQuantity";
-import GetProductReviews from "@/app/getproductReviews";
-import AddProductReviews from "@/app/addProductReviews";
+
+import AddProductReviews from "@/app/user/product/addProductReviews";
+import GetProductReviews from "@/app/products/getproductReviews";
 
 const ProductDetailContent = () => {
   const searchParams = useSearchParams();
