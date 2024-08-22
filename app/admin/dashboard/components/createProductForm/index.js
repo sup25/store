@@ -2,8 +2,8 @@ import { useState } from "react";
 import Button from "@/common/button";
 import { fields } from "./productFields";
 import { handleSubmit } from "../../createproduct/handler";
-import { ImageManipulator } from "./ImageManipulator";
-import uploadImageInCloudinary from "./ImageManipulator/uploadImageInCloudinary";
+import { ImageUploader } from "./ImageUploader";
+import uploadImageInCloudinary from "./ImageUploader/uploadImageInCloudinary";
 
 const CreateProductForm = ({
   resetForm,
@@ -114,7 +114,7 @@ const CreateProductForm = ({
           )}
         </div>
       ))}
-      <ImageManipulator formData={formData} setFormData={setFormData} />
+      <ImageUploader formData={formData} setFormData={setFormData} />
       <Button type="submit" isLoading={isLoading}>
         {buttonText}
       </Button>

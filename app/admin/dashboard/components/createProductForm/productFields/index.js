@@ -8,10 +8,10 @@ export const fields = [
   },
   {
     name: "handle",
-    label: "Handle",
+    label: "Handle (unique)",
     type: "text",
     required: true,
-    placeholder: "Enter the product handle",
+    placeholder: "jeans-pants-2024",
   },
   {
     name: "desc",
