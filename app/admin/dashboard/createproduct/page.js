@@ -37,6 +37,7 @@ const CreateProductAdmin = () => {
           onChange={(e) => handleChange(e, setFormData)}
           buttonText={buttonText}
           adminId={adminId}
+          isUpdating={isUpdating}
         />
       </div>
     </div>

@@ -24,18 +24,22 @@ const CreateProductForm = ({
     try {
       const uploadedImages = [];
       for (const image of formData.images) {
-        const uploadFormData = new FormData();
-        const uploadResult = await uploadImageInCloudinary(
-          image.file,
-          uploadFormData
-        );
-        if (uploadResult) {
-          uploadedImages.push({
-            ...image,
-            original_url: uploadResult.secure_url,
-            public_id: uploadResult.public_id,
-            thumbnail: uploadResult.secure_url,
-          });
+        if (image.file) {
+          const uploadFormData = new FormData();
+          const uploadResult = await uploadImageInCloudinary(
+            image.file,
+            uploadFormData
+          );
+          if (uploadResult) {
+            uploadedImages.push({
+              ...image,
+              original_url: uploadResult.secure_url,
+              public_id: uploadResult.public_id,
+              thumbnail: uploadResult.secure_url,
+            });
+          }
+        } else {
+          uploadedImages.push(image);
         }
       }
 
@@ -43,9 +47,6 @@ const CreateProductForm = ({
         ...formData,
         images: uploadedImages,
       };
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
       await handleSubmit(
         updatedFormData,
         isUpdating,
@@ -54,12 +55,23 @@ const CreateProductForm = ({
         setErrors,
         resetForm
       );
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     } catch (error) {
       console.error("Error uploading images:", error);
       setErrors([{ field: "images", message: "Failed to upload images" }]);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleClearImages = () => {
+    alert("All uploaded images will be cleared.");
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      images: [],
+    }));
   };
 
   return (
@@ -109,11 +121,40 @@ const CreateProductForm = ({
           {errors.map(
             (error) =>
               error.field === field.name && (
-                <div key={error.message}>{error.message}</div>
+                <div key={error.message} className="text-red-500">
+                  {error.message}
+                </div>
               )
           )}
         </div>
       ))}
+
+      {isUpdating && formData.images.length > 0 && (
+        <div className="flex flex-col gap-2">
+          <label className="text-lg font-others font-semibold">
+            Uploaded Images:
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {formData.images.map((image) => (
+              <div key={image.public_id} className="relative">
+                <img
+                  src={image.original_url || image.thumbnail}
+                  alt={`Uploaded ${image.public_id}`}
+                  className="w-[225px] h-[200px] object-cover"
+                />
+              </div>
+            ))}
+          </div>
+          <Button
+            type="button"
+            onClick={handleClearImages}
+            className="mt-2 bg-red-500 text-others hover:bg-red-600 w-fit text-white"
+          >
+            Clear All Images
+          </Button>
+        </div>
+      )}
+
       <ImageUploader formData={formData} setFormData={setFormData} />
       <Button type="submit" isLoading={isLoading}>
         {buttonText}

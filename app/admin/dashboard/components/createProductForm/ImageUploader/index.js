@@ -1,4 +1,3 @@
-"use client";
 import { useEffect, useState } from "react";
 import { handleDeleteImage, handleImageUpload } from "./handler";
 import Spinner from "@/common/spinner";
@@ -8,6 +7,10 @@ export const ImageUploader = ({ formData, setFormData }) => {
   const [selectedFiles, setSelectedFiles] = useState(formData.images);
   const [removing, setRemoving] = useState(false);
   const [imageAdded, setImageAdded] = useState(false);
+
+  useEffect(() => {
+    setSelectedFiles(formData.images);
+  }, [formData.images]);
 
   useEffect(() => {
     setImageAdded(selectedFiles.length > 0);
