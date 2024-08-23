@@ -52,7 +52,7 @@ const SendPhoneVerificationCode = () => {
 
   if (user && user.verified_phone) {
     return (
-      <div className="flex items-center gap-1">
+      <div className="user-details complete flex-row items-center">
         <div className="text-green-700">
           <MdOutlineVerified />
         </div>
@@ -62,13 +62,13 @@ const SendPhoneVerificationCode = () => {
   }
 
   return (
-    <div className="flex flex-col w-full mt-1">
-      <h2 className="my-1 font-others font-bold">Phone Verification</h2>
-      <div className="flex flex-col gap-2 w-full">
+    <div className="user-details incomplete  mt-1">
+      <h2 className="font-others font-bold">Phone Verification</h2>
+      <div className="flex flex-col gap-3 w-full">
         <input
           type="text"
           placeholder="+977 "
-          className="py-1 px-1 font-others"
+          className="py-1 px-1 font-others border-2 outline-none hover:border-secondary transition duration-300 ease-in-out"
           value={phoneNumber}
           onChange={handleInputChange}
         />

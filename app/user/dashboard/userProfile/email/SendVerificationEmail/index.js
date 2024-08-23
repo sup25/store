@@ -54,7 +54,7 @@ const SendVerificationEmail = () => {
 
   if (user.verified_email) {
     return (
-      <div className="flex items-center gap-1">
+      <div className="user-details flex-row items-center complete ">
         <div className="text-green-700">
           <MdOutlineVerified />
         </div>
@@ -64,7 +64,7 @@ const SendVerificationEmail = () => {
   }
 
   return (
-    <div className="flex flex-col gap-2 w-full">
+    <div className="user-details incomplete">
       <div className="flex items-center gap-1 w-full">
         <div className="text-gray-700">
           <MdOutlineVerified />

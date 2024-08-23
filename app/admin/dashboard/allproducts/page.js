@@ -12,9 +12,14 @@ const AllProducts = () => {
   const columnLabels = {
     id: "ID",
     sku: "SKU",
+    handle: "Handle",
+    short_desc: "Short Description",
     title: "Title",
     price: "Price",
     quantity: "Quantity",
+    tags: "Tags",
+    type: "Type",
+    desc: "Description",
   };
 
   useEffect(() => {
@@ -36,7 +41,15 @@ const AllProducts = () => {
             <Table
               data={products}
               setData={setProducts}
-              columns={["id", "sku", "title", "price", "quantity"]}
+              columns={[
+                "id",
+                "sku",
+                "title",
+                "tags",
+                "type",
+                "price",
+                "quantity",
+              ]}
               showSearch={true}
               uniqueKey="id"
               excludeKeys={["images", "adminId", "orderId"]}

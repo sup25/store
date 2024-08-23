@@ -47,7 +47,7 @@ const Search = () => {
   return (
     <div className="w-full relative">
       <input
-        className="py-2 px-2 font-others w-full max-w-[450px] border-2 outline-none hover:border-secondary transition duration-300 ease-in-out"
+        className="py-2 px-2 font-others w-full md:max-w-[450px] border-2 outline-none hover:border-secondary transition duration-300 ease-in-out"
         placeholder="Search for products"
         value={searchTerm}
         onChange={handleInputChange}

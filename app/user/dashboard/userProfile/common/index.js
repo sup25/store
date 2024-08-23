@@ -7,7 +7,7 @@ export const UserBtn = ({ handler = () => {}, text, loading, disabled }) => {
       className={`px-1 py-1 min-h-8 outline  font-others flex items-center justify-center ${
         disabled
           ? "bg-gray-400 cursor-not-allowed"
-          : " hover:bg-secondary hover:text-white hover:outline-black"
+          : " hover:bg-secondary hover:text-white hover:outline-black transition-all duration-300 ease-in-out"
       }`}
       onClick={handler}
     >

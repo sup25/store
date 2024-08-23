@@ -6,7 +6,7 @@ export const RegistrationTime = () => {
   const date = new Date(dateToConvert);
   const formattedDate = date.toLocaleString();
   return (
-    <div className="flex flex-col gap-2">
+    <div className="user-details complete">
       <div className="flex items-center gap-2">
         <FaRegCalendarAlt />
         <p className="font-others font-bold">Registration Date</p>

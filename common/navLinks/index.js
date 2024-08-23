@@ -53,7 +53,7 @@ const NavLinks = () => {
       {
         icon: <IoCartOutline size={25} />,
         text: `My Cart (${cartItems.length})`,
-        href: "/user/mycart",
+        href: "/user/cart",
 
         private: true,
       },

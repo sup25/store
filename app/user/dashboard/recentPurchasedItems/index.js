@@ -25,33 +25,20 @@ const RecentPurchasedItem = () => {
   }, []);
 
   return (
-    <div className="section">
-      <div className="container">
-        <div className="shadow-md py-4 px-10 h-auto max-h-[450px] overflow-y-scroll">
-          <h2 className="font-heading   mb-5 w-fit">
-            Recently Purchased Items
-          </h2>
-          {products.length === 0 ? (
-            <EmptyState />
-          ) : (
-            <div>
-              {products.slice(0, 3).map((product) => (
-                <div key={product.id} className="">
-                  <List data={product} />
-                </div>
-              ))}
-              {products.length > 3 && (
-                <div className="mt-4 ">
-                  {products.slice(3).map((product) => (
-                    <div key={product.id} className="">
-                      <List data={product} />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
+    <div className="shadow p-10 w-full max-w-[750px] h-auto  md:max-h-[570px] ">
+      <h2 className="font-heading mb-5 ">Recently Purchased Items</h2>
+      <div className="w-full h-auto  max-h-[415px]   overflow-y-scroll">
+        {products.length === 0 ? (
+          <EmptyState />
+        ) : (
+          <div className="">
+            {products.map((product) => (
+              <div key={product.id} className="">
+                <List data={product} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
