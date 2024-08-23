@@ -54,7 +54,7 @@ const Card = ({ product }) => {
         <Link href={`/product/${handle}`}>
           <div className="flex flex-col items-center">
             <img
-              className="w-60 h-60 object-cover rounded"
+              className="w-60 h-56 object-cover rounded"
               src={getImage()}
               alt={title}
             />

@@ -42,7 +42,7 @@ const Cart = () => {
   return (
     <div className="section">
       <div className="container flex justify-center items-center">
-        <div className="flex flex-col w-full max-w-[1000px] shadow rounded py-10 px-10 md:py-16 md:px-16 ">
+        <div className="flex flex-col w-full max-w-[1100px] shadow rounded py-10 px-10 md:py-16 md:px-16 ">
           <h2 className="text-center font-heading  pb-10">
             Your Cart ({items.length}) {items.length === 1 ? "item" : "items"}
           </h2>
@@ -52,9 +52,9 @@ const Cart = () => {
               items.map((item) => (
                 <div
                   key={item.id}
-                  className="flex w-full md:flex-row flex-col justify-between items-end gap-2 border-b-2 py-2 px-2"
+                  className="flex w-full md:flex-row flex-col justify-between items-end gap-5 border-b-2 py-2 px-2"
                 >
-                  <div className="flex  w-full px-1 py-2 gap-2">
+                  <div className="flex  w-full px-1 py-2 gap-10 flex-wrap">
                     {item.product.images.length > 0 && (
                       <img
                         src={item.product.images[0].original_url}
@@ -118,29 +118,27 @@ const Cart = () => {
             )}
           </div>
 
-          <div className="flex flex-col mt-14  w-full">
+          <div className="flex md:justify-end justify-center mt-14  w-full">
             {items.length >= 1 && (
-              <div className="flex justify-between items-center w-full flex-wrap  ">
+              <div className="w-full md:max-w-[300px] flex flex-col gap-2">
+                <p className="text-lg font-semibold font-others flex gap-2 items-center">
+                  Grand Total:
+                  <span className="font-bold font-others md:text-3xl text-2xl text-[#BFA100]">
+                    ${totalPrice.toFixed(2)}
+                  </span>
+                </p>
                 <div
                   onClick={handleDeleteAll}
                   loading={loading}
-                  className="hover:text-secondary animate-bounce cursor-pointer font-semibold font-others transition duration-300 ease-in-out"
+                  className="w-full min-h-[50px] font-others min-w-64 cursor-pointer flex items-center justify-center px-2 py-2 bg-red-500 hover:bg-tertiary text-white font-bold text-lg transition duration-150 ease-out hover:ease-in"
                 >
                   Clear All
                 </div>
-                <div className="flex flex-col gap-2 ">
-                  <p className="text-lg font-semibold font-others flex gap-2 items-center">
-                    Grand Total:
-                    <span className="font-bold text-3xl text-[#BFA100]">
-                      ${totalPrice.toFixed(2)}
-                    </span>
-                  </p>
-                  <BtnCheckout
-                    deleteItem={handleDeleteAll}
-                    items={items}
-                    user={user}
-                  />
-                </div>
+                <BtnCheckout
+                  deleteItem={handleDeleteAll}
+                  items={items}
+                  user={user}
+                />
               </div>
             )}
           </div>

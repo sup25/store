@@ -96,6 +96,21 @@ module.exports = {
           padding: "16px 8px 16px 8px",
           boxShadow: "0 10px 15px rgba(0, 0, 0, 0.2)",
         },
+        ".user-details": {
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-start",
+          width: "100%",
+          padding: "12px",
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+          gap: "8px",
+        },
+        ".complete": {
+          backgroundColor: "rgba(198, 246, 213, 0.4)",
+        },
+        ".incomplete": {
+          backgroundColor: "rgba(254, 226, 226, 0.4)",
+        },
 
         ".table-container": {
           "@media (max-width: 1200px)": {

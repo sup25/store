@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import axios from "axios";
-import "../../../../../common/styles.css";
+import "../../../../../../common/styles.css";
 import { IoIosClose } from "react-icons/io";
 import { UserBtn } from "../../common";
 import { toast } from "react-toastify";
@@ -90,11 +90,11 @@ const InputAddressPopUp = ({ userId, handler, updateUserAddress }) => {
             {inputFields.map((field) => (
               <label
                 key={field.name}
-                className="flex flex-col justify-between gap-2"
+                className="flex flex-col font-others justify-between gap-2"
               >
                 {field.label}:
                 <input
-                  className="py-2 px-2 bg-slate-300"
+                  className="py-2 px-2 font-others bg-slate-300"
                   type="text"
                   name={field.name}
                   value={addressData[field.name]}

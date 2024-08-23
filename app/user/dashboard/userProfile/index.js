@@ -4,9 +4,9 @@ import { RegistrationTime } from "./registrationTime";
 import SendVerificationEmail from "./email/SendVerificationEmail";
 import SendPhoneVerificationCode from "./phone/sendPhoneVerificationCode";
 
-const Userdata = () => {
+const UserProfile = () => {
   return (
-    <div className="py-10  w-full max-w-[400px] h-fit bg-slate-300">
+    <div className="py-5 w-full max-w-[400px] h-fit bg-white shadow">
       <div className="flex flex-col items-center gap-3 mb-4 w-full ">
         <ProfileDetails />
         <div className="px-5 w-full flex flex-col items-start gap-3">
@@ -20,4 +20,4 @@ const Userdata = () => {
   );
 };
 
-export default Userdata;
+export default UserProfile;

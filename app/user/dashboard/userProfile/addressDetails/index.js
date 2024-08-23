@@ -18,7 +18,11 @@ export const AddressDetails = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2 w-full items-start">
+    <div
+      className={`user-details ${
+        user.addresses.length > 0 ? "complete" : "incomplete"
+      }`}
+    >
       {showAddAddress && (
         <InputAddressPopUp
           userId={user.id}

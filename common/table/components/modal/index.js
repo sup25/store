@@ -1,3 +1,9 @@
+"use client";
+import Line from "@/common/line";
+import { useState } from "react";
+import { MdOutlineCancel } from "react-icons/md";
+import "../../../styles.css";
+
 const Modal = ({
   isOpen,
   onClose,
@@ -5,11 +11,14 @@ const Modal = ({
   excludeKeys = [],
   columnLabels = {},
 }) => {
-  if (!isOpen) return null;
+  const [isVisible, setIsVisible] = useState(isOpen);
 
   const closeModal = (e) => {
     if (e.target.id === "tableModal") {
-      onClose();
+      setIsVisible(false);
+      setTimeout(() => {
+        onClose();
+      }, 300);
     }
   };
 
@@ -32,15 +41,14 @@ const Modal = ({
         }
 
         return (
-          <p
-            key={key}
-            className="mb-2 text-black font-others w-fit font-medium"
-          >
+          <p key={key} className="mb-2 text-black font-others font-medium">
             <strong>{columnLabels[key] || key}:</strong> {displayValue}
           </p>
         );
       });
   };
+
+  if (!isOpen && !isVisible) return null;
 
   return (
     <div
@@ -49,17 +57,31 @@ const Modal = ({
       onClick={closeModal}
     >
       <div
-        className="bg-white  p-5 rounded-lg shadow-lg max-w-lg w-full relative"
+        className={`bg-white p-10 rounded-lg shadow-lg max-w-screen-lg w-full relative ${
+          isVisible ? "scale-in fade-in" : "scale-out fade-out"
+        }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          className="absolute top-2 right-2 font-others w-fit text-gray-500 hover:text-gray-800"
-          onClick={onClose}
+        <div
+          className="absolute top-2 cursor-pointer right-2 font-others"
+          onClick={() => {
+            setIsVisible(false);
+            setTimeout(() => {
+              onClose();
+            }, 300);
+          }}
         >
-          Close
-        </button>
+          <MdOutlineCancel size={25} />
+        </div>
+
         <div className="flex flex-col">
-          <h2 className="text-2xl font-heading  mb-4 text-black">Details</h2>
+          <div className="mb-4">
+            <h2 className="text-2xl font-heading flex flex-col text-black">
+              Details
+            </h2>
+            <Line className="w-full" />
+          </div>
+
           {renderContent()}
         </div>
       </div>

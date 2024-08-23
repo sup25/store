@@ -7,11 +7,11 @@ const Hero = () => {
   return (
     <div className="section">
       <div className="container ">
-        <div className="md:flex-row flex  flex-col-reverse gap-5">
-          <div className=" w-full md:w-[40%]  ">
+        <div className="md:flex-row flex justify-between flex-col-reverse gap-5">
+          <div className=" w-full md:w-[45%]  ">
             <HeroText />
           </div>
-          <div className="w-full md:w-[60%]">
+          <div className="w-full md:w-[55%]">
             <HeroImages />
           </div>
         </div>
