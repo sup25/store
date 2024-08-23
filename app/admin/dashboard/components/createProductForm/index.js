@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "@/common/button";
 import { fields } from "./productFields";
 import { handleSubmit } from "../../createproduct/handler";
@@ -15,10 +15,17 @@ const CreateProductForm = ({
   buttonText,
   adminId,
   isUpdating,
+  searchParams,
 }) => {
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    const handle = searchParams.get("handle");
+    if (!handle) {
+      resetForm();
+    }
+  }, [searchParams, resetForm]);
   const router = useRouter();
 
   const handleFormSubmit = async (e) => {
