@@ -50,6 +50,7 @@ const CreateProductAdmin = () => {
           buttonText={buttonText}
           adminId={adminId}
           isUpdating={isUpdating}
+          searchParams={searchParams}
         />
       </div>
     </div>
