@@ -6,6 +6,7 @@ import { handleSubmit } from "../../createproduct/handler";
 import { ImageUploader } from "./ImageUploader";
 import uploadImageInCloudinary from "./ImageUploader/uploadImageInCloudinary";
 import { useRouter } from "next/navigation";
+import withAuthAdmin from "@/app/admin/utils/adminHoc/page";
 
 const CreateProductForm = ({
   resetForm,
@@ -165,6 +166,18 @@ const CreateProductForm = ({
       )}
 
       <ImageUploader formData={formData} setFormData={setFormData} />
+      {errors.map(
+        (error) =>
+          error.field === "images" && (
+            <div
+              key={error.message}
+              className="text-red-700 font-others font-bold"
+            >
+              {error.message}
+            </div>
+          )
+      )}
+
       <Button type="submit" isLoading={isLoading}>
         {buttonText}
       </Button>
@@ -172,4 +185,4 @@ const CreateProductForm = ({
   );
 };
 
-export default CreateProductForm;
+export default withAuthAdmin(CreateProductForm);

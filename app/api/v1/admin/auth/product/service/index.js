@@ -15,26 +15,27 @@ export const createProductService = async (body) => {
     adminId,
   } = body;
 
+  const parsedPrice = parseFloat(price);
+  const parsedQuantity = parseInt(quantity, 10);
+
   const product = await prisma.product.create({
     data: {
       title,
       handle,
       desc,
       short_desc,
-      price: parseFloat(price),
-      quantity: parseInt(quantity, 10),
+      price: parsedPrice,
+      quantity: parsedQuantity,
       sku,
       tags: { set: tags || [] },
       type,
       Admin: { connect: { id: adminId } },
       images: {
-        createMany: {
-          data: images.map((image, index) => ({
-            original_url: image.original_url,
-            thumbnail: image.thumbnail,
-            index: index + 1,
-          })),
-        },
+        create: images.map((image, index) => ({
+          original_url: image.original_url,
+          thumbnail: image.thumbnail,
+          index: index + 1,
+        })),
       },
     },
   });

@@ -1,3 +1,3 @@
 export const EmptyReviews = () => {
-  return <div className="font-others font-bold">No reviews found</div>;
+  return <div className="font-others font-semibold">No reviews found</div>;
 };

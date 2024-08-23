@@ -109,9 +109,6 @@ module.exports = {
           ".font-heading": {
             fontSize: "36px",
           },
-          ".font-others": {
-            fontSize: "14px",
-          },
         },
       });
     }),
