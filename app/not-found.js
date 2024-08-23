@@ -1,11 +1,9 @@
-"use client";
-
 import Link from "next/link";
 import { FaExclamationTriangle } from "react-icons/fa";
 import { FiArrowLeft } from "react-icons/fi";
-export default function Custom404() {
+export default function NotFound() {
   return (
-    <div className="flex items-center justify-center  px-6 py-8">
+    <div className="flex items-center justify-center  px-6 py-8 z-[99999]">
       <div className="bg-white shadow-lg rounded-lg p-8 md:p-16 text-center">
         <div className="flex justify-center mb-6">
           <FaExclamationTriangle className="text-yellow-500 text-6xl" />

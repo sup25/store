@@ -13,6 +13,7 @@ import AddProductReviews from "@/app/user/product/addProductReviews";
 import GetProductReviews from "@/app/products/getproductReviews";
 import { getSinlgeProduct } from "@/app/utils";
 import Spinner from "@/common/spinner";
+import NotFound from "@/app/not-found";
 
 const ProductDetail = () => {
   const { handle } = useParams();
@@ -29,9 +30,10 @@ const ProductDetail = () => {
     try {
       const response = await getSinlgeProduct({ handle });
       console.log(response);
+
       setProduct(response);
     } catch (error) {
-      console.error("Error fetching product data:", error);
+      console.log("Error fetching product data:", error);
     } finally {
       setIsLoading(false);
     }
@@ -51,6 +53,9 @@ const ProductDetail = () => {
 
   if (isLoading) {
     return <Spinner />;
+  }
+  if (!product) {
+    return <NotFound />;
   }
 
   return (
