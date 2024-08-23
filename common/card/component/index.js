@@ -1,7 +1,8 @@
-import Link from "next/link";
 import { useState } from "react";
 import { IoIosClose } from "react-icons/io";
 import "../../styles.css";
+import LinkWithIcon from "@/common/linkWithIcon";
+import { FiArrowRight } from "react-icons/fi";
 export const LoginModal = ({ handler }) => {
   const [isVisible, setIsVisible] = useState(true);
   const handleBackgroundClick = (e) => {
@@ -28,16 +29,21 @@ export const LoginModal = ({ handler }) => {
         }`}
       >
         <div className="flex justify-between items-center">
-          <h2 className="text-xl text-black">You need to login to continue</h2>
+          <h2 className="text-lg font-others text-black">
+            You need to login to continue
+          </h2>
           <IoIosClose
-            size={25}
+            size={30}
             onClick={handleClose}
             className="text-gray-400 hover:text-black transition ease-in duration-300 cursor-pointer"
           />
         </div>
-        <Link href="/login" className="w-fit">
-          <div className="text-blue-500 w-fit">Login to continue</div>
-        </Link>
+        <LinkWithIcon
+          href="/login"
+          icon={FiArrowRight}
+          label="Login to continue"
+          iconPosition="right"
+        />
       </div>
     </div>
   );

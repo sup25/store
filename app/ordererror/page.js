@@ -1,6 +1,6 @@
 import React from "react";
-import Link from "next/link";
 import { FiAlertTriangle, FiArrowLeft } from "react-icons/fi";
+import LinkWithIcon from "@/common/linkWithIcon";
 
 const OrderErrorPage = () => {
   return (
@@ -16,12 +16,7 @@ const OrderErrorPage = () => {
               Something went wrong while processing your order. Please try again
               later.
             </p>
-            <Link href="/">
-              <div className="group flex items-center text-primary text-lg underline hover:text-secondary transition">
-                <FiArrowLeft className="mr-2 transform group-hover:-translate-x-1 transition-transform" />
-                Go Back to Store
-              </div>
-            </Link>
+            <LinkWithIcon href="/" icon={FiArrowLeft} label="Go Back Home" />
           </div>
         </div>
       </div>

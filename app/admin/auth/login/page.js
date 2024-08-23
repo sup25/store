@@ -7,6 +7,8 @@ import { useAuth } from "@/context/AuthContext";
 import axiosAdmin from "@/utils/axiosAdmin";
 import AuthForm from "@/common/authForm";
 import appConfig from "@/config";
+import LinkWithIcon from "@/common/linkWithIcon";
+import { FiArrowLeft } from "react-icons/fi";
 
 const Login = () => {
   const { setUserStore } = useAuth();
@@ -62,8 +64,13 @@ const Login = () => {
             formData={formData}
             onChange={handleChange}
             errors={errors}
-            buttonText="Login"
+            buttonText="Continue"
             isLoading={isLoading}
+          />
+          <LinkWithIcon
+            href="/login"
+            icon={FiArrowLeft}
+            label="Customer Login"
           />
         </div>
       </div>

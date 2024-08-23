@@ -5,9 +5,10 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "@/context/AuthContext";
 import axiosClient from "@/utils/axiosClient";
-import Link from "next/link";
 import AuthForm from "@/common/authForm";
 import appConfig from "@/config";
+import { FiArrowRight } from "react-icons/fi";
+import LinkWithIcon from "@/common/linkWithIcon";
 
 const Login = ({ redirectToVerification }) => {
   const { setUserStore } = useAuth();
@@ -93,12 +94,12 @@ const Login = ({ redirectToVerification }) => {
             isLoading={isLoading}
           />
 
-          <Link
+          <LinkWithIcon
             href="/admin/auth/login"
-            className="hover:text-secondary text-center font-others transition duration-300 ease-in-out"
-          >
-            Administrative Login
-          </Link>
+            icon={FiArrowRight}
+            label="Administrative Login"
+            iconPosition="right"
+          />
         </div>
       </div>
     </div>

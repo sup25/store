@@ -3,7 +3,7 @@ import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
 import Card from "@/common/card";
-import Spinner from "@/common/spinner";
+import { CgSpinner } from "react-icons/cg";
 import appConfig from "@/config";
 
 const RelatedProduct = () => {
@@ -54,14 +54,13 @@ const RelatedProduct = () => {
                 },
               }}
               style={{
-                display: "flex",
                 padding: "15px 15px",
-                alignItems: "center",
-                justifyContent: "center",
               }}
             >
               {loading ? (
-                <Spinner />
+                <div className="flex items-center justify-center">
+                  <CgSpinner className="animate-spin text-gray-500" size={30} />
+                </div>
               ) : (
                 Array.isArray(products) &&
                 products.map((product) => (

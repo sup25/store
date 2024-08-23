@@ -1,4 +1,4 @@
-import Link from "next/link";
+import LinkWithIcon from "@/common/linkWithIcon";
 import { FaExclamationTriangle } from "react-icons/fa";
 import { FiArrowLeft } from "react-icons/fi";
 export default function NotFound() {
@@ -14,12 +14,7 @@ export default function NotFound() {
         <p className="text-gray-600 mb-8">
           Oops! The page you are looking for does not exist.
         </p>
-        <Link href="/">
-          <div className="group flex items-center text-primary text-lg underline hover:text-secondary transition">
-            <FiArrowLeft className="mr-2 transform group-hover:-translate-x-1 transition-transform" />
-            Go Back Home
-          </div>
-        </Link>
+        <LinkWithIcon href="/" icon={FiArrowLeft} label="Go Back Home" />
       </div>
     </div>
   );
