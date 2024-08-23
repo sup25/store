@@ -42,7 +42,7 @@ const GetProductReviews = ({ productId, refreshReview }) => {
 
   return (
     <div className="w-full flex flex-col gap-2">
-      <p className="font-others text-xl font-semibold">
+      <p className="font-others  ">
         {reviews.length === 1 ? "Review" : "Reviews"} {averageScore}
       </p>
       {loading ? (
@@ -50,7 +50,7 @@ const GetProductReviews = ({ productId, refreshReview }) => {
       ) : reviews.length === 0 ? (
         <EmptyReviews />
       ) : (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-3 py-1">
           {reviews
             .slice(0, showAll ? reviews.length : initialVisibleCount)
             .map((review) => (

@@ -21,6 +21,7 @@ const ProductDetail = () => {
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [refreshReview, setRefreshReview] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [showFullDescription, setShowFullDescription] = useState(false);
 
   const { user } = useAuth();
 
@@ -58,20 +59,20 @@ const ProductDetail = () => {
       <div className="container">
         {product && (
           <div className="flex md:flex-row flex-col justify-between w-full gap-10">
-            <div className=" md:w-2/5 w-full flex items-start justify-center">
+            <div className="md:w-2/4 w-full flex items-start justify-center">
               <Swiper
                 modules={[Navigation]}
                 slidesPerView={1}
                 navigation={true}
                 style={{
-                  border: "1px solid black",
+                  border: "1px solid #d3d3d3",
                   padding: "10px",
                   width: "100%",
                 }}
               >
                 {product.images.map((image) => (
                   <SwiperSlide
-                    className="w-full "
+                    className="w-full"
                     key={image.id}
                     style={{
                       display: "flex",
@@ -83,7 +84,7 @@ const ProductDetail = () => {
                       <img
                         src={image.original_url}
                         alt={product.title}
-                        className="w-full md:h-[400px]  h-auto bg-cover"
+                        className="w-full md:h-[400px] h-auto bg-cover"
                       />
                     </div>
                   </SwiperSlide>
@@ -91,7 +92,7 @@ const ProductDetail = () => {
               </Swiper>
             </div>
 
-            <div className="md:w-2/5 w-full flex flex-col gap-10">
+            <div className="md:w-2/5 w-full flex flex-col gap-8">
               <h1 className="font-heading capitalize">{product.title}</h1>
               <p className="text-[#BFA100] font-others text-2xl font-bold">
                 {product.price.toLocaleString("en-US", {
@@ -99,13 +100,34 @@ const ProductDetail = () => {
                   currency: "USD",
                 })}
               </p>
-              <p className="font-others font-medium">{product.sku}</p>
-              <p className="font-others">{product.short_desc}</p>
+              <div className="flex flex-col">
+                <p className="font-others text-sm text-secondary">
+                  {product.handle}
+                </p>
+                <p className="font-others">{product.short_desc}</p>
+              </div>
+
               <SelectProductQuantity
                 quantity={quantity}
                 setQuantity={setQuantity}
               />
-              <p className="font-others">{product.desc}</p>
+
+              <div className="font-others ">
+                {showFullDescription
+                  ? product.desc
+                  : product.desc.length > 200
+                  ? `${product.desc.slice(0, 200)}...`
+                  : product.desc}
+                {product.desc.length > 200 && (
+                  <button
+                    onClick={() => setShowFullDescription((prev) => !prev)}
+                    className="text-secondary hover:underline ml-1"
+                  >
+                    {showFullDescription ? "Show less" : "Show more"}
+                  </button>
+                )}
+              </div>
+
               <AddProductReviews
                 productId={product.id}
                 onReviewAdded={handleReviewAdded}

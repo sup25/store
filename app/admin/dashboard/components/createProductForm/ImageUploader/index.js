@@ -4,12 +4,12 @@ import Spinner from "@/common/spinner";
 
 export const ImageUploader = ({ formData, setFormData }) => {
   const [uploading, setUploading] = useState(false);
-  const [selectedFiles, setSelectedFiles] = useState(formData.images);
+  const [selectedFiles, setSelectedFiles] = useState(formData.images || []);
   const [removing, setRemoving] = useState(false);
   const [imageAdded, setImageAdded] = useState(false);
 
   useEffect(() => {
-    setSelectedFiles(formData.images);
+    setSelectedFiles(formData.images || []);
   }, [formData.images]);
 
   useEffect(() => {
@@ -40,8 +40,8 @@ export const ImageUploader = ({ formData, setFormData }) => {
     <div className="flex items-center flex-col gap-2">
       {selectedFiles.length > 0 && (
         <div className="flex flex-wrap justify-center gap-2 bg-black bg-opacity-10 px-2 py-4 rounded-md">
-          {selectedFiles.map((file) => (
-            <div key={file.id} className="relative">
+          {selectedFiles.map((file, index) => (
+            <div key={file.id || index} className="relative">
               <img
                 src={file.original_url}
                 alt={`Selected ${file.id}`}
@@ -78,6 +78,7 @@ export const ImageUploader = ({ formData, setFormData }) => {
         accept="image/*"
         id="imageInput"
         name="imageInput"
+        multiple
         onChange={(event) => {
           setUploading(true);
           setImageAdded(true);

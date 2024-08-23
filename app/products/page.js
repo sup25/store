@@ -85,7 +85,7 @@ const Products = () => {
           </div>
         </div>
         <div className="flex flex-col gap-6  items-center">
-          <div className="flex flex-wrap gap-20 justify-between my-10">
+          <div className="flex flex-wrap gap-24  my-10">
             {paginatedProducts().length > 0
               ? paginatedProducts().map((product) => (
                   <div key={product.id}>

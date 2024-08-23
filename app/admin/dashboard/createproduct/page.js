@@ -1,7 +1,6 @@
 "use client";
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect, useCallback } from "react";
 import CreateProductForm from "@/app/admin/dashboard/components/createProductForm";
-
 import { handleChange } from "./handler";
 import { useAdminData, useProductData } from "./hooks";
 import withAuthAdmin from "../../utils/adminHoc/page";
@@ -33,9 +32,12 @@ const CreateProductAdmin = () => {
     if (productHandle) {
       getProductByHandle(productHandle, setFormData, setIsUpdating);
     }
-  }, [productHandle]);
+  }, [productHandle, setFormData, setIsUpdating]);
 
-  const resetForm = () => setFormData(initialFormData);
+  const resetForm = useCallback(
+    () => setFormData(initialFormData),
+    [setFormData]
+  );
 
   const buttonText = isUpdating ? "Update Product" : "Create Product";
 

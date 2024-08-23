@@ -29,14 +29,14 @@ export const fields = [
   },
   {
     name: "price",
-    label: "Price",
+    label: "Price $",
     type: "text",
     required: true,
     placeholder: "29.99",
   },
   {
     name: "quantity",
-    label: "Quantity",
+    label: "Quantity (units)",
     type: "text",
     required: true,
     placeholder: "Enter the product quantity",
