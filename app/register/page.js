@@ -3,10 +3,11 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import Link from "next/link";
+import { FiArrowRight } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import AuthForm from "@/common/authForm";
 import appConfig from "@/config";
+import LinkWithIcon from "@/common/linkWithIcon";
 
 const Register = () => {
   const router = useRouter();
@@ -76,13 +77,12 @@ const Register = () => {
             buttonText="Register"
             isLoading={isLoading}
           />
-
-          <Link
+          <LinkWithIcon
             href="/admin/auth/register"
-            className="hover:text-secondary text-center font-others transition duration-300 ease-in-out"
-          >
-            Businees Account
-          </Link>
+            icon={FiArrowRight}
+            label="Businees Account"
+            iconPosition="right"
+          />
         </div>
       </div>
     </div>

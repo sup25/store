@@ -6,6 +6,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import AuthForm from "@/common/authForm";
 import appConfig from "@/config";
+import LinkWithIcon from "@/common/linkWithIcon";
+import { FiArrowLeft } from "react-icons/fi";
 
 const Register = () => {
   const router = useRouter();
@@ -72,6 +74,11 @@ const Register = () => {
             errors={errors}
             buttonText="Register"
             isLoading={isLoading}
+          />
+          <LinkWithIcon
+            href="/register"
+            icon={FiArrowLeft}
+            label="Customer Register"
           />
         </div>
       </div>
