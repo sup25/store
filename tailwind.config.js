@@ -111,6 +111,13 @@ module.exports = {
         ".incomplete": {
           backgroundColor: "rgba(254, 226, 226, 0.4)",
         },
+        ".title-heading": {
+          fontSize: "1.125rem",
+          fontFamily: "var(--font-poppins)",
+          fontWeight: "500",
+          color: "#4a5568",
+          marginBottom: "8px",
+        },
 
         ".table-container": {
           "@media (max-width: 1200px)": {
