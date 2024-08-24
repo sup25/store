@@ -35,7 +35,6 @@ const HeroImages = () => {
                   alt={clothes.alt}
                   src={clothes.src}
                   fill
-                  loading="lazy"
                   priority={true}
                   style={{ objectFit: "cover" }}
                 />

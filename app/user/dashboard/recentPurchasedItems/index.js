@@ -28,7 +28,7 @@ const RecentPurchasedItem = () => {
   }, []);
 
   return (
-    <div className="shadow p-10 w-full max-w-[750px] h-auto  md:max-h-[570px] ">
+    <div className="shadow p-10 w-full max-w-[750px] h-full  md:max-h-[570px] ">
       <h2 className="font-heading mb-5 ">Recently Purchased Items</h2>
       {loading && products && (
         <div className="text-lg font-others animate-bounce">Loading items</div>
