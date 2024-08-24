@@ -5,6 +5,8 @@ import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import Login from "@/app/login/page";
 import appConfig from "@/config";
+import LinkWithIcon from "@/common/linkWithIcon";
+import { FiArrowRight } from "react-icons/fi";
 
 const VerifyEmailContent = () => {
   const [message, setMessage] = useState("");
@@ -54,7 +56,7 @@ const VerifyEmailContent = () => {
   if (!user) {
     return (
       <div className="flex flex-col items-center justify-center gap-2">
-        <p className="font-heading">
+        <p className="font-heading text-2xl mb-4 mx-2">
           You need to be logged in to verify your email.
         </p>
         <Login isPopup={true} redirectToVerification={true} />
@@ -64,11 +66,20 @@ const VerifyEmailContent = () => {
 
   return (
     <div className="section">
-      <div className="container items-center justify-center gap-2">
-        <p className="text-lg font-heading text-center">Email Verification</p>
-        <p className="text-base font-others font-medium text-center">
-          {loading ? "Loading..." : message}
-        </p>
+      <div className="container ">
+        <div className="flex items-center w-full justify-center gap-5 flex-col">
+          <p className="text-lg font-heading text-center">Email Verification</p>
+          <p className="text-2xl font-others font-medium text-center">
+            {loading ? "Loading..." : message}
+          </p>
+
+          <LinkWithIcon
+            label="Back to Profile"
+            href="/user/dashboard"
+            icon={FiArrowRight}
+            iconPosition="right"
+          />
+        </div>
       </div>
     </div>
   );
