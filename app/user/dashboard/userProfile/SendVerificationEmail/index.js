@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import crypto from "crypto";
 import { useAuth } from "@/context/AuthContext";
 import { MdOutlineVerified } from "react-icons/md";
-import { UserBtn } from "../../common";
+import { UserBtn } from "../common";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import appConfig from "@/config";
@@ -14,7 +14,6 @@ const SendVerificationEmail = () => {
   const [emailSent, setEmailSent] = useState(false);
 
   const generateToken = () => {
-    console.log(user);
     const token = crypto.randomBytes(32).toString("hex");
     return token;
   };
@@ -32,8 +31,6 @@ const SendVerificationEmail = () => {
         }
       );
 
-      console.log(response);
-
       if (response.status === 200) {
         toast.success("Verification email sent");
         setEmailSent(true);
@@ -47,6 +44,7 @@ const SendVerificationEmail = () => {
       setLoading(false);
     }
   };
+  useEffect(() => {}, [user]);
 
   if (!user || !user.email) {
     return <h1>Loading...</h1>;

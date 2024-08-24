@@ -105,7 +105,7 @@ export async function sendVerificationEmailService(user, token) {
     to: user.email,
     subject: "Verify your email",
     text: `Please verify your email by clicking the following link: 
-    ${baseUrl}/user/userdata/email/verifyEmail?token=${token}`,
+    ${baseUrl}/user/verify-email?token=${token}`,
   };
 
   await transporter.sendMail(mailOptions);

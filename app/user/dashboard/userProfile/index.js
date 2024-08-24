@@ -1,7 +1,7 @@
 import { ProfileDetails } from "./profileDetails";
 import { AddressDetails } from "./addressDetails";
 import { RegistrationTime } from "./registrationTime";
-import SendVerificationEmail from "./email/SendVerificationEmail";
+import SendVerificationEmail from "./SendVerificationEmail";
 import SendPhoneVerificationCode from "./phone/sendPhoneVerificationCode";
 
 const UserProfile = () => {

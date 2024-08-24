@@ -45,7 +45,7 @@ const Login = ({ redirectToVerification }) => {
       if (redirectToVerification) {
         const token = searchParams.get("token");
         if (token) {
-          const redirectUrl = `/user/userdata/email/verifyEmail?token=${token}`;
+          const redirectUrl = `/user/verify-email?token=${token}`;
           router.push(redirectUrl);
         } else {
           toast.error("Token missing. Please try again.");
@@ -83,7 +83,9 @@ const Login = ({ redirectToVerification }) => {
     <div className="section">
       <div className="container">
         <div className="flex w-full flex-col justify-center items-center gap-10">
-          <h2 className="font-heading  text-center">Login</h2>
+          {!redirectToVerification && (
+            <h2 className="font-heading  text-center">Login</h2>
+          )}
           <AuthForm
             fields={loginFields}
             onSubmit={handleSubmit}
@@ -94,12 +96,14 @@ const Login = ({ redirectToVerification }) => {
             isLoading={isLoading}
           />
 
-          <LinkWithIcon
-            href="/admin/auth/login"
-            icon={FiArrowRight}
-            label="Administrative Login"
-            iconPosition="right"
-          />
+          {!redirectToVerification && (
+            <LinkWithIcon
+              href="/admin/auth/login"
+              icon={FiArrowRight}
+              label="Administrative Login"
+              iconPosition="right"
+            />
+          )}
         </div>
       </div>
     </div>
