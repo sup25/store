@@ -43,6 +43,8 @@ const BtnCheckout = ({ items, showLoginPopup, user, deleteItem = null }) => {
           admin: item.product.adminId,
         })),
         user: user.id,
+        email: user.email,
+        username: user.first_name + " " + user.last_name,
         address: JSON.stringify(user.addresses),
       };
 

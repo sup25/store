@@ -2,6 +2,8 @@ import Stripe from "stripe";
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { createOrderController } from "../admin/auth/order/controller";
+import nodemailer from "nodemailer";
+import { generateOrderEmailContent } from "./components";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2023-10-16",
@@ -57,6 +59,8 @@ export async function POST(request) {
     const orderDetails = {
       price: checkoutSessionCompleted.amount_total,
       name: checkoutSessionCompleted.metadata.name,
+      email: checkoutSessionCompleted.metadata.email,
+      username: checkoutSessionCompleted.metadata.username,
       products: products,
       user: checkoutSessionCompleted.metadata.userId,
       address: checkoutSessionCompleted.metadata.address,
@@ -78,6 +82,31 @@ export async function POST(request) {
       await createOrderController(orderDetails);
 
       console.log("Order created successfully");
+
+      const emailContent = generateOrderEmailContent(orderDetails, products);
+
+      const transporter = nodemailer.createTransport({
+        service: "Gmail",
+        auth: {
+          user: process.env.USER_EMAIL,
+          pass: process.env.USER_PASSWORD,
+        },
+      });
+
+      const mailOptions = {
+        from: process.env.USER_EMAIL,
+        to: orderDetails.email,
+        subject: "Order Confirmation",
+        html: emailContent,
+      };
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.error("Error sending email:", error);
+        } else {
+          console.log("Email sent successfully:", info.response);
+        }
+      });
     } catch (error) {
       console.error("Error saving order details:", error);
       return new NextResponse(`Error saving order details: ${error.message}`, {

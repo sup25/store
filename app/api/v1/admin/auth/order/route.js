@@ -7,7 +7,7 @@ export async function POST(request) {
 
   console.log("requestedData", requestData);
 
-  const { items, user, address } = requestData;
+  const { items, user, address, email, username } = requestData;
 
   const validItems = items.filter(
     (item) => item.product && item.price && item.quantity
@@ -54,11 +54,13 @@ export async function POST(request) {
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url: `${baseUrl}/ordersuccess`,
-      cancel_url: `${baseUrl}/ordererror`,
+      success_url: `${baseUrl}/user/ordersuccess`,
+      cancel_url: `${baseUrl}/user/ordererror`,
       metadata: {
         name: names,
         userId: user,
+        email: email,
+        username: username,
         address: address,
         adminId: adminIds,
         product: JSON.stringify(products),
