@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import Link from "next/link";
 import { Pagination, Autoplay } from "swiper/modules";
+import Image from "next/image";
 const ClothImages = [
   { id: "1", src: "/images/c1.jpg", alt: "Cloth 1" },
   { id: "2", src: "/images/c2.jpg", alt: "Cloth 2" },
@@ -29,11 +30,15 @@ const HeroImages = () => {
         {ClothImages.map((clothes) => (
           <SwiperSlide key={clothes.id} className="flex justify-center">
             <Link href={"/products"}>
-              <div
-                className="w-full min-h-[578px] h-full bg-cover   bg-no-repeat  bg-top"
-                style={{ backgroundImage: `url(${clothes.src})` }}
-                aria-label={clothes.alt}
-              ></div>
+              <div className="w-full min-h-[578px] h-full relative ">
+                <Image
+                  alt={clothes.alt}
+                  src={clothes.src}
+                  fill
+                  loading="lazy"
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
             </Link>
           </SwiperSlide>
         ))}
