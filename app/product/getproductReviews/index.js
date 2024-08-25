@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-
 import { EmptyReviews } from "./components";
 import { CgSpinner } from "react-icons/cg";
 import { useAuth } from "@/context/AuthContext";
@@ -16,6 +15,7 @@ const GetProductReviews = ({ productId, refreshReview }) => {
   const [showAll, setShowAll] = useState(false);
   const [editingReviewId, setEditingReviewId] = useState(null);
   const [editedMessage, setEditedMessage] = useState("");
+  const [reviewLoading, setReviewLoading] = useState({});
 
   const { user } = useAuth();
 
@@ -25,7 +25,8 @@ const GetProductReviews = ({ productId, refreshReview }) => {
     try {
       setLoading(true);
       const allProductReviews = await getAllReviews({ productId });
-      setReviews(allProductReviews);
+      const sortedReviews = allProductReviews.sort((a, b) => b.id - a.id);
+      setReviews(sortedReviews);
     } catch (error) {
       console.log(error);
     } finally {
@@ -55,37 +56,49 @@ const GetProductReviews = ({ productId, refreshReview }) => {
             .slice(0, showAll ? reviews.length : initialVisibleCount)
             .map((review) => (
               <div key={review.id} className="shadow py-1 px-2">
-                <div className="flex gap-2 justify-between">
-                  <div className="flex gap-2">
-                    <p className="font-others font-semibold capitalize">
-                      {review.user.first_name} {review.user.last_name}
-                    </p>
-                    <p className="font-others font-bold">({review.score})</p>
+                {reviewLoading[review.id] ? (
+                  <div className="flex w-full items-center justify-center py-2">
+                    <CgSpinner className="animate-spin " />
                   </div>
-                  {currentUserId === review.user.id && (
-                    <ReviewActions
-                      review={review}
-                      setEditingReviewId={setEditingReviewId}
-                      setEditedMessage={setEditedMessage}
-                      currentUserId={currentUserId}
-                      setReviews={setReviews}
-                      setLoading={setLoading}
-                    />
-                  )}
-                </div>
-                {editingReviewId === review.id ? (
-                  <ReviewEditor
-                    editedMessage={editedMessage}
-                    setEditedMessage={setEditedMessage}
-                    loading={loading}
-                    setLoading={setLoading}
-                    review={review}
-                    setEditingReviewId={setEditingReviewId}
-                    setReviews={setReviews}
-                    currentUserId={currentUserId}
-                  />
                 ) : (
-                  <p className="font-others">{review.message}</p>
+                  <>
+                    <div className="flex gap-2 justify-between">
+                      <div className="flex gap-2">
+                        <p className="font-others font-semibold capitalize">
+                          {review.user.first_name} {review.user.last_name}
+                        </p>
+                        <p className="font-others font-bold">
+                          ({review.score})
+                        </p>
+                      </div>
+
+                      {currentUserId === review.user.id && (
+                        <ReviewActions
+                          review={review}
+                          setEditingReviewId={setEditingReviewId}
+                          setEditedMessage={setEditedMessage}
+                          currentUserId={currentUserId}
+                          setReviews={setReviews}
+                          setReviewLoading={setReviewLoading} // Pass review loading state handler
+                        />
+                      )}
+                    </div>
+                    <>
+                      {editingReviewId === review.id ? (
+                        <ReviewEditor
+                          editedMessage={editedMessage}
+                          setEditedMessage={setEditedMessage}
+                          review={review}
+                          setEditingReviewId={setEditingReviewId}
+                          setReviewLoading={setReviewLoading} // Pass review loading state handler
+                          setReviews={setReviews}
+                          currentUserId={currentUserId}
+                        />
+                      ) : (
+                        <p className="font-others">{review.message}</p>
+                      )}
+                    </>
+                  </>
                 )}
               </div>
             ))}

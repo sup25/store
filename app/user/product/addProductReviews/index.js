@@ -37,7 +37,7 @@ const AddProductReviews = ({ productId, onReviewAdded }) => {
       toast.success("Review submitted successfully");
       setRating(0);
       setComment("");
-      onReviewAdded();
+      onReviewAdded(response);
     } catch (error) {
       if (error.response && error.response.status === 400) {
         const errorMessage =

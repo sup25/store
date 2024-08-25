@@ -1,16 +1,17 @@
 import { deleteProductReviews, editProductReviews } from "@/app/utils";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 export const handleEditReview = async (
   reviewId,
   setReviews,
   setEditingReviewId,
   editedMessage,
   userId,
-  setLoading
+  setReviewLoading
 ) => {
   try {
-    setLoading(true);
+    setReviewLoading((prev) => ({ ...prev, [reviewId]: true }));
     const body = {
       reviewId,
       updatedFields: { message: editedMessage },
@@ -29,18 +30,17 @@ export const handleEditReview = async (
     console.error("Error editing review:", error);
     toast.error("Error editing review");
   } finally {
-    setLoading(false);
+    setReviewLoading((prev) => ({ ...prev, [reviewId]: false }));
   }
 };
-
 export const handleDeleteReview = async (
   reviewId,
   setReviews,
   userId,
-  setLoading
+  setReviewLoading
 ) => {
   try {
-    setLoading(true);
+    setReviewLoading((prev) => ({ ...prev, [reviewId]: true }));
     const body = {
       reviewId,
       userId,
@@ -55,7 +55,7 @@ export const handleDeleteReview = async (
     console.error("Error deleting review:", error);
     toast.error("Error deleting review");
   } finally {
-    setLoading(false);
+    setReviewLoading((prev) => ({ ...prev, [reviewId]: false }));
   }
 };
 

@@ -35,6 +35,7 @@ const HeroImages = () => {
                   alt={clothes.alt}
                   src={clothes.src}
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
                   priority={true}
                   style={{ objectFit: "cover" }}
                 />
