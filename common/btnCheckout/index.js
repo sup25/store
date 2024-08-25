@@ -76,11 +76,21 @@ const BtnCheckout = ({ items, showLoginPopup, user, deleteItem = null }) => {
   };
 
   const handleClick = (e) => {
+    e.preventDefault();
     if (!user) {
       showLoginPopup(e);
-    } else {
-      proceedCheckout(e);
+      return;
     }
+
+    const soldOutItem = items.find((item) => item.product.quantity === 0);
+    if (soldOutItem) {
+      toast.error(
+        `Cannot checkout "${soldOutItem.product.title}". It is sold out!`
+      );
+      return;
+    }
+
+    proceedCheckout(e);
   };
 
   return (

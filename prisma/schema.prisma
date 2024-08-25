@@ -128,6 +128,7 @@ model OrderProduct {
   orderId   Int
   product   Product @relation(fields: [productId], references: [id])
   productId Int
+  quantity  Int
 
   @@unique([orderId, productId])
 }

@@ -12,7 +12,7 @@ const CompletedOrder = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { handle } = useParams();
-
+  console.log(product);
   useEffect(() => {
     const getProduct = async () => {
       try {
