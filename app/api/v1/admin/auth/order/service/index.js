@@ -7,9 +7,10 @@ export const createOrderService = async (orderData) => {
     address: addressData,
     price: parseInt(orderData.price, 10) || 0,
     name: orderData.name,
-    products: orderData.products.map((product) =>
-      parseInt(product.productId || product, 10)
-    ),
+    products: orderData.products.map((product) => ({
+      productId: parseInt(product.productId || product, 10),
+      quantity: parseInt(product.quantity || 1, 10),
+    })),
     user: parseInt(orderData.user, 10),
     admin: orderData.admin.split(",").map((adminId) => parseInt(adminId, 10)),
   };
@@ -60,8 +61,8 @@ export const createOrderService = async (orderData) => {
       sale: {
         create: {
           products: {
-            connect: dataWithDefaults.products.map((productId) => ({
-              id: productId,
+            connect: dataWithDefaults.products.map((product) => ({
+              id: product.productId,
             })),
           },
         },
@@ -70,38 +71,59 @@ export const createOrderService = async (orderData) => {
         connect: { id: dataWithDefaults.user },
       },
       OrderProduct: {
-        create: dataWithDefaults.products.map((productId) => ({
+        create: dataWithDefaults.products.map((product) => ({
           product: {
-            connect: { id: productId },
+            connect: { id: product.productId },
           },
+          quantity: product.quantity,
         })),
       },
     },
   });
 
   await Promise.all(
-    dataWithDefaults.products.map(async (productId) => {
-      const product = await prisma.product.findUnique({
+    dataWithDefaults.products.map(async (product) => {
+      const { productId, quantity } = product;
+      const existingProduct = await prisma.product.findUnique({
         where: { id: productId },
       });
 
-      if (product && product.adminId) {
-        await prisma.status.create({
+      if (existingProduct) {
+        if (existingProduct.quantity < quantity) {
+          throw new Error(
+            `Insufficient stock for product with ID ${productId}`
+          );
+        }
+
+        await prisma.product.update({
+          where: { id: productId },
           data: {
-            type: "completed",
-            date: new Date(),
-            order: {
-              connect: { id: order.id },
-            },
-            Admin: {
-              connect: { id: product.adminId },
+            quantity: {
+              decrement: quantity,
             },
           },
         });
+
+        if (existingProduct.adminId) {
+          await prisma.status.create({
+            data: {
+              type: "completed",
+              date: new Date(),
+              order: {
+                connect: { id: order.id },
+              },
+              Admin: {
+                connect: { id: existingProduct.adminId },
+              },
+            },
+          });
+        } else {
+          console.error(
+            `Admin ID is undefined for product with ID: ${productId}`
+          );
+        }
       } else {
-        console.error(
-          `Admin ID is undefined for product with ID: ${productId}`
-        );
+        console.error(`Product with ID ${productId} not found`);
       }
     })
   );

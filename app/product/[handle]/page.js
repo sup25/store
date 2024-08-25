@@ -10,10 +10,11 @@ import { Navigation } from "swiper/modules";
 import SelectProductQuantity from "@/app/admin/dashboard/components/selectProductQuantity";
 import { useParams } from "next/navigation";
 import AddProductReviews from "@/app/user/product/addProductReviews";
-import GetProductReviews from "@/app/products/getproductReviews";
+
 import { getSinlgeProduct } from "@/app/utils";
 import Spinner from "@/common/spinner";
 import NotFound from "@/app/not-found";
+import GetProductReviews from "../getproductReviews";
 
 const ProductDetail = () => {
   const { handle } = useParams();
@@ -29,8 +30,6 @@ const ProductDetail = () => {
   const getProductDetails = async () => {
     try {
       const response = await getSinlgeProduct({ handle });
-      console.log(response);
-
       setProduct(response);
     } catch (error) {
       console.log("Error fetching product data:", error);
@@ -109,12 +108,25 @@ const ProductDetail = () => {
                 <p className="font-others text-sm text-secondary">
                   {product.handle}
                 </p>
+                <p className="title-heading">
+                  Availabel Quantity:{" "}
+                  <span
+                    className={`${
+                      product.quantity > 10
+                        ? "bg-green-200 text-green-700"
+                        : "bg-red-200 text-red-700 "
+                    }  px-2 py-1 rounded-lg`}
+                  >
+                    {product.quantity}
+                  </span>
+                </p>
                 <p className="font-others">{product.short_desc}</p>
               </div>
 
               <SelectProductQuantity
                 quantity={quantity}
                 setQuantity={setQuantity}
+                title={false}
               />
 
               <div className="font-others ">

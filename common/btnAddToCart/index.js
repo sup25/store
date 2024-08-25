@@ -11,6 +11,10 @@ const BtnAddToCart = ({ product, showLoginPopup, user, quantity }) => {
   const { updateCartItems } = useCart();
 
   const handleClick = async (e) => {
+    if (product.quantity === 0) {
+      toast.error(`Cannot add to cart "${product.title}". It is sold out!`);
+      return;
+    }
     if (!user) {
       showLoginPopup();
     } else {

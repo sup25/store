@@ -42,7 +42,7 @@ const GetProductReviews = ({ productId, refreshReview }) => {
 
   return (
     <div className="w-full flex flex-col gap-2">
-      <p className="font-others  ">
+      <p className="title-heading  ">
         {reviews.length === 1 ? "Review" : "Reviews"} {averageScore}
       </p>
       {loading ? (

@@ -14,9 +14,9 @@ const Card = ({ product }) => {
   const { user } = useAuth();
   const [isLoginModalVisible, setIsLoginModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { handle, title, description, images, price } = product;
+  const { handle, title, description, images, price, quantity } = product;
   const [addedToCart, setAddedToCart] = useState(false);
-  const { updateCartItems } = useCart();
+  const { updateCartItems, cartItems } = useCart();
 
   const getImage = () => {
     if (images && images.length > 0 && images[0].thumbnail) {
@@ -26,6 +26,25 @@ const Card = ({ product }) => {
   };
 
   const handleCartClick = async () => {
+    if (product.quantity === 0) {
+      toast.error(`Cannot add to cart "${product.title}". It is sold out!`);
+      return;
+    }
+    const existingCartItem = cartItems.find(
+      (item) => item.product.id === product.id
+    );
+
+    const totalQuantityInCart = existingCartItem
+      ? existingCartItem.quantity
+      : 0;
+
+    if (totalQuantityInCart >= product.quantity) {
+      toast.error(
+        `You have already added all available stock of "${product.title}" to the cart.`
+      );
+      return;
+    }
+
     if (!user) {
       setIsLoginModalVisible(true);
     } else {
@@ -71,6 +90,15 @@ const Card = ({ product }) => {
               <p className="text-gray-700 font-others text-sm text-center">
                 {description}
               </p>
+              {quantity === 0 ? (
+                <p className="text-red-700 font-others text-sm text-center">
+                  Sold Out
+                </p>
+              ) : quantity <= 10 ? (
+                <p className="text-red-700 font-others text-sm text-center">
+                  Only {quantity} left!
+                </p>
+              ) : null}
               <p className="text-[#BFA100] font-others text-center text-xl font-bold">
                 ${price}
               </p>
