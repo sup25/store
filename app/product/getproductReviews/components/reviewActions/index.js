@@ -8,7 +8,7 @@ const ReviewActions = ({
   setEditedMessage,
   currentUserId,
   setReviews,
-  setLoading,
+  setReviewLoading,
 }) => {
   return (
     <div className="flex gap-2">
@@ -24,7 +24,12 @@ const ReviewActions = ({
         size={20}
         className="cursor-pointer hover:text-red-500 transition duration-300 ease-in-out"
         onClick={() =>
-          handleDeleteReview(review.id, setReviews, currentUserId, setLoading)
+          handleDeleteReview(
+            review.id,
+            setReviews,
+            currentUserId,
+            setReviewLoading
+          )
         }
       />
     </div>

@@ -1,16 +1,14 @@
 import React from "react";
-import { CgSpinner } from "react-icons/cg";
 import { handleEditReview } from "../../handlers";
 
 const ReviewEditor = ({
   editedMessage,
   setEditedMessage,
-  loading,
   review,
   setEditingReviewId,
   setReviews,
   currentUserId,
-  setLoading,
+  setReviewLoading,
 }) => {
   const handleCancelEdit = () => {
     setEditingReviewId(null);
@@ -34,17 +32,12 @@ const ReviewEditor = ({
               setEditingReviewId,
               editedMessage,
               currentUserId,
-              setLoading,
-              loading
+              setReviewLoading
             )
           }
           className="bg-green-500 text-white w-full p-2 hover:bg-tertiary font-others transition duration-300 ease-in-out"
         >
-          {loading ? (
-            <CgSpinner className="animate-spin self-center " />
-          ) : (
-            "Save"
-          )}
+          Save
         </button>
         <button
           onClick={handleCancelEdit}
