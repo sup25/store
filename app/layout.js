@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/constants/navbar";
 import Footer from "@/constants/footer";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, Zoom } from "react-toastify";
 import { AuthProvider } from "@/context/AuthContext";
 import { CartProvider } from "@/context/cartContext";
 import { generateMetadata } from "./metadata";
@@ -57,7 +57,12 @@ export default function RootLayout({ children }) {
         className={inter.className}
         style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
       >
-        <ToastContainer />
+        <ToastContainer
+          position="bottom-right"
+          autoClose={2000}
+          theme="light"
+          transition={Zoom}
+        />
         <AuthProvider>
           <CartProvider>
             <div className="w-full md:mb-16 mb-14 ">

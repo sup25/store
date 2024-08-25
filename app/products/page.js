@@ -73,7 +73,7 @@ const Products = () => {
     <div className="section">
       <div className="container">
         {loading && <Spinner />}
-        <h1 className="font-heading mb-10  text-center">Search for Product</h1>
+        <h1 className="font-heading mb-10  text-center">All Products</h1>
         <div className="flex flex-col w-full my-10">
           <div className="flex md:flex-row flex-col md:justify-start justify-center items-center  md:items-end w-full gap-10 flex-wrap">
             <GetProductsByPrice
@@ -85,7 +85,7 @@ const Products = () => {
           </div>
         </div>
         <div className="flex flex-col gap-6 w-full  items-center">
-          <div className="flex w-full flex-wrap md:gap-28 gap-12 md:justify-start justify-center  my-10">
+          <div className="flex w-full flex-wrap md:gap-16 gap-12 md:justify-start justify-center  my-10">
             {paginatedProducts().length > 0
               ? paginatedProducts().map((product) => (
                   <div key={product.id}>
