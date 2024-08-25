@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper/modules";
 import "swiper/swiper-bundle.css";
 import Card from "@/common/card";
 import { CgSpinner } from "react-icons/cg";
@@ -44,17 +45,22 @@ const RelatedProduct = () => {
           <h2 className="font-heading my-10">Related Products</h2>
           <div>
             <Swiper
+              modules={[Pagination]}
               slidesPerView={1}
+              pagination={true}
+              loop={true}
               breakpoints={{
                 768: {
                   slidesPerView: 2,
                 },
                 960: {
-                  slidesPerView: 3,
+                  slidesPerView: 4,
                 },
               }}
               style={{
-                padding: "15px 15px",
+                padding: "30px 5px",
+                "--swiper-pagination-bottom": "0px",
+                "--swiper-pagination-bullet-horizontal-gap": "10px",
               }}
             >
               {loading ? (

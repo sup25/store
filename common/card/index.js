@@ -8,6 +8,7 @@ import { handleAddToCart } from "./handler";
 import { useCart } from "@/context/cartContext";
 import { CgSpinner } from "react-icons/cg";
 import { LoginModal } from "./component";
+import Image from "next/image";
 
 const Card = ({ product }) => {
   const { user } = useAuth();
@@ -50,23 +51,30 @@ const Card = ({ product }) => {
   return (
     <>
       {isLoginModalVisible && <LoginModal handler={handleClose} />}
-      <div className="relative mx-2 md:w-[300px] h-[400px] cursor-pointer flex flex-col items-center justify-center px-6 py-4 shadow-lg rounded-20 gap-4 transform transition ease-in hover:scale-105">
+      <div className="relative mx-2 md:w-[250px] h-[350px] cursor-pointer flex flex-col items-center justify-center px-6 py-4 shadow-lg rounded-md gap-4 transform transition ease-in hover:scale-105">
         <Link href={`/product/${handle}`}>
           <div className="flex flex-col items-center">
-            <img
-              className="w-60 h-56 object-cover rounded"
-              src={getImage()}
-              alt={title}
-            />
-            <p className="font-bold font-heading text-center text-lg mt-2">
-              {title}
-            </p>
-            <p className="text-gray-700 font-others text-sm text-center">
-              {description}
-            </p>
-            <p className="text-[#BFA100] font-others text-center text-2xl font-bold">
-              ${price}
-            </p>
+            <div className="w-48 h-44  relative">
+              <Image
+                alt={title}
+                src={getImage()}
+                fill
+                priority={true}
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+
+            <div className="flex flex-col pt-3">
+              <p className="font-bold font-heading text-center text-base mt-2">
+                {title}
+              </p>
+              <p className="text-gray-700 font-others text-sm text-center">
+                {description}
+              </p>
+              <p className="text-[#BFA100] font-others text-center text-xl font-bold">
+                ${price}
+              </p>
+            </div>
           </div>
         </Link>
         <div className="relative group">
