@@ -30,7 +30,7 @@ const SendPhoneVerificationCode = () => {
           auth,
           "recaptcha-container",
           {
-            size: "normal",
+            size: "invisible",
           }
         );
       } catch (error) {
