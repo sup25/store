@@ -15,6 +15,9 @@ export async function POST(request) {
     return internalRes("User registered successfully", user, 201);
   } catch (err) {
     console.log(err);
+    if (err.message === "Email already in use") {
+      return internalRes("Email already in use", null, 409);
+    }
     return internalRes("Internal Server Error", null, 500);
   }
 }

@@ -21,6 +21,7 @@ const Register = () => {
   });
 
   const [errors, setErrors] = useState([]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -28,6 +29,7 @@ const Register = () => {
       [name]: value,
     });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -43,18 +45,26 @@ const Register = () => {
         `/${appConfig.basePath}/user/auth/register`,
         formData
       );
-      if (response.status !== 201) {
+
+      if (response.status === 201) {
+        toast.success("User registered successfully");
+        router.push("/user/dashboard");
+      } else {
         throw new Error("Failed to register user");
       }
-
-      toast.success("User registered successfully");
-      router.push("/");
     } catch (error) {
-      console.log("Error registering user:", error.response.data);
-      setErrors(error.response?.data?.returnedData?.errors || []);
-      if (error.response?.data?.message) {
-        setErrors([error.response.data.message]);
-        toast.error("email already in use ");
+      console.log("Error registering user:", error.response?.data);
+
+      const errorData = error.response?.data;
+      if (errorData?.status === 409) {
+        setErrors([errorData.message || "Email already in use"]);
+        toast.error(errorData.message || "Email already in use");
+      } else if (errorData?.returnedData?.errors) {
+        const validationErrors = errorData.returnedData.errors.map(
+          (err) => err.message
+        );
+        setErrors(validationErrors);
+        toast.error(validationErrors.join(", "));
       } else {
         setErrors(["An error occurred during registration"]);
         toast.error("An error occurred during registration");
@@ -63,6 +73,7 @@ const Register = () => {
       setIsLoading(false);
     }
   };
+
   const registerFields = [
     { name: "first_name", label: "First Name", type: "text", required: true },
     { name: "last_name", label: "Last Name", type: "text", required: true },

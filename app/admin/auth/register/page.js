@@ -47,7 +47,7 @@ const Register = () => {
         throw new Error("Failed to register ");
       }
       toast.success("registered successfully");
-      router.push("/");
+      router.push("/admin/dashboard");
     } catch (error) {
       console.log("Error registering:", error.response.data);
       setErrors(error.response?.data?.returnedData?.errors || []);
