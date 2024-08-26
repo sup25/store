@@ -5,8 +5,8 @@ export async function POST(request) {
   try {
     const { phoneNumber, userId } = await request.json();
 
-    if (!phoneNumber || !userId) {
-      return internalRes("Missing required fields", { success: false }, 400);
+    if (!phoneNumber) {
+      return internalRes("Missing phone number", { success: false }, 400);
     }
 
     const existingUser = await prisma.User.findFirst({
@@ -21,16 +21,7 @@ export async function POST(request) {
       );
     }
 
-    await prisma.User.update({
-      where: { id: userId },
-      data: { phone: phoneNumber, verified_phone: true },
-    });
-
-    return internalRes(
-      "Phone number stored successfully",
-      { success: true },
-      200
-    );
+    return internalRes("Phone number is available", { success: true }, 200);
   } catch (error) {
     console.error("Internal server error:", error);
     return internalRes(

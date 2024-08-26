@@ -30,7 +30,7 @@ const ProductRecommendation = () => {
     <div className="section">
       <div className="container">
         <h2 className="font-heading mb-12 "> For You </h2>
-        <div className="flex flex-wrap w-full md:items-start items-center justify-center md:justify-start  gap-24">
+        <div className="flex flex-wrap w-full md:items-start items-center justify-center md:justify-start  gap-28">
           {loading && <Spinner />}
           {products &&
             products.map((product) => (
