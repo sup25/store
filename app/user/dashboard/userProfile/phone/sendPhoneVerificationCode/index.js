@@ -12,6 +12,8 @@ import {
   RecaptchaVerifier,
   signInWithPhoneNumber,
 } from "@/app/config/firebase";
+import appConfig from "@/config";
+import axios from "axios";
 
 const SendPhoneVerificationCode = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -63,6 +65,22 @@ const SendPhoneVerificationCode = () => {
     try {
       setLoading(true);
 
+      const response = await axios.post(
+        `/${appConfig.basePath}/user/auth/phoneverification/checkPhoneNumberInUse`,
+        {
+          phoneNumber,
+          userId: user.id,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      if (response.data.error) {
+        toast.error(response.data.error);
+        return;
+      }
+
       const appVerifier = recaptchaVerifierRef.current;
       if (!appVerifier) {
         toast.error("Recaptcha not initialized. Please try again.");
@@ -78,8 +96,12 @@ const SendPhoneVerificationCode = () => {
       setSuccess(true);
       toast.success("Verification code sent!");
     } catch (error) {
-      toast.error("Error sending verification code.");
-      console.error("Error sending verification code:", error);
+      if (error.response && error.response.data && error.response.data.error) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error("Error sending verification code.");
+      }
+      console.error("Error sending verification code");
     } finally {
       setLoading(false);
     }
