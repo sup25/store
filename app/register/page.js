@@ -48,7 +48,7 @@ const Register = () => {
 
       if (response.status === 201) {
         toast.success("User registered successfully");
-        router.push("/user/dashboard");
+        router.push("/login");
       } else {
         throw new Error("Failed to register user");
       }
