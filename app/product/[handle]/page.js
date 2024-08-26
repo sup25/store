@@ -109,7 +109,7 @@ const ProductDetail = () => {
                   {product.handle}
                 </p>
                 <p className="title-heading">
-                  Availabel Quantity:{" "}
+                  Available Quantity:{" "}
                   <span
                     className={`${
                       product.quantity > 10

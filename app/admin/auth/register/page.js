@@ -16,6 +16,7 @@ const Register = () => {
     name: "",
     email: "",
     password: "",
+    confirm_password: "",
   });
 
   const [errors, setErrors] = useState([]);
@@ -28,6 +29,12 @@ const Register = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (formData.password !== formData.confirm_password) {
+      setErrors(["Passwords do not match"]);
+      toast.error("Passwords do not match");
+      return;
+    }
     setIsLoading(true);
 
     try {
@@ -59,6 +66,12 @@ const Register = () => {
     { name: "name", label: "Name", type: "text", required: true },
     { name: "email", label: "Email", type: "email", required: true },
     { name: "password", label: "Password", type: "password", required: true },
+    {
+      name: "confirm_password",
+      label: "Confirm Password",
+      type: "password",
+      required: true,
+    },
   ];
 
   return (
