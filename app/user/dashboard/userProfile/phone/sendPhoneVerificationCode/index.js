@@ -20,19 +20,31 @@ const SendPhoneVerificationCode = () => {
   const [confirmationResult, setConfirmationResult] = useState(null);
   const { user } = useAuth();
   const recaptchaVerifierRef = useRef(null);
-  console.log(user);
+
+  const isPhoneVerified = Boolean(user?.verified_phone);
+
   useEffect(() => {
-    recaptchaVerifierRef.current = new RecaptchaVerifier(
-      auth,
-      "recaptcha-container",
-      {
-        size: "invisible",
+    if (!isPhoneVerified && auth && !recaptchaVerifierRef.current) {
+      try {
+        recaptchaVerifierRef.current = new RecaptchaVerifier(
+          auth,
+          "recaptcha-container",
+          {
+            size: "normal",
+          }
+        );
+      } catch (error) {
+        console.error("Recaptcha initialization failed:", error);
       }
-    );
+    }
+
     return () => {
-      recaptchaVerifierRef.current = null;
+      if (recaptchaVerifierRef.current) {
+        recaptchaVerifierRef.current.clear();
+        recaptchaVerifierRef.current = null;
+      }
     };
-  }, []);
+  }, [auth, isPhoneVerified]);
 
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -47,21 +59,27 @@ const SendPhoneVerificationCode = () => {
       toast.error("Add correct phone number");
       return;
     }
+
     try {
       setLoading(true);
 
       const appVerifier = recaptchaVerifierRef.current;
+      if (!appVerifier) {
+        toast.error("Recaptcha not initialized. Please try again.");
+        return;
+      }
+
       const result = await signInWithPhoneNumber(
         auth,
         phoneNumber,
         appVerifier
       );
-
       setConfirmationResult(result);
       setSuccess(true);
       toast.success("Verification code sent!");
     } catch (error) {
       toast.error("Error sending verification code.");
+      console.error("Error sending verification code:", error);
     } finally {
       setLoading(false);
     }
