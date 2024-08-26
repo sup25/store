@@ -1,19 +1,38 @@
 "use client";
-import axios from "axios";
-import { useState } from "react";
+
+import { useEffect, useRef, useState } from "react";
 import VerifyPhoneVerificationCode from "../verifyPhoneVerificationCode";
 import { useAuth } from "@/context/AuthContext";
 import { MdOutlineVerified } from "react-icons/md";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserBtn } from "../../common";
-import appConfig from "@/config";
+import {
+  auth,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+} from "@/app/config/firebase";
 
 const SendPhoneVerificationCode = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [confirmationResult, setConfirmationResult] = useState(null);
   const { user } = useAuth();
+  const recaptchaVerifierRef = useRef(null);
+  console.log(user);
+  useEffect(() => {
+    recaptchaVerifierRef.current = new RecaptchaVerifier(
+      auth,
+      "recaptcha-container",
+      {
+        size: "invisible",
+      }
+    );
+    return () => {
+      recaptchaVerifierRef.current = null;
+    };
+  }, []);
 
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -30,19 +49,17 @@ const SendPhoneVerificationCode = () => {
     }
     try {
       setLoading(true);
-      const response = await axios.post(
-        `/${appConfig.basePath}/user/auth/phoneverification/sendVerificationCode`,
-        { phoneNumber },
-        {
-          headers: { "Content-Type": "application/json" },
-        }
+
+      const appVerifier = recaptchaVerifierRef.current;
+      const result = await signInWithPhoneNumber(
+        auth,
+        phoneNumber,
+        appVerifier
       );
-      setSuccess(response.data.message);
-      if (response.data.message) {
-        toast.success("Verification code sent!");
-      } else {
-        toast.error("Error sending verification code.");
-      }
+
+      setConfirmationResult(result);
+      setSuccess(true);
+      toast.success("Verification code sent!");
     } catch (error) {
       toast.error("Error sending verification code.");
     } finally {
@@ -62,7 +79,7 @@ const SendPhoneVerificationCode = () => {
   }
 
   return (
-    <div className="user-details incomplete  mt-1">
+    <div className="user-details incomplete mt-1">
       <h2 className="font-others font-bold">Phone Verification</h2>
       <div className="flex flex-col gap-3 w-full">
         <input
@@ -79,10 +96,14 @@ const SendPhoneVerificationCode = () => {
           loading={loading}
         />
         {success ? (
-          <VerifyPhoneVerificationCode phoneNumber={phoneNumber} />
+          <VerifyPhoneVerificationCode
+            phoneNumber={phoneNumber}
+            confirmationResult={confirmationResult}
+          />
         ) : (
           ""
         )}
+        <div id="recaptcha-container"></div>
       </div>
     </div>
   );
