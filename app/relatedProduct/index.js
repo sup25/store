@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
+import { Pagination, Navigation } from "swiper/modules";
 import "swiper/swiper-bundle.css";
 import Card from "@/common/card";
 import { CgSpinner } from "react-icons/cg";
@@ -26,7 +26,7 @@ const RelatedProduct = () => {
       );
       const allProducts = response.data.returnedData;
       const shuffledProducts = shuffleArray(allProducts);
-      const selectedProducts = shuffledProducts.slice(0, 6);
+      const selectedProducts = shuffledProducts.slice(0, 8);
       setProducts(selectedProducts);
       setLoading(false);
     } catch (error) {
@@ -45,10 +45,11 @@ const RelatedProduct = () => {
           <h2 className="font-heading my-10">Related Products</h2>
           <div>
             <Swiper
-              modules={[Pagination]}
+              modules={[Pagination, Navigation]}
               slidesPerView={1}
               pagination={true}
-              loop={true}
+              navigation={true}
+              allowTouchMove={false}
               breakpoints={{
                 768: {
                   slidesPerView: 2,

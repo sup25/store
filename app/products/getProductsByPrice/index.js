@@ -8,7 +8,8 @@ const GetProductsByPrice = ({ setPriceRange, Range }) => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-5 items-center">
+      <p className="title-heading"> Price Range</p>
       <PriceRangeSlider
         onSliderChange={onSliderChange}
         initialPriceRange={Range}

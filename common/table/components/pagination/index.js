@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import constants from "../../constants";
 
 const Pagination = ({ currentPage, handlePageChange, totalPages }) => {
   const [pageRange, setPageRange] = useState(constants.pagination.pageRange);
 
   const updatePageRange = () => {
-    if (window.innerWidth < 640) {
-      setPageRange(constants.pagination.mobilePageRange);
-    } else {
-      setPageRange(constants.pagination.pageRange);
-    }
+    setPageRange(
+      window.innerWidth < 640
+        ? constants.pagination.mobilePageRange
+        : constants.pagination.pageRange
+    );
   };
+
   useEffect(() => {
     updatePageRange();
     window.addEventListener("resize", updatePageRange);
@@ -18,42 +20,74 @@ const Pagination = ({ currentPage, handlePageChange, totalPages }) => {
   }, []);
 
   const getPageNumbers = () => {
-    let startPage = Math.max(1, currentPage - Math.floor(pageRange / 2));
-    let endPage = Math.min(totalPages, startPage + pageRange - 1);
+    const pageNumbers = [1];
 
-    if (endPage - startPage < pageRange - 1) {
-      startPage = Math.max(1, endPage - pageRange + 1);
+    if (currentPage > 2) {
+      pageNumbers.push(currentPage - 1);
+    }
+    if (currentPage > 1 && currentPage < totalPages) {
+      pageNumbers.push(currentPage);
+    }
+    if (currentPage < totalPages - 1) {
+      pageNumbers.push(currentPage + 1);
     }
 
-    const pageNumbers = [];
-    for (let i = startPage; i <= endPage; i++) {
-      pageNumbers.push(i);
+    if (totalPages > 1) {
+      pageNumbers.push(totalPages);
     }
-    return pageNumbers;
+
+    const uniquePages = [...new Set(pageNumbers)];
+
+    const finalPages = [1];
+
+    if (currentPage > 1) {
+      finalPages.push(currentPage);
+    }
+    if (currentPage < totalPages) {
+      finalPages.push(currentPage + 1);
+    }
+
+    if (totalPages > 1) {
+      finalPages.push(totalPages);
+    }
+
+    const result = [...new Set(finalPages)];
+
+    if (result.length > 4) {
+      if (currentPage <= 2) {
+        return [1, 2, 3, totalPages];
+      }
+      if (currentPage >= totalPages - 1) {
+        return [1, totalPages - 2, totalPages - 1, totalPages];
+      }
+      return [1, currentPage - 1, currentPage, currentPage + 1, totalPages];
+    }
+
+    return result;
   };
 
   return (
     <div className="flex justify-center mt-4">
-      <div className="inline-flex space-x-2 w-full">
+      <div className="inline-flex space-x-2 p-1 bg-white rounded-md">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className={`md:px-4 px-2 md:py-2 py-1 border rounded-lg ${
+          className={`w-8 h-8 flex items-center justify-center rounded-lg border transition duration-300 text-center ${
             currentPage === 1
-              ? "bg-gray-200 cursor-not-allowed"
-              : "bg-white text-black border-blue-500 hover:bg-blue-500 hover:text-white transition duration-300"
+              ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+              : "bg-white text-primary border-secondary hover:bg-secondary hover:text-white"
           }`}
         >
-          Previous
+          <FaChevronLeft size={14} />
         </button>
         {getPageNumbers().map((page) => (
           <button
             key={page}
             onClick={() => handlePageChange(page)}
-            className={`md:px-4 px-2 md:py-2 py-1 border rounded-lg ${
+            className={`w-8 h-8 flex items-center justify-center text-sm font-others rounded-lg border transition duration-300 text-center ${
               page === currentPage
-                ? "bg-blue-500 text-white font-others w-fit"
-                : "bg-white text-blue-800 font-others w-fit border-blue-500 hover:bg-blue-500 hover:text-white transition duration-300"
+                ? "bg-secondary text-white font-bold"
+                : "bg-white text-primary border-secondary hover:bg-secondary hover:text-white"
             }`}
           >
             {page}
@@ -62,13 +96,13 @@ const Pagination = ({ currentPage, handlePageChange, totalPages }) => {
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className={`md:px-4 px-2 md:py-2 py-1 border rounded-lg ${
+          className={`w-8 h-8 flex items-center justify-center rounded-lg border transition duration-300 text-center ${
             currentPage === totalPages
-              ? "bg-gray-200 cursor-not-allowed font-others w-fit"
-              : "bg-white text-black font-others w-fit border-blue-500 hover:bg-blue-500 hover:text-white transition duration-300"
+              ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+              : "bg-white text-primary border-secondary hover:bg-secondary hover:text-white"
           }`}
         >
-          Next
+          <FaChevronRight size={14} />
         </button>
       </div>
     </div>
