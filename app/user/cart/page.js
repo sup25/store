@@ -79,6 +79,7 @@ const Cart = () => {
                   <div className="flex w-full items-center  gap-2">
                     <SelectProductQuantity
                       title={false}
+                      maxQuantity={item.product.quantity}
                       quantity={item.quantity}
                       setQuantity={(newQuantity) =>
                         handleQuantityChange(

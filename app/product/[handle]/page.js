@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import BtnCheckout from "@/common/btnCheckout";
 import LoginPopUp from "@/common/loginPopup";
@@ -126,7 +127,7 @@ const ProductDetail = () => {
               <SelectProductQuantity
                 quantity={quantity}
                 setQuantity={setQuantity}
-                title={false}
+                maxQuantity={product.quantity}
               />
 
               <div className="font-others ">
@@ -153,13 +154,14 @@ const ProductDetail = () => {
                 productId={product.id}
                 refreshReview={refreshReview}
               />
-              <div className="w-full flex flex-col md:flex-row justify-between gap-5">
+              <div className="w-full flex flex-col md:flex-row justify-between gap-5 flex-wrap">
                 <BtnAddToCart
                   product={product}
                   showLoginPopup={() => setShowLoginPopup(true)}
                   user={user}
-                  quantity={quantity}
+                  quantity={quantity === 0 ? 1 : quantity}
                 />
+
                 <BtnCheckout
                   items={[
                     {
