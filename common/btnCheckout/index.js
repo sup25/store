@@ -11,8 +11,7 @@ import appConfig from "@/config";
 const BtnCheckout = ({ items, showLoginPopup, user, deleteItem = null }) => {
   const [loading, setLoading] = useState(false);
 
-  const proceedCheckout = async (e) => {
-    e.preventDefault();
+  const proceedCheckout = async () => {
     setLoading(true);
     const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
     const stripe = await loadStripe(publishableKey);
@@ -27,7 +26,9 @@ const BtnCheckout = ({ items, showLoginPopup, user, deleteItem = null }) => {
         toast.error("Please complete your profile before checking out.");
         setLoading(false);
         return;
-      } else if (deleteItem) {
+      }
+
+      if (deleteItem) {
         const itemIds = items.map((item) => item.id);
         await deleteItem(itemIds);
       }
@@ -44,11 +45,11 @@ const BtnCheckout = ({ items, showLoginPopup, user, deleteItem = null }) => {
         })),
         user: user.id,
         email: user.email,
-        username: user.first_name + " " + user.last_name,
+        username: `${user.first_name} ${user.last_name}`,
         address: JSON.stringify(user.addresses),
       };
 
-      const checkoutSession = await axios.post(
+      const response = await axios.post(
         `/${appConfig.basePath}/admin/auth/order`,
         checkoutSessionData,
         {
@@ -58,11 +59,9 @@ const BtnCheckout = ({ items, showLoginPopup, user, deleteItem = null }) => {
         }
       );
 
-      const sessionId = checkoutSession.data.sessionId;
+      const sessionId = response.data.sessionId;
 
-      const result = await stripe.redirectToCheckout({
-        sessionId: sessionId,
-      });
+      const result = await stripe.redirectToCheckout({ sessionId });
 
       if (result.error) {
         throw new Error(result.error.message);
@@ -82,15 +81,21 @@ const BtnCheckout = ({ items, showLoginPopup, user, deleteItem = null }) => {
       return;
     }
 
-    const soldOutItem = items.find((item) => item.product.quantity === 0);
-    if (soldOutItem) {
+    const invalidItem = items.find(
+      (item) =>
+        item.quantity === 0 ||
+        item.product.quantity === 0 ||
+        item.quantity === ""
+    );
+
+    if (invalidItem) {
       toast.error(
-        `Cannot checkout "${soldOutItem.product.title}". It is sold out!`
+        `Cannot checkout "${invalidItem.product.title}". Please select a valid quantity.`
       );
       return;
     }
 
-    proceedCheckout(e);
+    proceedCheckout();
   };
 
   return (

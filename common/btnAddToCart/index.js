@@ -11,8 +11,10 @@ const BtnAddToCart = ({ product, showLoginPopup, user, quantity }) => {
   const { updateCartItems } = useCart();
 
   const handleClick = async (e) => {
-    if (product.quantity === 0) {
-      toast.error(`Cannot add to cart "${product.title}". It is sold out!`);
+    if (product.quantity === 0 || quantity === 0) {
+      toast.error(
+        `Cannot add to cart "${product.title}". It is sold out or invalid quantity!`
+      );
       return;
     }
     if (!user) {
@@ -47,7 +49,7 @@ const BtnAddToCart = ({ product, showLoginPopup, user, quantity }) => {
 
   return (
     <div
-      className="w-full font-others cursor-pointer flex items-center justify-center px-2 py-2 bg-secondary hover:bg-tertiary text-white font-bold text-lg transition duration-150 ease-out hover:ease-in"
+      className="w-full font-others min-h-[50px]  cursor-pointer flex items-center justify-center px-2 py-2 bg-secondary hover:bg-tertiary text-white font-bold text-lg transition duration-150 ease-out hover:ease-in"
       onClick={handleClick}
     >
       {loading ? <Spinner /> : "Add to cart"}

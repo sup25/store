@@ -1,10 +1,9 @@
 import prisma from "@/_lib/prisma";
-
 export const createOrderService = async (orderData) => {
-  const addressData = JSON.parse(orderData.address)[0];
-
+  const addressArray = JSON.parse(orderData.address);
+  const address = addressArray[0];
   const dataWithDefaults = {
-    address: addressData,
+    address,
     price: parseInt(orderData.price, 10) || 0,
     name: orderData.name,
     products: orderData.products.map((product) => ({
@@ -23,37 +22,25 @@ export const createOrderService = async (orderData) => {
     throw new Error("Missing required order details");
   }
 
-  let existingAddress = await prisma.address.findFirst({
-    where: {
-      street: dataWithDefaults.address.street,
-      city: dataWithDefaults.address.city,
-      state: dataWithDefaults.address.state,
-      country: dataWithDefaults.address.country,
-      zipcode: dataWithDefaults.address.zipcode,
-      userId: dataWithDefaults.user,
-    },
-  });
-
-  if (!existingAddress) {
-    existingAddress = await prisma.address.create({
-      data: {
-        street: dataWithDefaults.address.street,
-        city: dataWithDefaults.address.city,
-        state: dataWithDefaults.address.state,
-        country: dataWithDefaults.address.country,
-        zipcode: dataWithDefaults.address.zipcode,
-        apt: dataWithDefaults.address.apt,
-        user: {
-          connect: { id: dataWithDefaults.user },
-        },
-      },
-    });
-  }
-
   const order = await prisma.order.create({
     data: {
       address: {
-        connect: { id: existingAddress.id },
+        connectOrCreate: {
+          where: {
+            id: address.id,
+          },
+          create: {
+            street: address.street,
+            city: address.city,
+            state: address.state,
+            country: address.country,
+            zipcode: address.zipcode,
+            apt: address.apt,
+            user: {
+              connect: { id: dataWithDefaults.user },
+            },
+          },
+        },
       },
       total_price: dataWithDefaults.price,
       net_price: dataWithDefaults.price,
@@ -80,53 +67,6 @@ export const createOrderService = async (orderData) => {
       },
     },
   });
-
-  await Promise.all(
-    dataWithDefaults.products.map(async (product) => {
-      const { productId, quantity } = product;
-      const existingProduct = await prisma.product.findUnique({
-        where: { id: productId },
-      });
-
-      if (existingProduct) {
-        if (existingProduct.quantity < quantity) {
-          throw new Error(
-            `Insufficient stock for product with ID ${productId}`
-          );
-        }
-
-        await prisma.product.update({
-          where: { id: productId },
-          data: {
-            quantity: {
-              decrement: quantity,
-            },
-          },
-        });
-
-        if (existingProduct.adminId) {
-          await prisma.status.create({
-            data: {
-              type: "completed",
-              date: new Date(),
-              order: {
-                connect: { id: order.id },
-              },
-              Admin: {
-                connect: { id: existingProduct.adminId },
-              },
-            },
-          });
-        } else {
-          console.error(
-            `Admin ID is undefined for product with ID: ${productId}`
-          );
-        }
-      } else {
-        console.error(`Product with ID ${productId} not found`);
-      }
-    })
-  );
 
   return order;
 };

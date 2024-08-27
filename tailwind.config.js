@@ -24,8 +24,7 @@ module.exports = {
       colors: {
         primary: "#000000",
         secondary: "#6575A8",
-        tertiary: "#98C1D9",
-        btn: "#D00000",
+        tertiary: "#9DB2C4",
       },
       borderRadius: {
         20: "20px",

@@ -67,8 +67,6 @@ export async function POST(request) {
       admin: checkoutSessionCompleted.metadata.adminId,
     };
 
-    console.log("Extracted order details:", orderDetails);
-
     if (!orderDetails.name || !orderDetails.products || !orderDetails.user) {
       console.error("Missing required order details", orderDetails);
       return new NextResponse("Missing required order details", {
@@ -77,12 +75,8 @@ export async function POST(request) {
     }
 
     try {
-      console.log("Creating order with details:", orderDetails);
-
       await createOrderController(orderDetails);
-
       console.log("Order created successfully");
-
       const emailContent = generateOrderEmailContent(orderDetails, products);
 
       const transporter = nodemailer.createTransport({
@@ -119,25 +113,15 @@ export async function POST(request) {
     case "checkout.session.completed":
       await handleCheckoutSessionCompleted(event);
       break;
-
     case "payment_intent.requires_action":
-      console.log("PaymentIntent requires action:", event.data.object);
       break;
-
     case "payment_intent.created":
-      console.log("PaymentIntent created:", event.data.object);
       break;
-
     case "payment_intent.succeeded":
-      console.log("PaymentIntent succeeded:", event.data.object);
       break;
-
     case "charge.succeeded":
-      console.log("Charge succeeded:", event.data.object);
       break;
-
     default:
-      console.log(`Unhandled event type ${event.type}`);
   }
 
   return new NextResponse("Webhook received and processed", { status: 200 });

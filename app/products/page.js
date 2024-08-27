@@ -94,11 +94,13 @@ const Products = () => {
                 ))
               : "No products found"}
           </div>
-          <Pagination
-            currentPage={currentPage}
-            handlePageChange={handlePageChange}
-            totalPages={Math.ceil(combinedFilter().length / productsPerPage)}
-          />
+          {products.length > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              handlePageChange={handlePageChange}
+              totalPages={Math.ceil(combinedFilter().length / productsPerPage)}
+            />
+          )}
         </div>
       </div>
     </div>
