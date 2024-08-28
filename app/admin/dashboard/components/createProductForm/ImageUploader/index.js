@@ -6,15 +6,12 @@ export const ImageUploader = ({ formData, setFormData }) => {
   const [uploading, setUploading] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState(formData.images || []);
   const [removing, setRemoving] = useState(false);
-  const [imageAdded, setImageAdded] = useState(false);
+  const [imageAdded, setImageAdded] = useState(selectedFiles.length > 0);
 
   useEffect(() => {
     setSelectedFiles(formData.images || []);
+    setImageAdded((formData.images || []).length > 0);
   }, [formData.images]);
-
-  useEffect(() => {
-    setImageAdded(selectedFiles.length > 0);
-  }, [selectedFiles]);
 
   const buttonClass = () => {
     if (uploading || selectedFiles.length === 6) {

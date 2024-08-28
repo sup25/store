@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Button from "@/common/button";
 import { fields } from "./productFields";
-import { handleSubmit } from "../../createproduct/handler";
+import { handleSubmit } from "./handler";
 import { ImageUploader } from "./ImageUploader";
 import uploadImageInCloudinary from "./ImageUploader/uploadImageInCloudinary";
 import { useRouter } from "next/navigation";

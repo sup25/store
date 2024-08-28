@@ -23,7 +23,7 @@ const Accordion = ({ icon, title, items, onItemClick, isExpanded }) => {
   return (
     <Menu>
       <MenuButton
-        className="flex items-center px-2 gap-2 justify-between w-full py-2 rounded hover:bg-secondary transtion duration-300 ease-in"
+        className="flex items-center px-2 gap-2 justify-between w-full py-2 rounded hover:bg-slate-300 transtion duration-300 ease-in"
         onClick={handleMenuClick}
       >
         <div className="flex items-center gap-2">
@@ -55,7 +55,9 @@ const Accordion = ({ icon, title, items, onItemClick, isExpanded }) => {
               className="block data-[focus]:bg-blue-100 px-2 py-2 bg-white hover:bg-slate-200 transition duration-300 cursor-pointer"
             >
               {isExpanded && (
-                <span className="font-others text-base">{item.text}</span>
+                <span className="font-others text-base font-medium">
+                  {item.text}
+                </span>
               )}
             </MenuItem>
           ))}

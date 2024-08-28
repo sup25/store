@@ -1,5 +1,5 @@
-import { EmptyMessage } from "../infoMessage";
-import ProductList from "../productList";
+import { EmptyMessage } from "../ProductStatusMessages";
+import ProductsList from "../productsList";
 
 export const SoldProducts = ({ soldItems }) => {
   return (
@@ -13,7 +13,7 @@ export const SoldProducts = ({ soldItems }) => {
         ) : (
           <div className="">
             {soldItems.map((item) => (
-              <ProductList key={item.id} soldData={item} />
+              <ProductsList key={item.id} soldData={item} />
             ))}
           </div>
         )}
