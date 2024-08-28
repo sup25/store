@@ -3,56 +3,22 @@ import Link from "next/link";
 import { IoIosClose } from "react-icons/io";
 import AuthForm from "../authForm";
 import "../styles.css";
-import { useAuth } from "@/context/AuthContext";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import axiosClient from "@/utils/axiosClient";
-import appConfig from "@/config";
+import useLogin from "./hook";
 
 const LoginPopUp = ({ handler }) => {
   const [isVisible, setIsVisible] = useState(true);
-  const [formData, setFormData] = useState({ email: "", password: "" });
-  const [isLoading, setIsLoading] = useState(false);
-  const { setUserStore } = useAuth();
+  const { formData, isLoading, handleChange, handleSubmit } = useLogin(handler);
+
   const handleClose = () => {
     setIsVisible(false);
     setTimeout(() => {
       handler();
     }, 300);
   };
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+
   const handleBackgroundClick = (e) => {
     if (e.target.id === "loginPopUp") {
       handler();
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    try {
-      const response = await axiosClient.post(
-        `/${appConfig.basePath}/user/auth/login`,
-        formData
-      );
-      const { user, accessToken, refreshToken } = response.data.returnedData;
-      setUserStore(user, accessToken, refreshToken);
-      handler();
-      toast.success("Login successful!");
-    } catch (error) {
-      console.error(
-        "Login failed:",
-        error.response?.data.returnedData || error.message
-      );
-      toast.error("Login failed. Please check your credentials and try again.");
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -69,12 +35,12 @@ const LoginPopUp = ({ handler }) => {
       >
         <div className="flex w-full justify-center items-center  flex-col gap-5 py-10 px-2">
           <div className="flex w-full justify-between">
-            <div className="flex  w-full px-8 items-start">
-              <div className="flex-col text-center items-center w-full">
-                <p className="text-xl font-medium">
+            <div className="flex w-full px-8 items-start">
+              <div className="flex flex-col gap-2 text-center items-center w-full">
+                <p className="md:text-xl text-base font-medium font-others">
                   Welcome! Please Login to continue.
                 </p>
-                <p className="text-xs text-primary">
+                <p className="text-xs text-primary font-others">
                   New member?{" "}
                   <Link href="/register" className="text-slate-800 font-medium">
                     Register here.

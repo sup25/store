@@ -37,11 +37,19 @@ import Link from "next/link";
  * @returns {JSX.Element} The rendered link with icon and label.
  */
 
-const LinkWithIcon = ({ href, icon: Icon, label, iconPosition = "left" }) => {
+const LinkWithIcon = ({
+  href,
+  icon: Icon,
+  label,
+  iconPosition = "left",
+  className,
+}) => {
   const isLeft = iconPosition === "left";
   return (
     <Link href={href}>
-      <div className="group flex items-center text-primary font-others text-lg  hover:text-secondary transition">
+      <div
+        className={`group flex items-center text-primary font-others text-lg  hover:text-secondary transition ${className}`}
+      >
         {isLeft && Icon && (
           <Icon className="mr-2 transform group-hover:-translate-x-1 transition-transform" />
         )}
