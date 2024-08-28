@@ -1,3 +1,9 @@
+.range-slider__thumb {
+  background: #6575a8 !important;
+}
+.range-slider .range-slider__range {
+  background: #9db2c4 !important;
+}
 @keyframes fade-in {
   from {
     opacity: 0;

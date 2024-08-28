@@ -26,13 +26,16 @@ export async function POST(request) {
 
 export async function GET(request) {
   const url = new URL(request.url);
-  const tags = url.searchParams.getAll("tags");
+  const tags = url.searchParams.get("tags")?.split(",") || [];
+
   try {
     console.log(tags);
-    let products;
+    let products = [];
+
     if (tags.length > 0) {
       products = await showProductAccordingToTagController(tags);
     }
+
     return internalRes("Products retrieved successfully", products, 200);
   } catch (error) {
     console.error(error);

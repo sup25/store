@@ -117,6 +117,12 @@ module.exports = {
           color: "#4a5568",
           marginBottom: "8px",
         },
+        ".search-bar": {
+          padding: "8px",
+          outline: "none",
+          borderWidth: "2px",
+          transition: "0.3s ease-in-out",
+        },
 
         ".table-container": {
           "@media (max-width: 1200px)": {

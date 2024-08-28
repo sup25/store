@@ -15,7 +15,11 @@ const Search = () => {
 
   const handleInputChange = (e) => {
     setSearchTerm(e.target.value);
-    setHasSearched(false);
+    if (e.target.value === "") {
+      setHasSearched(true);
+    } else {
+      setHasSearched(false);
+    }
   };
 
   useEffect(() => {
@@ -47,7 +51,7 @@ const Search = () => {
   return (
     <div className="w-full relative">
       <input
-        className="py-2 px-2 font-others w-full md:max-w-[450px] border-2 outline-none hover:border-secondary transition duration-300 ease-in-out"
+        className=" font-others search-bar w-full md:max-w-[450px] border-2  hover:border-secondary "
         placeholder="Search for products"
         value={searchTerm}
         onChange={handleInputChange}
