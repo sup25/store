@@ -1,7 +1,7 @@
-import { EmptyMessage } from "../infoMessage";
-import ProductListItems from "../productListItems";
+import { EmptyMessage } from "../ProductStatusMessages";
+import ProductListItems from "./productListItems";
 
-const ProductList = ({ soldData, unsoldData }) => {
+const ProductsList = ({ soldData, unsoldData }) => {
   if (!soldData && !unsoldData) return <EmptyMessage />;
 
   return (
@@ -12,4 +12,4 @@ const ProductList = ({ soldData, unsoldData }) => {
   );
 };
 
-export default ProductList;
+export default ProductsList;

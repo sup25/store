@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import SelectProductQuantity from "@/app/admin/dashboard/components/selectProductQuantity";
+import SelectProductQuantity from "@/common/selectProductQuantity";
 import { MdDeleteOutline } from "react-icons/md";
 import { handleDeleteItem, handleQuantityChange } from "./handler";
 import { toast } from "react-toastify";

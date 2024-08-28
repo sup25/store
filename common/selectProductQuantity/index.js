@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 
-const SelectProductQuantity = ({
-  quantity,
-  setQuantity,
-  maxQuantity,
-  title = true,
-}) => {
+const SelectProductQuantity = ({ quantity, setQuantity, maxQuantity }) => {
   const [inputValue, setInputValue] = useState(quantity || 0);
 
   useEffect(() => {
@@ -45,7 +40,6 @@ const SelectProductQuantity = ({
 
   return (
     <div className="flex flex-col items-start gap-2 w-full max-w-[150px]">
-      {title && <p className="title-heading">Quantity</p>}
       <div className="flex gap-3 w-full border px-2 py-2 items-center">
         <button
           onClick={handleQuantityDecrease}

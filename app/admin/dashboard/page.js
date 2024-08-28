@@ -7,7 +7,7 @@ import { UnsoldProducts } from "./components/unSoldProducts";
 import Spinner from "@/common/spinner";
 import { useAdminData } from "./createproduct/hooks";
 import { TotalSales } from "./components/totalSales";
-import { MemberDate } from "./components/memberDate";
+import { MemberJoinDate } from "./components/memberJoinDate";
 
 const Dashboard = () => {
   const [soldItems, setSoldItems] = useState([]);
@@ -55,7 +55,7 @@ const Dashboard = () => {
         <div className="container ">
           <div className="flex flex-col flex-wrap gap-16">
             <div className="flex flex-wrap w-full gap-10 ">
-              <MemberDate totalProducts={totalProducts} />
+              <MemberJoinDate totalProducts={totalProducts} />
               <TotalSales soldItems={soldItems} />
             </div>
             <div className="flex flex-wrap w-full justify-between">

@@ -85,7 +85,7 @@ const SideBar = () => {
     if (window.innerWidth <= 768) {
       const timeout = setTimeout(() => {
         setIsExpanded(false);
-      }, 500);
+      }, 1000);
       setAutoCollapseTimeout(timeout);
     }
   };
@@ -96,7 +96,7 @@ const SideBar = () => {
       onMouseLeave={handleCollapse}
       onTouchStart={handleExpand}
       onTouchEnd={handleCollapse}
-      className={`flex shadow-md h-fit px-1 py-1 flex-col gap-2 transition-all duration-300 ${
+      className={`flex shadow-md h-fit px-2 py-1 flex-col gap-2 transition-all duration-300 ${
         isExpanded ? "w-64" : "w-20"
       }`}
     >
@@ -107,7 +107,7 @@ const SideBar = () => {
         <div key={index}>
           {!item.subItems ? (
             <div
-              className={`flex cursor-pointer px-2 gap-2 py-2 items-center hover:bg-secondary rounded transition ease-in duration-300 ${
+              className={`flex cursor-pointer px-2 gap-2 py-2 items-center hover:bg-slate-300 rounded transition ease-in duration-300 ${
                 activeItem === item.name ? "bg-tertiary" : ""
               }`}
               onClick={() => handleItemClick(item.name, item.path)}

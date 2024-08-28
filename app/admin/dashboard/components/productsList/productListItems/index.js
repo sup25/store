@@ -1,6 +1,6 @@
 import React from "react";
-
 const ProductListItems = ({ item, sold }) => {
+  console.log(item);
   return (
     <div>
       <li
@@ -14,11 +14,11 @@ const ProductListItems = ({ item, sold }) => {
           src={item.image[0]}
           alt={item.title}
         />
-        <span className="md:text-2xl font-others text-center w-fit  text-xl font-semibold">
+        <span className="font-others text-center w-fit capitalize text-xl font-semibold">
           {item.title}
         </span>
         <span
-          className={`font-semibold md:text-2xl font-others text-center w-fit text-xl text-${
+          className={`font-semibold font-others text-center w-fit text-xl text-${
             sold ? "green" : "red"
           }-700`}
         >

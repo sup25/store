@@ -93,7 +93,7 @@ module.exports = {
           borderRadius: "0.375rem",
           display: "flex",
           padding: "16px 8px 16px 8px",
-          boxShadow: "0 10px 15px rgba(0, 0, 0, 0.2)",
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
         },
         ".user-details": {
           display: "flex",
