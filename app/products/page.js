@@ -10,6 +10,7 @@ import GetProductsByPrice from "./getProductsByPrice";
 import Pagination from "@/common/table/components/pagination";
 import { useSearchParams } from "next/navigation";
 import { fetchProducts, showProductsByTag } from "./utils";
+import LoginPopUp from "@/common/loginPopup";
 
 const Products = () => {
   const range = DEFAULT_PRICE_RANGE;
@@ -21,7 +22,7 @@ const Products = () => {
   const [tag, setTag] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
-
+  const [loginPopuupVisible, setLoginPopupVisible] = useState(false);
   const searchParams = useSearchParams();
 
   const combinedFilter = () => {
@@ -69,41 +70,53 @@ const Products = () => {
     return combinedFilter().slice(startIndex, endIndex);
   };
 
+  const handleClose = () => {
+    setLoginPopupVisible(false);
+  };
+
   return (
-    <div className="section">
-      <div className="container">
-        {loading && <Spinner />}
-        <h1 className="font-heading mb-10  text-center">All Products</h1>
-        <div className="flex flex-col w-full my-10">
-          <div className="flex md:flex-row flex-col md:justify-start justify-center items-center  md:items-end w-full gap-10 flex-wrap">
-            <GetProductsByPrice
-              setPriceRange={setPriceRange}
-              loading={loading}
-              Range={range}
-            />
-            <GetProductsByTags handleTagSubmit={handleTagSubmit} />
+    <>
+      {loginPopuupVisible && <LoginPopUp handler={handleClose} />}
+      <div className="section">
+        <div className="container">
+          {loading && <Spinner />}
+          <h1 className="font-heading mb-10  text-center">All Products</h1>
+          <div className="flex flex-col w-full my-10">
+            <div className="flex md:flex-row flex-col md:justify-start justify-center items-center  md:items-end w-full gap-10 flex-wrap">
+              <GetProductsByPrice
+                setPriceRange={setPriceRange}
+                loading={loading}
+                Range={range}
+              />
+              <GetProductsByTags handleTagSubmit={handleTagSubmit} />
+            </div>
           </div>
-        </div>
-        <div className="flex flex-col gap-6 w-full  items-center">
-          <div className="flex w-full flex-wrap md:gap-16 gap-12 md:justify-start justify-center  my-10">
-            {paginatedProducts().length > 0
-              ? paginatedProducts().map((product) => (
-                  <div key={product.id}>
-                    <Card product={product} />
-                  </div>
-                ))
-              : "No products found"}
+          <div className="flex flex-col gap-6 w-full  items-center">
+            <div className="flex w-full flex-wrap md:gap-16 gap-12 md:justify-start justify-center  my-10">
+              {paginatedProducts().length > 0
+                ? paginatedProducts().map((product) => (
+                    <div key={product.id}>
+                      <Card
+                        product={product}
+                        setLoginPopupVisible={setLoginPopupVisible}
+                      />
+                    </div>
+                  ))
+                : "No products found"}
+            </div>
+            {products.length > 0 && (
+              <Pagination
+                currentPage={currentPage}
+                handlePageChange={handlePageChange}
+                totalPages={Math.ceil(
+                  combinedFilter().length / productsPerPage
+                )}
+              />
+            )}
           </div>
-          {products.length > 0 && (
-            <Pagination
-              currentPage={currentPage}
-              handlePageChange={handlePageChange}
-              totalPages={Math.ceil(combinedFilter().length / productsPerPage)}
-            />
-          )}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
