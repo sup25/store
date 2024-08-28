@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState, Suspense } from "react";
-
 import Card from "@/common/card";
 import Spinner from "@/common/spinner";
 import { DEFAULT_PRICE_RANGE } from "@/constants";
@@ -22,8 +21,12 @@ const Products = () => {
   const [tag, setTag] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
-  const [loginPopuupVisible, setLoginPopupVisible] = useState(false);
+  const [loginPopupVisible, setLoginPopupVisible] = useState(false);
   const searchParams = useSearchParams();
+
+  const handleReload = () => {
+    window.location.reload();
+  };
 
   const combinedFilter = () => {
     const filteredByPrice = products.filter((product) => {
@@ -34,13 +37,12 @@ const Products = () => {
     });
 
     if (tag) {
-      const filteredByTag = filteredProducts.filter((product) => {
+      return filteredProducts.filter((product) => {
         return (
           product.price >= debouncedPriceRange[0] &&
           product.price <= debouncedPriceRange[1]
         );
       });
-      return filteredByTag;
     }
     return filteredByPrice;
   };
@@ -76,13 +78,13 @@ const Products = () => {
 
   return (
     <>
-      {loginPopuupVisible && <LoginPopUp handler={handleClose} />}
+      {loginPopupVisible && <LoginPopUp handler={handleClose} />}
       <div className="section">
         <div className="container">
           {loading && <Spinner />}
-          <h1 className="font-heading mb-10  text-center">All Products</h1>
+          <h1 className="font-heading mb-10 text-center">All Products</h1>
           <div className="flex flex-col w-full my-10">
-            <div className="flex md:flex-row flex-col md:justify-start justify-center items-center  md:items-end w-full gap-10 flex-wrap">
+            <div className="flex md:flex-row flex-col md:justify-start justify-center items-center md:items-end w-full gap-10 flex-wrap">
               <GetProductsByPrice
                 setPriceRange={setPriceRange}
                 loading={loading}
@@ -91,8 +93,8 @@ const Products = () => {
               <GetProductsByTags handleTagSubmit={handleTagSubmit} />
             </div>
           </div>
-          <div className="flex flex-col gap-6 w-full  items-center">
-            <div className="flex w-full flex-wrap md:gap-16 gap-12 md:justify-start justify-center  my-10">
+          <div className="flex flex-col gap-6 w-full items-center">
+            <div className="flex w-full flex-wrap md:gap-16 gap-12 md:justify-start justify-center my-10">
               {paginatedProducts().length > 0
                 ? paginatedProducts().map((product) => (
                     <div key={product.id}>
@@ -102,8 +104,22 @@ const Products = () => {
                       />
                     </div>
                   ))
-                : "No products found"}
+                : !loading && (
+                    <p className="font-heading text-xl">No products found</p>
+                  )}
             </div>
+
+            {paginatedProducts().length > 0
+              ? ""
+              : !loading && (
+                  <p
+                    className=" p-2 cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-600 font-others transition duration-300 ease-in-out"
+                    onClick={handleReload}
+                  >
+                    Back to products
+                  </p>
+                )}
+
             {products.length > 0 && (
               <Pagination
                 currentPage={currentPage}

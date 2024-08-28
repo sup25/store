@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import RangeSlider from "react-range-slider-input";
 import "react-range-slider-input/dist/style.css";
-
-const PriceRangeSlider = ({ onSliderChange, initialPriceRange }) => {
+import "../styles.css";
+const Slider = ({ onSliderChange, initialPriceRange }) => {
   const [sliderValue, setSliderValue] = useState(initialPriceRange);
 
   const handleSliderChange = (value) => {
@@ -21,7 +21,7 @@ const PriceRangeSlider = ({ onSliderChange, initialPriceRange }) => {
           value={sliderValue[0]}
           className="border text-center flex items-center justify-center p-2 rounded w-20"
         />
-        <label className="text-2xl font-light">to</label>
+        <label className="text-xl font-others font-light">to</label>
         <input
           type="text"
           readOnly
@@ -33,4 +33,4 @@ const PriceRangeSlider = ({ onSliderChange, initialPriceRange }) => {
   );
 };
 
-export default PriceRangeSlider;
+export default Slider;
