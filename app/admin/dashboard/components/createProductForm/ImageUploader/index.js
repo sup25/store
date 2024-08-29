@@ -13,6 +13,72 @@ export const ImageUploader = ({ formData, setFormData }) => {
     setImageAdded((formData.images || []).length > 0);
   }, [formData.images]);
 
+  const MAX_FILE_SIZE_MB = 5;
+  const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+  const MIN_FILE_SIZE_BYTES = 20 * 1024;
+  const MAX_WIDTH = 4000;
+  const MAX_HEIGHT = 4000;
+
+  const handleFileValidation = (file) => {
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      return `File size should not exceed ${MAX_FILE_SIZE_MB} MB.`;
+    }
+
+    if (file.size < MIN_FILE_SIZE_BYTES) {
+      return `File size should be at least ${MIN_FILE_SIZE_BYTES / 1024} KB.`;
+    }
+
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+
+      img.onload = () => {
+        if (img.width > MAX_WIDTH || img.height > MAX_HEIGHT) {
+          resolve(
+            `Image dimensions should not exceed ${MAX_WIDTH}x${MAX_HEIGHT} pixels.`
+          );
+        } else {
+          resolve(null);
+        }
+      };
+    });
+  };
+
+  const handleFileChange = async (event) => {
+    setUploading(true);
+    const files = Array.from(event.target.files);
+    const validFiles = [];
+    const errorMessages = [];
+
+    for (const file of files) {
+      const errorMessage = await handleFileValidation(file);
+      if (errorMessage) {
+        errorMessages.push({ name: file.name, message: errorMessage });
+      } else {
+        validFiles.push(file);
+      }
+    }
+
+    if (errorMessages.length > 0) {
+      alert(
+        errorMessages
+          .map((err) => `Error with file ${err.name}: ${err.message}`)
+          .join("\n")
+      );
+    }
+
+    if (validFiles.length > 0) {
+      handleImageUpload(
+        { target: { files: validFiles } },
+        selectedFiles,
+        setSelectedFiles,
+        setFormData
+      ).finally(() => setUploading(false));
+    } else {
+      setUploading(false);
+    }
+  };
+
   const buttonClass = () => {
     if (uploading || selectedFiles.length === 6) {
       return "bg-gray-500 text-sm text-white font-others py-2 px-4 rounded-md transition duration-300 cursor-not-allowed w-[150px] flex items-center justify-center";
@@ -76,16 +142,7 @@ export const ImageUploader = ({ formData, setFormData }) => {
         id="imageInput"
         name="imageInput"
         multiple
-        onChange={(event) => {
-          setUploading(true);
-          setImageAdded(true);
-          handleImageUpload(
-            event,
-            selectedFiles,
-            setSelectedFiles,
-            setFormData
-          ).finally(() => setUploading(false));
-        }}
+        onChange={handleFileChange}
         className="hidden"
         disabled={selectedFiles.length === 6 || uploading}
       />

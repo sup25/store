@@ -89,7 +89,7 @@ const ProductDetail = () => {
                       <img
                         src={image.original_url}
                         alt={product.title}
-                        className="w-full md:h-[400px] h-auto bg-cover"
+                        className="w-full h-[400px] bg-cover"
                       />
                     </div>
                   </SwiperSlide>
@@ -99,13 +99,13 @@ const ProductDetail = () => {
 
             <div className="md:w-2/5 w-full flex flex-col gap-8">
               <h1 className="font-heading capitalize">{product.title}</h1>
-              <p className="text-[#BFA100] font-others text-2xl font-bold">
+              <p className="text-[#BFA100] font-others text-3xl font-bold">
                 {product.price.toLocaleString("en-US", {
                   style: "currency",
                   currency: "USD",
                 })}
               </p>
-              <div className="flex flex-col">
+              <div className="flex flex-col gap-1">
                 <p className="font-others text-sm text-secondary">
                   {product.handle}
                 </p>
