@@ -38,7 +38,7 @@ export const getProductSales = async (adminId) => {
     const response = await getRequest(
       `/${appConfig.basePath}/admin/auth/product/sales/${adminId}`
     );
-    console.log("sales", response);
+
     return response;
   } catch (error) {
     throw error;
