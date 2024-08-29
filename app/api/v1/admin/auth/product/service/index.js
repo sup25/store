@@ -201,6 +201,7 @@ export const getProductSalesDataService = async (adminId) => {
 
   const productSalesData = products.map((product) => {
     const totalSold = product.sales.length;
+
     const totalPrice = product.OrderProduct.reduce(
       (acc, orderProduct) => acc + (orderProduct.order.total_price || 0),
       0
@@ -208,9 +209,12 @@ export const getProductSalesDataService = async (adminId) => {
 
     return {
       title: product.title,
+      sku: product.sku,
+      handle: product.handle,
       sold: totalSold,
       image: product.images.map((image) => image.original_url),
       total_price: totalPrice,
+      price: product.price,
     };
   });
 
