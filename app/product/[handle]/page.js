@@ -7,11 +7,10 @@ import { useAuth } from "@/context/AuthContext";
 import BtnAddToCart from "@/common/btnAddToCart";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
-import { Navigation } from "swiper/modules";
+import { Navigation, Thumbs } from "swiper/modules";
 import SelectProductQuantity from "@/common/selectProductQuantity";
 import { useParams } from "next/navigation";
 import AddProductReviews from "@/app/user/product/addProductReviews";
-
 import { getSinlgeProduct } from "@/app/utils";
 import Spinner from "@/common/spinner";
 import NotFound from "@/app/not-found";
@@ -25,6 +24,7 @@ const ProductDetail = () => {
   const [refreshReview, setRefreshReview] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   const { user } = useAuth();
 
@@ -64,11 +64,12 @@ const ProductDetail = () => {
       <div className="container">
         {product && (
           <div className="flex md:flex-row flex-col justify-between w-full gap-10">
-            <div className="md:w-2/4 w-full flex items-start justify-center">
+            <div className="md:w-2/4 w-full flex flex-col items-center justify-start">
               <Swiper
-                modules={[Navigation]}
+                modules={[Navigation, Thumbs]}
                 slidesPerView={1}
                 navigation={true}
+                thumbs={{ swiper: thumbsSwiper }}
                 style={{
                   border: "1px solid #d3d3d3",
                   padding: "10px",
@@ -85,13 +86,40 @@ const ProductDetail = () => {
                       justifyContent: "center",
                     }}
                   >
-                    <div className="flex flex-col">
-                      <img
-                        src={image.original_url}
-                        alt={product.title}
-                        className="w-full h-[400px] bg-cover"
-                      />
-                    </div>
+                    <img
+                      src={image.original_url}
+                      alt={product.title}
+                      className="h-[400px] bg-cover"
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+
+              <Swiper
+                onSwiper={setThumbsSwiper}
+                spaceBetween={10}
+                slidesPerView={4}
+                freeMode={true}
+                watchSlidesProgress={true}
+                className="my-5"
+                style={{ width: "100%" }}
+              >
+                {product.images.map((image) => (
+                  <SwiperSlide
+                    key={image.id}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      border: "1px solid #d3d3d3",
+                    }}
+                  >
+                    <img
+                      src={image.original_url}
+                      alt={product.title}
+                      className="h-[80px] object-contain"
+                    />
                   </SwiperSlide>
                 ))}
               </Swiper>
@@ -130,7 +158,7 @@ const ProductDetail = () => {
                 maxQuantity={product.quantity}
               />
 
-              <div className="font-others ">
+              <div className="font-others">
                 {showFullDescription
                   ? product.desc
                   : product.desc.length > 200
