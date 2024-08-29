@@ -67,6 +67,18 @@ export const createOrderService = async (orderData) => {
       },
     },
   });
+  await Promise.all(
+    dataWithDefaults.products.map(async (product) => {
+      await prisma.product.update({
+        where: { id: product.productId },
+        data: {
+          quantity: {
+            decrement: product.quantity,
+          },
+        },
+      });
+    })
+  );
 
   return order;
 };
