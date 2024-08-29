@@ -62,6 +62,7 @@ export default function RootLayout({ children }) {
           autoClose={2000}
           theme="light"
           transition={Zoom}
+          stacked={true}
         />
         <AuthProvider>
           <CartProvider>
