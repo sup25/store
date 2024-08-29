@@ -123,6 +123,15 @@ module.exports = {
           borderWidth: "2px",
           transition: "0.3s ease-in-out",
         },
+        ".popup-background": {
+          position: "fixed",
+          inset: "0",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "rgba(26, 32, 44, 0.3)",
+          zIndex: "999999",
+        },
 
         ".table-container": {
           "@media (max-width: 1200px)": {

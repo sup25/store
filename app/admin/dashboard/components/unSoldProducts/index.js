@@ -1,6 +1,6 @@
 import ProductsList from "../productsList";
 
-export const UnsoldProducts = ({ unsoldItems }) => {
+export const UnsoldProducts = ({ unsoldItems, showpopup }) => {
   return (
     <>
       {unsoldItems.length === 0 ? (
@@ -12,7 +12,11 @@ export const UnsoldProducts = ({ unsoldItems }) => {
           </h3>
           <div className="">
             {unsoldItems.map((item) => (
-              <ProductsList key={item.id} unsoldData={item} />
+              <ProductsList
+                key={item.id}
+                unsoldData={item}
+                showpopup={showpopup}
+              />
             ))}
           </div>
         </div>

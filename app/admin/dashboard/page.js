@@ -8,6 +8,7 @@ import Spinner from "@/common/spinner";
 import { useAdminData } from "./createproduct/hooks";
 import { TotalSales } from "./components/totalSales";
 import { MemberJoinDate } from "./components/memberJoinDate";
+import SalesStatusPopUp from "./components/salesStatuspopup";
 
 const Dashboard = () => {
   const [soldItems, setSoldItems] = useState([]);
@@ -15,6 +16,18 @@ const Dashboard = () => {
   const [totalProducts, setTotalProducts] = useState(0);
   const [loading, setLoading] = useState(false);
   const adminId = useAdminData();
+  const [showpopup, setShowPopup] = useState(false);
+  const [listdata, setListData] = useState(null);
+
+  const handleShowPopup = (data) => {
+    setShowPopup(true);
+    setListData(data);
+  };
+
+  const handleClosePopup = () => {
+    setListData(null);
+    setShowPopup(false);
+  };
 
   const getSales = async () => {
     if (!adminId) {
@@ -50,17 +63,23 @@ const Dashboard = () => {
 
   return (
     <>
+      {showpopup && (
+        <SalesStatusPopUp data={listdata} handle={handleClosePopup} />
+      )}
       {loading && <Spinner />}
       <div className="section  py-8">
         <div className="container ">
           <div className="flex flex-col flex-wrap gap-16">
-            <div className="flex flex-wrap w-full gap-10 ">
+            <div className="flex flex-wrap w-full gap-20 ">
               <MemberJoinDate totalProducts={totalProducts} />
               <TotalSales soldItems={soldItems} />
             </div>
-            <div className="flex flex-wrap w-full justify-between">
-              <SoldProducts soldItems={soldItems} />
-              <UnsoldProducts unsoldItems={unsoldItems} />
+            <div className="flex flex-wrap w-full gap-20">
+              <SoldProducts soldItems={soldItems} showpopup={handleShowPopup} />
+              <UnsoldProducts
+                unsoldItems={unsoldItems}
+                showpopup={handleShowPopup}
+              />
             </div>
           </div>
         </div>
