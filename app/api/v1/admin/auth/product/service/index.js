@@ -126,13 +126,6 @@ export const updateProductService = async (productId, updatedFields) => {
 
 export const deleteProductService = async (productId) => {
   const parsedProductId = parseInt(productId, 10);
-
-  await prisma.orderProduct.deleteMany({
-    where: {
-      productId: parsedProductId,
-    },
-  });
-
   const salesWithProduct = await prisma.sale.findMany({
     where: {
       products: {
@@ -145,7 +138,6 @@ export const deleteProductService = async (productId) => {
       id: true,
     },
   });
-
   await Promise.all(
     salesWithProduct.map((sale) =>
       prisma.sale.update({
@@ -180,30 +172,29 @@ export const getProductSalesDataService = async (adminId) => {
       adminId: parsedAdminId,
     },
     include: {
-      sales: true,
+      sales: {
+        include: {
+          orders: true,
+        },
+      },
       images: {
         select: {
           original_url: true,
           thumbnail: true,
         },
       },
-      OrderProduct: {
-        include: {
-          order: {
-            select: {
-              total_price: true,
-            },
-          },
-        },
-      },
     },
   });
 
   const productSalesData = products.map((product) => {
-    const totalSold = product.sales.length;
+    const totalSold = product.sales.reduce(
+      (acc, sale) => acc + sale.orders.length,
+      0
+    );
 
-    const totalPrice = product.OrderProduct.reduce(
-      (acc, orderProduct) => acc + (orderProduct.order.total_price || 0),
+    const totalPrice = product.sales.reduce(
+      (acc, sale) =>
+        acc + sale.orders.reduce((sum, order) => sum + order.total_price, 0),
       0
     );
 
@@ -212,7 +203,7 @@ export const getProductSalesDataService = async (adminId) => {
       sku: product.sku,
       handle: product.handle,
       sold: totalSold,
-      image: product.images.map((image) => image.original_url),
+      image: product.images.length > 0 ? product.images[0].original_url : null,
       total_price: totalPrice,
       price: product.price,
     };
@@ -223,7 +214,6 @@ export const getProductSalesDataService = async (adminId) => {
 };
 
 export const createReviewService = async (body) => {
-  console.log("service", body);
   const { productId, userId, score, message } = body;
 
   if (!productId || !userId) {
@@ -233,9 +223,11 @@ export const createReviewService = async (body) => {
   const hasPurchased = await prisma.order.findMany({
     where: {
       userId: Number(userId),
-      OrderProduct: {
-        some: {
-          productId: Number(productId),
+      sale: {
+        products: {
+          some: {
+            id: Number(productId),
+          },
         },
       },
     },

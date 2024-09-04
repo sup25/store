@@ -15,7 +15,7 @@ const ProductListItems = ({ item, sold, showpopup }) => {
       >
         <img
           className="w-10 h-10 object-cover rounded-full"
-          src={item.image[0]}
+          src={item.image}
           alt={item.title}
         />
         <span className="font-others text-center w-fit text-xl font-semibold">

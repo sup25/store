@@ -54,7 +54,7 @@ export async function POST(request) {
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url: `${baseUrl}/user/ordersuccess`,
+      success_url: `${baseUrl}/user/orderstatus`,
       cancel_url: `${baseUrl}/user/ordererror`,
       metadata: {
         name: names,
