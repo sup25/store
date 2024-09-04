@@ -46,7 +46,7 @@ const SalesStatusPopUp = ({ data, handle }) => {
               <div className="flex items-center  space-x-4 w-full">
                 <img
                   className="md:w-40 md:h-40 w-28 h-28 object-cover rounded-md shadow"
-                  src={data.image[0]}
+                  src={data.image}
                   alt={data.title}
                 />
                 <div className="flex flex-col gap-1 border-l pl-5">

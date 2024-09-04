@@ -1,13 +1,34 @@
 import Stripe from "stripe";
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
-import { createOrderController } from "../admin/auth/order/controller";
 import nodemailer from "nodemailer";
 import { generateOrderEmailContent } from "./components";
+import { createOrderController } from "../admin/auth/order/controller";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2023-10-16",
 });
+
+const createTransporter = () => {
+  return nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: process.env.USER_EMAIL,
+      pass: process.env.USER_PASSWORD,
+    },
+  });
+};
+
+const sendEmail = async (transporter, mailOptions) => {
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully:", info.response);
+    return info;
+  } catch (error) {
+    console.error("Error sending email:", error);
+    throw error;
+  }
+};
 
 export async function POST(request) {
   const endpointSecret = process.env.NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET;
@@ -76,16 +97,10 @@ export async function POST(request) {
 
     try {
       await createOrderController(orderDetails);
-      console.log("Order created successfully");
+
       const emailContent = generateOrderEmailContent(orderDetails, products);
 
-      const transporter = nodemailer.createTransport({
-        service: "Gmail",
-        auth: {
-          user: process.env.USER_EMAIL,
-          pass: process.env.USER_PASSWORD,
-        },
-      });
+      const transporter = createTransporter();
 
       const mailOptions = {
         from: process.env.USER_EMAIL,
@@ -94,34 +109,51 @@ export async function POST(request) {
         html: emailContent,
       };
 
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.error("Error sending email:", error);
-        } else {
-          console.log("Email sent successfully:", info.response);
-        }
-      });
+      await sendEmail(transporter, mailOptions);
     } catch (error) {
-      console.error("Error saving order details:", error);
-      return new NextResponse(`Error saving order details: ${error.message}`, {
+      console.error("Error processing order:", error);
+      try {
+        await stripe.refunds.create({
+          payment_intent: checkoutSessionCompleted.payment_intent,
+          reason: "requested_by_customer",
+        });
+
+        console.log(
+          `Refund initiated for PaymentIntent ${checkoutSessionCompleted.payment_intent}`
+        );
+
+        const transporter = createTransporter();
+        const emailContent = generateOrderEmailContent(
+          orderDetails,
+          null,
+          false
+        );
+        const mailOptions = {
+          from: process.env.USER_EMAIL,
+          to: orderDetails.email,
+          subject: "Order Failed - Refund Initiated",
+          html: emailContent,
+        };
+
+        await sendEmail(transporter, mailOptions);
+      } catch (refundError) {
+        console.error("Error initiating refund:", refundError.message);
+      }
+
+      return new NextResponse(`Error processing order: ${error.message}`, {
         status: 500,
       });
     }
+
+    return new NextResponse("Order processed and email sent", { status: 200 });
   }
 
   switch (event.type) {
     case "checkout.session.completed":
       await handleCheckoutSessionCompleted(event);
       break;
-    case "payment_intent.requires_action":
-      break;
-    case "payment_intent.created":
-      break;
-    case "payment_intent.succeeded":
-      break;
-    case "charge.succeeded":
-      break;
     default:
+      break;
   }
 
   return new NextResponse("Webhook received and processed", { status: 200 });

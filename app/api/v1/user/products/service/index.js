@@ -129,14 +129,14 @@ export const showProductAccordingToPriceService = async (
 };
 
 export const getPurchasedProductsService = async (userId) => {
-  const orders = await prisma.Order.findMany({
+  const orders = await prisma.order.findMany({
     where: {
       userId: Number(userId),
     },
     include: {
-      OrderProduct: {
+      sale: {
         include: {
-          product: {
+          products: {
             include: {
               images: true,
             },
@@ -146,9 +146,5 @@ export const getPurchasedProductsService = async (userId) => {
     },
   });
 
-  const products = orders.flatMap((order) =>
-    order.OrderProduct.map((orderProduct) => orderProduct.product)
-  );
-
-  return products;
+  return orders;
 };
