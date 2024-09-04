@@ -21,9 +21,10 @@ export default function OrderStatus() {
                 Check Your Email
               </h1>
               <p className="text-gray-600 font-others mb-6 text-center">
-                We've sent an order confirmation to your email. Please check
-                your inbox for the details of your purchase.
+                We&apos;ve sent an order confirmation to your email. Please
+                check your inbox for the details of your purchase.
               </p>
+
               <button
                 onClick={handleContinueShopping}
                 className="px-4 py-2 text-white bg-primary  font-others rounded hover:bg-secondary transition duration-300 ease-in-out"
