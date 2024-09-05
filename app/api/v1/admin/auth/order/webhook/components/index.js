@@ -141,7 +141,7 @@ export const generateOrderEmailContent = (
           <p style="text-align: center;">Dear <span class="user-name">${orderDetails.username}</span>,</p>
           <p style="text-align: center;">We regret to inform you that we encountered an issue while processing your order. As a result, your payment has been automatically canceled for your security.</p>
           <p style="text-align: center;">Please rest assured that no charges have been made to your account. If you would like to try again or need assistance, our support team is here to help.</p>
-          <p style="text-align: center;">Feel free to reach out to us at <span class="imp">+9779861142179</span>for any questions or concerns. We apologize for any inconvenience this may have caused and appreciate your understanding.</p>
+          <p style="text-align: center;">Feel free to reach out to us at <span class="imp"> +9779861142179 </span>for any questions or concerns. We apologize for any inconvenience this may have caused and appreciate your understanding.</p>
           <div class="footer">
             <p>Thank you for choosing us!</p>
             <p>Best regards,<br><strong>Store Team</strong></p>
