@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import nodemailer from "nodemailer";
 import { generateOrderEmailContent } from "./components";
-import { createOrderController } from "../controller";
+import { createOrderController } from "../admin/auth/order/controller";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2023-10-16",
