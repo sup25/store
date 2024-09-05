@@ -33,6 +33,9 @@ const sendEmail = async (transporter, mailOptions) => {
 export async function POST(request) {
   const endpointSecret = process.env.NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET;
   const sig = headers(request).get("stripe-signature");
+
+  console.log("Stripe Signature:", sig);
+
   if (!sig) {
     console.error("Missing stripe-signature header");
     return new NextResponse("Missing stripe-signature header", { status: 400 });
@@ -41,6 +44,7 @@ export async function POST(request) {
   let event;
   try {
     const rawBody = await request.text();
+
     event = stripe.webhooks.constructEvent(rawBody, sig, endpointSecret);
   } catch (err) {
     console.error(`Webhook Error: ${err.message}`);
