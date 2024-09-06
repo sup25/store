@@ -2,7 +2,13 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { GoSignIn, GoSignOut, GoPersonAdd, GoPerson } from "react-icons/go";
+import {
+  GoSignIn,
+  GoSignOut,
+  GoPersonAdd,
+  GoPerson,
+  GoHome,
+} from "react-icons/go";
 import { IoCartOutline } from "react-icons/io5";
 
 import { useAuth } from "@/context/AuthContext";
@@ -39,22 +45,28 @@ const NavLinks = () => {
     closeDrawer();
   };
 
-  let links = [];
+  let links = [
+    {
+      icon: <GoHome size={25} />,
+      text: "Home",
+      href: "/",
+      private: false,
+    },
+  ];
 
   if (user) {
     links = [
+      ...links,
       {
         icon: <GoPerson size={25} />,
         text: user.first_name,
         private: true,
         href: "/user/dashboard",
       },
-
       {
         icon: <IoCartOutline size={25} />,
         text: `My Cart (${cartItems.length})`,
         href: "/user/cart",
-
         private: true,
       },
       {
@@ -81,6 +93,7 @@ const NavLinks = () => {
     ];
   } else {
     links = [
+      ...links,
       {
         href: "/login",
         icon: <GoSignIn size={25} />,
@@ -100,7 +113,9 @@ const NavLinks = () => {
     <>
       <div className="md:flex none md:items-center md:space-x-4">
         {links.map((link, index) => {
-          const shouldDisplay = link.private ? user || admin : !user && !admin;
+          const isHomeLink = link.text === "Home";
+          const shouldDisplay =
+            isHomeLink || (link.private ? user || admin : !user && !admin);
           if (shouldDisplay) {
             return (
               <div key={index}>
@@ -157,9 +172,9 @@ const NavLinks = () => {
         >
           <div className="flex flex-col w-full items-start gap-4 mt-4">
             {links.map((link, index) => {
-              const shouldDisplay = link.private
-                ? user || admin
-                : !user && !admin;
+              const isHomeLink = link.text === "Home";
+              const shouldDisplay =
+                isHomeLink || (link.private ? user || admin : !user && !admin);
               if (shouldDisplay) {
                 return (
                   <div key={index}>
