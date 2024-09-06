@@ -35,7 +35,7 @@ const GetProductsByTags = ({ handleTagSubmit }) => {
   return (
     <>
       {loading && <Spinner />}
-      <div className="relative flex  gap-2 w-full max-w-[600px]">
+      <div className="relative flex flex-col gap-2 w-full max-w-[600px]">
         {showTooltip && (
           <div className="absolute -top-7 left-0 font-others  text-black text-sm p-1 ">
             Use commas to separate multiple tags
@@ -51,7 +51,7 @@ const GetProductsByTags = ({ handleTagSubmit }) => {
           onMouseLeave={() => setShowTooltip(false)}
         />
         <button
-          className="bg-secondary md:w-40 hover:bg-primary transition duration-300 ease-in-out p-2 text-white"
+          className="bg-secondary  hover:bg-primary transition duration-300 ease-in-out p-2 text-white"
           onClick={handleSubmit}
         >
           Search
