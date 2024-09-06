@@ -25,11 +25,26 @@ export async function PUT(request, { params }) {
   if (validationErrors.length > 0) {
     return internalRes("Validation Error", { errors: validationErrors }, 400);
   }
+
+  ("");
   try {
     const productList = await updateProductController(productId, body);
     return internalRes("Product updated successfully", productList, 200);
   } catch (err) {
     console.error(err);
+
+    if (
+      err.message.includes(
+        "The product handle is already in use by another product. Please choose a different handle."
+      )
+    ) {
+      return internalRes(
+        "Product handle already exists. Please choose a different handle.",
+        null,
+        409
+      );
+    }
+
     return internalRes("Internal Server Error", null, 500);
   }
 }
