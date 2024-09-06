@@ -10,6 +10,7 @@ import Pagination from "@/common/table/components/pagination";
 import { useSearchParams } from "next/navigation";
 import { fetchProducts, showProductsByTag } from "./utils";
 import LoginPopUp from "@/common/loginPopup";
+import Filter from "./filter";
 
 const Products = () => {
   const range = DEFAULT_PRICE_RANGE;
@@ -23,13 +24,14 @@ const Products = () => {
   const productsPerPage = 12;
   const [loginPopupVisible, setLoginPopupVisible] = useState(false);
   const searchParams = useSearchParams();
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const handleReload = () => {
     window.location.reload();
   };
 
   const combinedFilter = () => {
-    const filteredByPrice = products.filter((product) => {
+    let filteredByPrice = products.filter((product) => {
       return (
         product.price >= debouncedPriceRange[0] &&
         product.price <= debouncedPriceRange[1]
@@ -37,18 +39,35 @@ const Products = () => {
     });
 
     if (tag) {
-      return filteredProducts.filter((product) => {
+      filteredByPrice = filteredProducts.filter((product) => {
         return (
           product.price >= debouncedPriceRange[0] &&
           product.price <= debouncedPriceRange[1]
         );
       });
     }
-    return filteredByPrice;
+
+    const sortedProducts = filteredByPrice.sort((a, b) => {
+      if (sortOrder === "asc") {
+        return a.title.localeCompare(b.title);
+      } else if (sortOrder === "desc") {
+        return b.title.localeCompare(a.title);
+      } else if (sortOrder === "price-asc") {
+        return a.price - b.price;
+      } else if (sortOrder === "price-desc") {
+        return b.price - a.price;
+      }
+      return 0;
+    });
+
+    return sortedProducts;
   };
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+  };
+  const handleSortChange = (sortValue) => {
+    setSortOrder(sortValue);
   };
 
   useEffect(() => {
@@ -115,16 +134,19 @@ const Products = () => {
               </div>
             </div>
             <div className="py-10">
-              {paginatedProducts().length > 0
-                ? ""
-                : !loading && (
-                    <p
-                      className=" p-2 cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-600 font-others transition duration-300 ease-in-out"
-                      onClick={handleReload}
-                    >
-                      Back to products
-                    </p>
-                  )}
+              {" "}
+              <div>
+                {paginatedProducts().length > 0
+                  ? ""
+                  : !loading && (
+                      <p
+                        className=" p-2 cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-600 font-others transition duration-300 ease-in-out"
+                        onClick={handleReload}
+                      >
+                        Back to products
+                      </p>
+                    )}
+              </div>{" "}
             </div>
             {products.length > 0 && (
               <Pagination
