@@ -8,7 +8,7 @@ import { CgSpinner } from "react-icons/cg";
 import appConfig from "@/config";
 import LoginPopUp from "@/common/loginPopup";
 
-const RelatedProduct = () => {
+const RelatedProduct = ({ heading }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loginPopuupVisible, setLoginPopupVisible] = useState(false);
@@ -50,7 +50,7 @@ const RelatedProduct = () => {
       <div className="section">
         <div className="container">
           <div className="flex flex-col">
-            <h2 className="font-heading my-10">Related Products</h2>
+            <h2 className="font-heading my-10">{heading}</h2>
             <div>
               <Swiper
                 modules={[Pagination, Navigation]}

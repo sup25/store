@@ -1,9 +1,8 @@
 "use client";
-
 import UserProfile from "./userProfile";
 import withAuthUser from "../utils/userHoc/page";
-import ProductRecommendation from "./productsRecommendation";
 import RecentPurchasedItem from "./recentPurchasedItems";
+import RelatedProduct from "@/common/relatedProduct";
 
 const Dashboard = () => {
   return (
@@ -14,7 +13,7 @@ const Dashboard = () => {
             <UserProfile />
             <RecentPurchasedItem />
           </div>
-          <ProductRecommendation />
+          <RelatedProduct heading="For you" />
         </div>
       </div>
     </div>
