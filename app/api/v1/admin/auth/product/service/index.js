@@ -18,6 +18,18 @@ export const createProductService = async (body) => {
   const parsedPrice = parseFloat(price);
   const parsedQuantity = parseInt(quantity, 10);
 
+  const existingProduct = await prisma.product.findUnique({
+    where: {
+      handle,
+    },
+  });
+
+  if (existingProduct) {
+    throw new Error(
+      "The product handle is already in use. Please choose a different handle."
+    );
+  }
+
   const product = await prisma.product.create({
     data: {
       title,
@@ -82,9 +94,23 @@ export const getAllProductsService = async () => {
 export const updateProductService = async (productId, updatedFields) => {
   const parsedProductId = parseInt(productId, 10);
   const { images, handle: newHandle, price, quantity, ...rest } = updatedFields;
-  const parsedPrice = price !== undefined ? parseInt(price, 10) : undefined;
+  const parsedPrice = price !== undefined ? parseFloat(price) : undefined;
   const parsedQuantity =
     quantity !== undefined ? parseInt(quantity, 10) : undefined;
+
+  if (newHandle) {
+    const existingProduct = await prisma.product.findUnique({
+      where: {
+        handle: newHandle,
+      },
+    });
+
+    if (existingProduct && existingProduct.id !== parsedProductId) {
+      throw new Error(
+        "The product handle is already in use by another product. Please choose a different handle."
+      );
+    }
+  }
 
   const product = await prisma.product.update({
     where: {

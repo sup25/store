@@ -53,6 +53,12 @@ export const handleSubmit = async (
     }
   } catch (error) {
     console.error("Error:", error);
+
+    if (error.response.status === 409) {
+      toast.error(
+        "Product handle already exists. Please choose a different handle."
+      );
+    }
     setErrors(error.response?.data?.returnedData?.errors || []);
     const err = error.response?.data?.returnedData?.errors;
     console.log("errrrr", err);
