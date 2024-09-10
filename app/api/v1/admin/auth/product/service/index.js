@@ -18,6 +18,9 @@ export const createProductService = async (body) => {
   const parsedPrice = parseFloat(price);
   const parsedQuantity = parseInt(quantity, 10);
 
+  if (parsedPrice > 100) {
+    throw new Error("Price cannot exceed $100.");
+  }
   const existingProduct = await prisma.product.findUnique({
     where: {
       handle,
@@ -95,6 +98,9 @@ export const updateProductService = async (productId, updatedFields) => {
   const parsedProductId = parseInt(productId, 10);
   const { images, handle: newHandle, price, quantity, ...rest } = updatedFields;
   const parsedPrice = price !== undefined ? parseFloat(price) : undefined;
+  if (parsedPrice !== undefined && parsedPrice > 100) {
+    throw new Error("Price cannot exceed $100.");
+  }
   const parsedQuantity =
     quantity !== undefined ? parseInt(quantity, 10) : undefined;
 
