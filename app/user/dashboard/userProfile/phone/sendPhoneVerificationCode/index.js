@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import VerifyPhoneVerificationCode from "../verifyPhoneVerificationCode";
 import { useAuth } from "@/context/AuthContext";
-import { MdOutlineVerified } from "react-icons/md";
+import { MdOutlineVerified, MdInfoOutline } from "react-icons/md";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserBtn } from "../../common";
@@ -26,6 +26,16 @@ const SendPhoneVerificationCode = () => {
   const isPhoneVerified = Boolean(user?.verified_phone);
 
   useEffect(() => {
+    const isAlertShown = sessionStorage.getItem("phoneAlertShown");
+
+    if (!isPhoneVerified && !isAlertShown && !user.verified_phone) {
+      alert(
+        "please use +9779812345678 as the phone number and 123456 as Verification code"
+      );
+
+      sessionStorage.setItem("phoneAlertShown", "true");
+    }
+
     if (!isPhoneVerified && auth && !recaptchaVerifierRef.current) {
       try {
         recaptchaVerifierRef.current = new RecaptchaVerifier(
@@ -48,11 +58,22 @@ const SendPhoneVerificationCode = () => {
     };
   }, [auth, isPhoneVerified]);
 
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    const sanitizedValue = value.replace(/[^\d+]/g, "");
-    setPhoneNumber(sanitizedValue);
+  const showInfoAlert = () => {
+    alert(
+      "Please use 9812345678 as the phone number and 123456 as Verification code"
+    );
   };
+
+  const handleInputChange = (e) => {
+    const value = e.target.value.slice(4);
+    const sanitizedValue = value.replace(/[^\d]/g, "");
+
+    setPhoneNumber("+977" + sanitizedValue);
+  };
+
+  useEffect(() => {
+    setPhoneNumber("+977");
+  }, []);
 
   const sendVerificationCode = async () => {
     const strippedPhoneNumber = phoneNumber.replace(/^\+\d{1,3}/, "");
@@ -121,14 +142,22 @@ const SendPhoneVerificationCode = () => {
   return (
     <div className="user-details incomplete mt-1">
       <h2 className="font-others font-bold">Phone Verification</h2>
+
       <div className="flex flex-col gap-3 w-full">
-        <input
-          type="text"
-          placeholder="+977 "
-          className="py-1 px-1 font-others border-2 outline-none hover:border-secondary transition duration-300 ease-in-out"
-          value={phoneNumber}
-          onChange={handleInputChange}
-        />
+        <div className="flex w-full justify-between items-center ">
+          <input
+            type="text"
+            placeholder="+977 "
+            className="py-1 px-1 w-full  font-others border-2 outline-none hover:border-secondary transition duration-300 ease-in-out"
+            value={phoneNumber}
+            onChange={handleInputChange}
+          />
+          <MdInfoOutline
+            className="ml-2 text-black animate-pulse cursor-pointer"
+            size={20}
+            onClick={showInfoAlert}
+          />
+        </div>
 
         <UserBtn
           handler={sendVerificationCode}
