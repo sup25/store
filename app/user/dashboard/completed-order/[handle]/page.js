@@ -6,13 +6,17 @@ import axios from "axios";
 import Spinner from "@/common/spinner";
 import Link from "next/link";
 import BtnAddToCart from "@/common/btnAddToCart";
+import { useAuth } from "@/context/AuthContext";
 
 const CompletedOrder = () => {
   const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { handle } = useParams();
-  console.log(product);
+  const { user } = useAuth();
+  const quantity = 1;
+  const showLoginPopup = false;
+
   useEffect(() => {
     const getProduct = async () => {
       try {
@@ -57,9 +61,6 @@ const CompletedOrder = () => {
   return (
     <div className="section bg-gray-50 min-h-screen py-12 px-6">
       <div className="container mx-auto max-w-screen-lg">
-        <h1 className="font-heading font-bold text-center text-3xl text-gray-800 mb-12">
-          Order Details
-        </h1>
         {product.map((item) => (
           <div
             key={item.id}
@@ -94,12 +95,12 @@ const CompletedOrder = () => {
                       ${item.price.toFixed(2)}
                     </span>
                   </p>
-                  {/*  <p className="title-heading">
+                  <p className="title-heading">
                     Quantity:{" "}
                     <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded-lg">
                       {item.quantity}
                     </span>
-                  </p> */}
+                  </p>
                   <p className="title-heading">
                     Tags:{" "}
                     <span className="bg-yellow-100 text-yellow-700 px-2 py-[1px] rounded-lg">
@@ -125,13 +126,21 @@ const CompletedOrder = () => {
                     )}
                   </p>
                 </div>
-                <div className="flex justify-end items-center mt-8 space-x-4">
+                <div className="flex justify-between items-center mt-8 gap-5 flex-wrap">
                   <Link
                     href={"/user/dashboard"}
-                    className="bg-gray-100 text-gray-700 px-6 py-3 font-others rounded-md shadow hover:bg-gray-200 transition duration-300"
+                    className="bg-gray-500 min-h-[50px] w-full text-center text-white  px-6 py-3 font-others  shadow hover:bg-tertiary transition duration-300"
                   >
                     Back to Products
                   </Link>
+                  <div className="w-full">
+                    <BtnAddToCart
+                      product={item}
+                      user={user}
+                      quantity={quantity}
+                      showLoginPopup={showLoginPopup}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
