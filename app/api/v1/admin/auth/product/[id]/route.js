@@ -32,7 +32,9 @@ export async function PUT(request, { params }) {
     return internalRes("Product updated successfully", productList, 200);
   } catch (err) {
     console.error(err);
-
+    if (err.message.includes("Price cannot exceed $100")) {
+      return internalRes("Price cannot exceed $100", null, 500);
+    }
     if (
       err.message.includes(
         "The product handle is already in use by another product. Please choose a different handle."

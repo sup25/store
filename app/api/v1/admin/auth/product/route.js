@@ -25,6 +25,9 @@ export async function POST(request) {
         409
       );
     }
+    if (error.message.includes("Price cannot exceed $100")) {
+      return internalRes("Price cannot exceed $100", null, 500);
+    }
 
     return internalRes("Internal Server Error", null, 500);
   }

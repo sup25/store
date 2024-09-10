@@ -59,6 +59,9 @@ export const handleSubmit = async (
         "Product handle already exists. Please choose a different handle."
       );
     }
+    if (error.response.data.message === "Price cannot exceed $100") {
+      toast.error("Price cannot exceed $100");
+    }
     setErrors(error.response?.data?.returnedData?.errors || []);
     const err = error.response?.data?.returnedData?.errors;
     console.log("errrrr", err);
