@@ -3,8 +3,8 @@ import React, { useState, useEffect } from "react";
 import Spinner from "@/common/spinner";
 
 import { getCompletedOrder } from "../API";
-import Table from "@/common/table";
 import withAuthAdmin from "../../utils/adminHoc/page";
+import Table from "../components/table";
 
 const CompletedOrders = () => {
   const [orders, setOrders] = useState([]);

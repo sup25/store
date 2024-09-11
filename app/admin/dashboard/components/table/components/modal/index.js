@@ -2,7 +2,7 @@
 import Line from "@/common/line";
 import { useState } from "react";
 import { MdOutlineCancel } from "react-icons/md";
-import "../../../styles.css";
+import "../../../../../../../common/styles.css";
 
 const Modal = ({
   isOpen,

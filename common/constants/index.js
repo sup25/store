@@ -1,7 +1,7 @@
 const constants = {
   pagination: {
     perPage: 5,
-    pageRange: 5,
+    pageRange: 8,
     mobilePageRange: 3,
   },
 };
