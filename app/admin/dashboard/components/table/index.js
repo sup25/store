@@ -1,12 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import constants from "./constants";
+import constants from "@/common/constants";
 import SearchBar from "./components/searchBar";
 import { NoItemsFoundMessage } from "./components/tableMessage";
 import TableBody from "./components/tableBody";
-import Pagination from "./components/pagination";
+
 import { useSortedData } from "./hooks";
-import Spinner from "../spinner";
+import Spinner from "@/common/spinner";
+import Pagination from "@/common/pagination";
 
 const Table = ({
   data,

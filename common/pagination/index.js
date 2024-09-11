@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import constants from "../../constants";
+import constants from "../constants";
 
 const Pagination = ({ currentPage, handlePageChange, totalPages }) => {
   const [pageRange, setPageRange] = useState(constants.pagination.pageRange);
@@ -22,48 +22,22 @@ const Pagination = ({ currentPage, handlePageChange, totalPages }) => {
   const getPageNumbers = () => {
     const pageNumbers = [1];
 
-    if (currentPage > 2) {
-      pageNumbers.push(currentPage - 1);
-    }
-    if (currentPage > 1 && currentPage < totalPages) {
+    if (currentPage > 2) pageNumbers.push(currentPage - 1);
+    if (currentPage > 1 && currentPage < totalPages)
       pageNumbers.push(currentPage);
-    }
-    if (currentPage < totalPages - 1) {
-      pageNumbers.push(currentPage + 1);
-    }
-
-    if (totalPages > 1) {
-      pageNumbers.push(totalPages);
-    }
+    if (currentPage < totalPages - 1) pageNumbers.push(currentPage + 1);
+    if (totalPages > 1) pageNumbers.push(totalPages);
 
     const uniquePages = [...new Set(pageNumbers)];
 
-    const finalPages = [1];
-
-    if (currentPage > 1) {
-      finalPages.push(currentPage);
-    }
-    if (currentPage < totalPages) {
-      finalPages.push(currentPage + 1);
-    }
-
-    if (totalPages > 1) {
-      finalPages.push(totalPages);
-    }
-
-    const result = [...new Set(finalPages)];
-
-    if (result.length > 4) {
-      if (currentPage <= 2) {
-        return [1, 2, 3, totalPages];
-      }
-      if (currentPage >= totalPages - 1) {
+    if (uniquePages.length > pageRange) {
+      if (currentPage <= 2) return [1, 2, 3, totalPages];
+      if (currentPage >= totalPages - 1)
         return [1, totalPages - 2, totalPages - 1, totalPages];
-      }
       return [1, currentPage - 1, currentPage, currentPage + 1, totalPages];
     }
 
-    return result;
+    return uniquePages;
   };
 
   return (

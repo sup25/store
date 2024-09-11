@@ -2,8 +2,9 @@
 import React, { useEffect, useState } from "react";
 import { getProducts } from "../utils";
 import Spinner from "@/common/spinner";
-import Table from "@/common/table";
+/* import Table from "@/common/table"; */
 import withAuthAdmin from "../../utils/adminHoc/page";
+import Table from "../components/table";
 
 const AllProducts = () => {
   const [loading, setLoading] = useState(true);

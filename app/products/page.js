@@ -6,11 +6,12 @@ import { DEFAULT_PRICE_RANGE } from "@/constants";
 import { useDebounce } from "use-debounce";
 import GetProductsByTags from "./getProductsByTags";
 import GetProductsByPrice from "./getProductsByPrice";
-import Pagination from "@/common/table/components/pagination";
+/* import Pagination from "@/common/table/components/pagination"; */
 import { useSearchParams } from "next/navigation";
 import { fetchProducts, showProductsByTag } from "./utils";
 import LoginPopUp from "@/common/loginPopup";
 import Filter from "./filter";
+import Pagination from "@/common/pagination";
 
 const Products = () => {
   const range = DEFAULT_PRICE_RANGE;
