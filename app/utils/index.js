@@ -3,6 +3,14 @@
 import appConfig from "@/config";
 import axios from "axios";
 
+export const sendUserComplaint = async (data) => {
+  const response = await axios.post(
+    `/${appConfig.basePath}/user/auth/customercomplaint`,
+    data
+  );
+  return response.data.returnedData;
+};
+
 export const getAllProducts = async () => {
   const response = await axios.get(`/${appConfig.basePath}/admin/auth/product`);
   return response.data.returnedData;
