@@ -3,6 +3,7 @@ import {
   addAddressService,
   createUserService,
   loginUserService,
+  sendComplaintEmailService,
   sendVerificationEmailService,
 } from "../service";
 import {
@@ -41,4 +42,7 @@ export const addAddressController = async (userId, addressData) => {
 
 export const sendVerificationEmailController = async (user, token) => {
   await sendVerificationEmailService(user, token);
+};
+export const sendComplaintEmailController = async (data) => {
+  await sendComplaintEmailService(data);
 };

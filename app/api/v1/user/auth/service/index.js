@@ -2,6 +2,7 @@ import prisma from "@/_lib/prisma";
 import { comparePassword } from "@/app/api/utils/comparePassword";
 import appConfig from "@/config";
 import nodemailer from "nodemailer";
+import { generateComplaintEmailContent } from "./emailtamplate";
 
 export const createUserService = async (body) => {
   try {
@@ -106,6 +107,33 @@ export async function sendVerificationEmailService(user, token) {
     subject: "Verify your email",
     text: `Please verify your email by clicking the following link: 
     ${baseUrl}/user/verify-email?token=${token}`,
+  };
+
+  await transporter.sendMail(mailOptions);
+}
+
+export async function sendComplaintEmailService(data) {
+  const {
+    body: { userEmail, complaintMessage },
+  } = data;
+
+  const transporter = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: process.env.USER_EMAIL,
+      pass: process.env.USER_PASSWORD,
+    },
+  });
+  const emailcontent = generateComplaintEmailContent(
+    userEmail,
+    complaintMessage
+  );
+
+  const mailOptions = {
+    from: process.env.USER_EMAIL,
+    to: process.env.USER_EMAIL,
+    subject: "New Complaint",
+    html: emailcontent,
   };
 
   await transporter.sendMail(mailOptions);

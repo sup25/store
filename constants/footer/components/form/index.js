@@ -1,18 +1,33 @@
 "use client";
+import { sendUserComplaint } from "@/app/utils";
 import { useState } from "react";
+import { CgSpinner } from "react-icons/cg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 export const ComplaintForm = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-
-  const handleSubmit = (e) => {
+  const [loading, setLoading] = useState(false);
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    toast.success(
-      "Your complaint has been submitted. We'll get back to you soon."
-    );
-    setEmail("");
-    setMessage("");
+
+    try {
+      setLoading(true);
+      const response = await sendUserComplaint({
+        userEmail: email,
+        complaintMessage: message,
+      });
+      toast.success(
+        "Your complaint has been submitted. We'll get back to you soon."
+      );
+      setEmail("");
+      setMessage("");
+    } catch (error) {
+      toast.error("Error sending complaint");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -42,9 +57,16 @@ export const ComplaintForm = () => {
         ></textarea>
         <button
           type="submit"
-          className="w-full bg-primary text-white font-semibold py-3 rounded-lg hover:bg-secondary transition duration-300 ease-in-out"
+          className={`w-full flex items-center justify-center bg-primary text-white font-semibold py-3 rounded-lg hover:bg-secondary transition duration-300 ease-in-out ${
+            loading ? "bg-gray-400 cursor-not-allowed" : ""
+          }`}
+          disabled={loading}
         >
-          Submit Complaint
+          {loading ? (
+            <CgSpinner size={25} className="animate-spin" />
+          ) : (
+            "Submit Complaint"
+          )}
         </button>
       </form>
     </div>
